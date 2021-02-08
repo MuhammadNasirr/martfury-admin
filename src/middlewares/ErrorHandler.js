@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authMiddleware } from "./JwtAuth";
 
 const errorRoutes = Router();
 errorRoutes.use(function timeLog(req, res, next) {
