@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 connect();
 
 app.use(publicRouter);
-app.use(authMiddleware);
+// app.use(authMiddleware);
 
 app.use(errorRoutes);
 
