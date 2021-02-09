@@ -5,7 +5,7 @@ export const createUser = async (payload) => {
   //console.log(payload)
   let user = await userModel.findOne({ userId: payload.userId });
   console.log(user);
-  if (user) return { error: "UserIdg Already Exists" };
+  if (user) return { error: "UserId Already Exists" };
   if (!user) {
     newUser = new userModel(payload);
     const userData = await newUser.save();

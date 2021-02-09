@@ -2,19 +2,27 @@ import express from "express";
 import bodyParser from "body-parser";
 import { publicRouter } from "./routing/PublicRoutes";
 import { connect } from "./config/database";
-import { errorRoutes } from "./middlewares/ErrorHandler";
+import { errorHandler, errorRoutes } from "./middlewares/ErrorHandler";
 import { authMiddleware } from "./middlewares/JwtAuth";
+import { protectedRouter } from "./routing/ProtectedRoutes";
+var methodOverride = require("method-override");
 
 const app = express();
-
 app.use(bodyParser.json());
 connect();
 
 app.use(publicRouter);
-// app.use(authMiddleware);
+app.use(protectedRouter);
 
-app.use(errorRoutes);
+app.all("*", (req, res, next) => {
+  const err = new Error(`Can't find ${req.originalUrl} on this server!`);
+  err.status = "fail";
+  err.statusCode = 404;
 
+  next(err);
+});
+
+app.use(errorHandler);
 app.listen(process.env.PORT || 3000, () => {
   console.log("Authentication service started on port 3000");
 });

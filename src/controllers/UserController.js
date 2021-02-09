@@ -8,7 +8,10 @@ export const login = async (req, res, next) => {
     let user = await userRepo.getUser({ userId: userId, password });
     console.log(user);
     if (user.error) {
-      res.status(401).json({ error: user.error });
+      const err = new Error(user.error);
+      err.status = "fail";
+      err.statusCode = 401;
+      next(err);
     } else {
       res.status(200).json({
         _id: user.id,
@@ -17,7 +20,12 @@ export const login = async (req, res, next) => {
         name: user.name,
       });
     }
-  } else res.status(400).json({ message: "UserId or Password missing" });
+  } else {
+    const err = new Error("UserId or Password missing");
+    err.status = "fail";
+    err.statusCode = 401;
+    next(err);
+  }
 };
 
 export const signup = async (req, res, next) => {
@@ -30,7 +38,10 @@ export const signup = async (req, res, next) => {
       password: password,
     });
     if (user.error) {
-      res.status(401).json({ error: user.error });
+      const err = new Error(user.error);
+      err.status = "fail";
+      err.statusCode = 401;
+      next(err);
       return;
     }
     res.status(200).json({
@@ -39,5 +50,10 @@ export const signup = async (req, res, next) => {
       userId: user.userId,
       name: user.name,
     });
-  } else res.status(400).json({ message: "UserId or Password missing" });
+  } else {
+    const err = new Error("UserId or Password missing");
+    err.status = "fail";
+    err.statusCode = 401;
+    next(err);
+  }
 };
