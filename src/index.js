@@ -15,6 +15,6 @@ app.use(authMiddleware);
 
 app.use(errorRoutes);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Authentication service started on port 3000");
 });
