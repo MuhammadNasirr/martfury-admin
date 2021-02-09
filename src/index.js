@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { publicRouter } from "./routing/publicRoutes";
+import { publicRouter } from "./routing/PublicRoutes";
 import { connect } from "./config/database";
 import { errorRoutes } from "./middlewares/ErrorHandler";
 import { authMiddleware } from "./middlewares/JwtAuth";
