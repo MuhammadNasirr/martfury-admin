@@ -29,13 +29,14 @@ export const login = async (req, res, next) => {
 };
 
 export const signup = async (req, res, next) => {
-  const { name, userId, password } = req.body;
+  const { name, userId, password, role } = req.body;
   console.log(req.body);
   if (userId && password) {
     let user = await userRepo.createUser({
       name,
       userId: userId,
       password: password,
+      role,
     });
     if (user.error) {
       const err = new Error(user.error);

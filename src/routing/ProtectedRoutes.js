@@ -9,11 +9,19 @@ protectedRouter.use(function timeLog(req, res, next) {
   next();
 });
 
-protectedRouter.post("/page", PageController.createPage);
-protectedRouter.get("/page", PageController.getPages);
-protectedRouter.get("/page/:pageId", PageController.getPageDetails);
-protectedRouter.put("/page/:pageId", PageController.updatePage);
-protectedRouter.delete("/page/:pageId", PageController.deletePage);
+protectedRouter.post("/page", authMiddleware, PageController.createPage);
+protectedRouter.get("/page", authMiddleware, PageController.getPages);
+protectedRouter.get(
+  "/page/:pageId",
+  authMiddleware,
+  PageController.getPageDetails
+);
+protectedRouter.put("/page/:pageId", authMiddleware, PageController.updatePage);
+protectedRouter.delete(
+  "/page/:pageId",
+  authMiddleware,
+  PageController.deletePage
+);
 
 protectedRouter.post("/authP/login", authMiddleware, UserController.login);
 protectedRouter.post("/authP/signup", authMiddleware, UserController.signup);
