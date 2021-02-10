@@ -19,9 +19,9 @@ const pageSchema = mongoose.Schema(
   { strict: "throw" }
 );
 pageSchema.plugin(AutoIncrement, { id: "id_seq", inc_field: "id" });
-// pageSchema.methods.toJSON = function () {
-//   var obj = this.toObject();
-//   delete obj.softDelete;
-//   return obj;
-// };
+pageSchema.methods.toJSON = function () {
+  var obj = this.toObject();
+  delete obj.softDelete;
+  return obj;
+};
 export default mongoose.model("page", pageSchema);
