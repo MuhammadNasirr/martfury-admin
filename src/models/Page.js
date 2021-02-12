@@ -4,7 +4,11 @@ const pageSchema = mongoose.Schema(
   {
     id: Number,
     name: { type: String, required: true },
-    template: { type: String, required: true },
+    template: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "templates",
+      required: true,
+    },
     createdAt: Date,
     status: {
       type: String,
