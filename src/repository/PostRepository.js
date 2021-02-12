@@ -38,10 +38,10 @@ export const getPosts = async (page) => {
 export const getPostDetails = async (id) => {
   const cat = await postModel
     .findOne({ id: id })
-    .populate({
-      path: "categories",
-      select: { name: 1, id: 1 },
-    })
+    // .populate({
+    //   path: "categories",
+    //   select: { name: 1, id: 1 },
+    // })
     .populate({
       path: "tags",
       select: { name: 1, id: 1 },
