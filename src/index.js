@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import { publicRouter } from "./routing/PublicRoutes";
 import { connect } from "./config/database";
 import { errorHandler, errorRoutes } from "./middlewares/ErrorHandler";
@@ -8,6 +9,7 @@ import { protectedRouter } from "./routing/ProtectedRoutes";
 var methodOverride = require("method-override");
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 connect();
 
