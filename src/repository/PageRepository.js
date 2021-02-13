@@ -28,7 +28,10 @@ export const getPages = async (page) => {
 };
 
 export const getPageDetails = async (id) => {
-  const page = await pageModel.findOne({ id: id, softDelete: false });
+  const page = await pageModel.findOne({ id: id, softDelete: false }).populate({
+    path: "template",
+    select: { name: 1 },
+  });
 
   return {
     status: "success",

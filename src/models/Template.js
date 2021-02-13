@@ -2,9 +2,9 @@ import mongoose from "../config/database";
 
 const templateSchema = mongoose.Schema(
   {
-    name: String,
-    header: String,
-    footer: String,
+    name: { type: String, required: true },
+    header: { type: String, required: true },
+    footer: { type: String, required: true },
   },
   { strict: "throw" }
 );
