@@ -3,6 +3,7 @@ import * as UserController from "../controllers/UserController";
 import * as PageController from "../controllers/PageController";
 import * as TemplateController from "../controllers/TemplateController";
 import * as TagsController from "../controllers/TagsController";
+import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
 import * as PostController from "../controllers/PostController";
 import { authMiddleware } from "../middlewares/JwtAuth";
@@ -13,8 +14,14 @@ protectedRouter.use(function timeLog(req, res, next) {
   next();
 });
 
+//PAGE
 protectedRouter.post("/page", authMiddleware, PageController.createPage);
 protectedRouter.get("/page", authMiddleware, PageController.getPages);
+protectedRouter.get(
+  "/page/published",
+  authMiddleware,
+  PageController.getMenuPages
+);
 protectedRouter.get(
   "/page/:pageId",
   authMiddleware,
@@ -27,6 +34,7 @@ protectedRouter.delete(
   PageController.deletePage
 );
 
+//TEMPLATES
 protectedRouter.post(
   "/template",
   authMiddleware,
@@ -53,8 +61,14 @@ protectedRouter.delete(
   TemplateController.deleteTemplate
 );
 
+//TAGS
 protectedRouter.post("/tags", authMiddleware, TagsController.createTag);
 protectedRouter.get("/tags", authMiddleware, TagsController.getTags);
+protectedRouter.get(
+  "/tags/published",
+  authMiddleware,
+  TagsController.getPublishedTags
+);
 protectedRouter.get(
   "/tags/:tagId",
   authMiddleware,
@@ -67,8 +81,14 @@ protectedRouter.delete(
   TagsController.deleteTag
 );
 
+//CATS
 protectedRouter.post("/cats", authMiddleware, CatsController.createCat);
 protectedRouter.get("/cats", authMiddleware, CatsController.getCats);
+protectedRouter.get(
+  "/cats/published",
+  authMiddleware,
+  CatsController.getPublishedCats
+);
 protectedRouter.get(
   "/cats/:catId",
   authMiddleware,
@@ -81,6 +101,7 @@ protectedRouter.delete(
   CatsController.deleteCat
 );
 
+//POSTS
 protectedRouter.post("/post", authMiddleware, PostController.createPost);
 protectedRouter.get("/post", authMiddleware, PostController.getPosts);
 protectedRouter.get(
@@ -95,9 +116,18 @@ protectedRouter.delete(
   PostController.deletePost
 );
 
-protectedRouter.post("/authP/login", authMiddleware, UserController.login);
-protectedRouter.post("/authP/signup", authMiddleware, UserController.signup);
-
-// define the about route
-
+//MENUS
+protectedRouter.post("/menu", authMiddleware, MenuController.createMenu);
+protectedRouter.get("/menu", authMiddleware, MenuController.getMenus);
+protectedRouter.get(
+  "/menu/:menuId",
+  authMiddleware,
+  MenuController.getMenuDetails
+);
+protectedRouter.put("/menu/:menuId", authMiddleware, MenuController.updateMenu);
+protectedRouter.delete(
+  "/menu/:menu",
+  authMiddleware,
+  MenuController.deleteMenu
+);
 export { protectedRouter };

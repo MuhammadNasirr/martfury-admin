@@ -8,9 +8,9 @@ export const createPost = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getPosts = async (page) => {
+export const getPosts = async (page, userId) => {
   const cats = await postModel
-    .find()
+    .find({ author: userId })
     .select("id name categories createdAt status author")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page)
@@ -35,9 +35,9 @@ export const getPosts = async (page) => {
   };
 };
 
-export const getPostDetails = async (id) => {
+export const getPostDetails = async (id, userId) => {
   const cat = await postModel
-    .findOne({ id: id })
+    .findOne({ id: id, author: userId })
     // .populate({
     //   path: "categories",
     //   select: { name: 1, id: 1 },
@@ -57,7 +57,7 @@ export const getPostDetails = async (id) => {
   };
 };
 
-export const updatePost = async (id, payload) => {
+export const updatePost = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;
   }
@@ -65,7 +65,7 @@ export const updatePost = async (id, payload) => {
     delete payload._id;
   }
   const cat = await postModel.updateOne(
-    { id: id },
+    { id: id, author: userId },
     { ...payload },
     { runValidators: true }
   );
@@ -81,8 +81,8 @@ export const updatePost = async (id, payload) => {
     };
 };
 
-export const deletePost = async (id) => {
-  const cat = await postModel.deleteOne({ id: id });
+export const deletePost = async (id, userId) => {
+  const cat = await postModel.deleteOne({ id: id, author: userId });
   console.log(cat);
   if (cat.n > 0)
     return {

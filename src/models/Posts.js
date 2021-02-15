@@ -39,10 +39,6 @@ const postSchema = mongoose.Schema(
       ref: "users",
     },
     softDelete: { type: Boolean, default: false },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
-    },
   },
   { strict: "throw" }
 );

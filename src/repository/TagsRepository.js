@@ -8,9 +8,9 @@ export const createTag = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getTags = async (page) => {
+export const getTags = async (page, userId) => {
   const tags = await tagModel
-    .find()
+    .find({ author: userId })
     .select("id name status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
@@ -27,8 +27,21 @@ export const getTags = async (page) => {
   };
 };
 
-export const getTagDetails = async (id) => {
-  const tag = await tagModel.findOne({ id: id }).select("-author");
+export const getPublishedTags = async (userId) => {
+  const tags = await tagModel
+    .find({ author: userId, status: "Published" })
+    .select("id name ");
+
+  return {
+    status: "success",
+    data: tags,
+  };
+};
+
+export const getTagDetails = async (id, userId) => {
+  const tag = await tagModel
+    .findOne({ id: id, author: userId })
+    .select("-author");
 
   return {
     status: "success",
@@ -36,7 +49,7 @@ export const getTagDetails = async (id) => {
   };
 };
 
-export const updateTag = async (id, payload) => {
+export const updateTag = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;
   }
@@ -44,7 +57,7 @@ export const updateTag = async (id, payload) => {
     delete payload._id;
   }
   const tag = await tagModel.updateOne(
-    { id: id },
+    { id: id, author: userId },
     { ...payload },
     { runValidators: true }
   );
@@ -60,8 +73,8 @@ export const updateTag = async (id, payload) => {
     };
 };
 
-export const deleteTag = async (id) => {
-  const tag = await tagModel.deleteOne({ id: id });
+export const deleteTag = async (id, userId) => {
+  const tag = await tagModel.deleteOne({ id: id, author: userId });
   console.log(tag);
   if (tag.n > 0)
     return {

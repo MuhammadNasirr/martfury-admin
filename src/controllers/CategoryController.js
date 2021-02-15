@@ -45,9 +45,33 @@ export const getCats = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
   try {
-    let respo = await catRepo.getCats(page - 1 || 0, req.jwtPayload.userId);
+    console.log(req.jwtPayload);
+    let respo = await catRepo.getCats(page - 1 || 0, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data.cats.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getPublishedCats = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    console.log(req.jwtPayload);
+    let respo = await catRepo.getAllPublishedCats(req.jwtPayload.userid);
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
       else {
         res.status(204).json(respo);
       }
@@ -79,7 +103,7 @@ export const getCatDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await catRepo.getCatDetails(id, req.jwtPayload.userId);
+    let respo = await catRepo.getCatDetails(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
@@ -115,7 +139,7 @@ export const updateCat = async (req, res, next) => {
         ...payload,
         updatedAt: new Date(),
       },
-      req.jwtPayload.userId
+      req.jwtPayload.userid
     );
     if (respo.status === "success") {
       res.status(200).json(respo);
@@ -145,7 +169,7 @@ export const deleteCat = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await catRepo.deleteCat(id, req.jwtPayload.userId);
+    let respo = await catRepo.deleteCat(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

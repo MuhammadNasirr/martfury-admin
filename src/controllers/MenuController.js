@@ -1,30 +1,17 @@
-import * as postRepo from "../repository/PostRepository";
+import * as menuRepo from "../repository/MenuRepository";
 
-export const createPost = async (req, res, next) => {
-  const {
-    name,
-    categories,
-    tags,
-    description,
-    status,
-    format,
-    isFeatured,
-    content,
-  } = req.body;
+export const createMenu = async (req, res, next) => {
+  const { name, status, structure, displayLocation } = req.body;
   let payload = {
     name,
-    categories,
-    tags,
-    description,
+    structure,
     status,
-    format,
+    displayLocation,
     createdAt: new Date(),
-    isFeatured,
-    content,
     author: req.jwtPayload.userid,
   };
   try {
-    let respo = await postRepo.createPost(payload);
+    let respo = await menuRepo.createMenu(payload);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -40,13 +27,13 @@ export const createPost = async (req, res, next) => {
   }
 };
 
-export const getPosts = async (req, res, next) => {
+export const getMenus = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
   try {
-    let respo = await postRepo.getPosts(page - 1 || 0, req.jwtPayload.userid);
+    let respo = await menuRepo.getMenus(page - 1 || 0, req.jwtPayload.userid);
     if (respo.status === "success") {
-      if (respo.data.posts.length) res.status(200).json(respo);
+      if (respo.data.menus.length) res.status(200).json(respo);
       else {
         res.status(204).json(respo);
       }
@@ -63,14 +50,14 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
-export const getPostDetails = async (req, res, next) => {
+export const getMenuDetails = async (req, res, next) => {
   //   console.log(req);
-  const { postId } = req.params;
-  console.log(postId);
-  let id = parseInt(postId);
+  const { menuId } = req.params;
+  console.log(menuId);
+  let id = parseInt(menuId);
 
   if (!id) {
-    const err = new Error("Invalid PostId provided");
+    const err = new Error("Invalid menuId provided");
     err.status = "fail";
     err.statusCode = 400;
     next(err);
@@ -78,7 +65,7 @@ export const getPostDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await postRepo.getPostDetails(id, req.jwtPayload.userid);
+    let respo = await menuRepo.getMenuDetails(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
@@ -95,20 +82,20 @@ export const getPostDetails = async (req, res, next) => {
   }
 };
 
-export const updatePost = async (req, res, next) => {
+export const updateMenu = async (req, res, next) => {
   //   console.log(req);
-  const { postId } = req.params;
+  const { menuId } = req.params;
   const payload = { ...req.body };
-  let id = parseInt(postId);
+  let id = parseInt(menuId);
   if (!id) {
-    const err = new Error("Invalid postId provided");
+    const err = new Error("Invalid menuId provided");
     err.status = "fail";
     err.statusCode = 400;
     next(err);
     return;
   }
   try {
-    let respo = await postRepo.updatePost(id, payload, req.jwtPayload.userid);
+    let respo = await menuRepo.updateMenu(id, payload, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -124,20 +111,20 @@ export const updatePost = async (req, res, next) => {
   }
 };
 
-export const deletePost = async (req, res, next) => {
+export const deleteMenu = async (req, res, next) => {
   //   console.log(req);
-  const { postId } = req.params;
+  const { menuId } = req.params;
 
-  let id = parseInt(postId);
+  let id = parseInt(menuId);
   if (!id) {
-    const err = new Error("Invalid postId provided");
+    const err = new Error("Invalid menuId provided");
     err.status = "fail";
     err.statusCode = 400;
     next(err);
     return;
   }
   try {
-    let respo = await postRepo.deletePost(id, req.jwtPayload.userid);
+    let respo = await menuRepo.deleteMenu(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

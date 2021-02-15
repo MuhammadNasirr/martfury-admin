@@ -8,9 +8,9 @@ export const createPage = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getPages = async (page) => {
+export const getPages = async (page, userId) => {
   const pages = await pageModel
-    .find({ softDelete: false })
+    .find({ softDelete: false, author: userId })
     .select("id name template status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
@@ -27,9 +27,9 @@ export const getPages = async (page) => {
   };
 };
 
-export const getPageDetails = async (id) => {
+export const getPageDetails = async (id, userId) => {
   const page = await pageModel
-    .findOne({ id: id, softDelete: false })
+    .findOne({ id: id, softDelete: false, author: userId })
     .populate({
       path: "template",
       select: { name: 1 },
@@ -42,7 +42,7 @@ export const getPageDetails = async (id) => {
   };
 };
 
-export const updatePage = async (id, payload) => {
+export const updatePage = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;
   }
@@ -50,7 +50,7 @@ export const updatePage = async (id, payload) => {
     delete payload._id;
   }
   const page = await pageModel.updateOne(
-    { id: id, softDelete: false },
+    { id: id, softDelete: false, author: userId },
     { ...payload },
     { runValidators: true }
   );
@@ -66,9 +66,9 @@ export const updatePage = async (id, payload) => {
     };
 };
 
-export const deletePage = async (id) => {
+export const deletePage = async (id, userId) => {
   const page = await pageModel.updateOne(
-    { id: id, softDelete: false },
+    { id: id, softDelete: false, author: userId },
     { softDelete: true },
     { runValidators: true }
   );
@@ -82,4 +82,27 @@ export const deletePage = async (id) => {
       status: "fail",
       message: "Inavlid PageId",
     };
+};
+
+export const getMenuPages = async (userId) => {
+  const pages = await pageModel
+    .find({ softDelete: false, author: userId, status: "Published" })
+    .select("id name");
+  const menuPage = [];
+  if (pages.length) {
+    pages.forEach((page) => {
+      menuPage.push({
+        text: page.name,
+        url: `/${page.name.replace(" ", "-")}`,
+      });
+    });
+  }
+  menuPage.push({
+    name: "Blogs",
+    url: "/blogs",
+  });
+  return {
+    status: "success",
+    subMenus: menuPage,
+  };
 };

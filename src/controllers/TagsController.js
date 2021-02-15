@@ -30,7 +30,7 @@ export const getTags = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
   try {
-    let respo = await tagRepo.getTags(page - 1 || 0);
+    let respo = await tagRepo.getTags(page - 1 || 0, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data.tags.length) res.status(200).json(respo);
       else {
@@ -64,10 +64,33 @@ export const getTagDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await tagRepo.getTagDetails(id);
+    let respo = await tagRepo.getTagDetails(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getPublishedTags = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    console.log(req.jwtPayload);
+    let respo = await tagRepo.getPublishedTags(req.jwtPayload.userid);
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
     } else {
       const err = new Error(respo.message);
       err.status = respo.status;
@@ -94,7 +117,7 @@ export const updateTag = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await tagRepo.updateTag(id, payload);
+    let respo = await tagRepo.updateTag(id, payload, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -123,7 +146,7 @@ export const deleteTag = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await tagRepo.deleteTag(id);
+    let respo = await tagRepo.deleteTag(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

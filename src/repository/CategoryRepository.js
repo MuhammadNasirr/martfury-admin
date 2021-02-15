@@ -8,9 +8,9 @@ export const createCat = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getCats = async (page) => {
+export const getCats = async (page, userId) => {
   const cats = await catModel
-    .find()
+    .find({ author: userId })
     .select("id name status createdAt updatedAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
@@ -27,9 +27,20 @@ export const getCats = async (page) => {
   };
 };
 
-export const getCatDetails = async (id) => {
+export const getAllPublishedCats = async (userId) => {
+  const cats = await catModel
+    .find({ author: userId, status: "Published" })
+    .select("id name");
+
+  return {
+    status: "success",
+    data: cats,
+  };
+};
+
+export const getCatDetails = async (id, userId) => {
   const cat = await catModel
-    .findOne({ id: id })
+    .findOne({ id: id, author: userId })
     .populate({
       path: "parent",
       select: { name: 1 },
@@ -42,7 +53,7 @@ export const getCatDetails = async (id) => {
   };
 };
 
-export const updateCat = async (id, payload) => {
+export const updateCat = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;
   }
@@ -50,7 +61,7 @@ export const updateCat = async (id, payload) => {
     delete payload._id;
   }
   const cat = await catModel.updateOne(
-    { id: id },
+    { id: id, author: userId },
     { ...payload },
     { runValidators: true }
   );
@@ -66,8 +77,8 @@ export const updateCat = async (id, payload) => {
     };
 };
 
-export const deleteCat = async (id) => {
-  const cat = await catModel.deleteOne({ id: id });
+export const deleteCat = async (id, userId) => {
+  const cat = await catModel.deleteOne({ id: id, author: userId });
   console.log(cat);
   if (cat.n > 0)
     return {

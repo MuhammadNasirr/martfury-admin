@@ -10,6 +10,7 @@ export const createPage = async (req, res, next) => {
     status,
     content,
     createdAt: new Date(),
+    author: req.jwtPayload.userid,
   };
   try {
     let respo = await pageRepo.createPage(payload);
@@ -32,9 +33,31 @@ export const getPages = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
   try {
-    let respo = await pageRepo.getPages(page - 1 || 0);
+    let respo = await pageRepo.getPages(page - 1 || 0, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data.pages.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getMenuPages = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    let respo = await pageRepo.getMenuPages(req.jwtPayload.userid);
+    if (respo.status === "success") {
+      if (respo.subMenus.length) res.status(200).json(respo);
       else {
         res.status(204).json(respo);
       }
@@ -66,7 +89,7 @@ export const getPageDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await pageRepo.getPageDetails(id);
+    let respo = await pageRepo.getPageDetails(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
@@ -96,7 +119,11 @@ export const updatePage = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await pageRepo.updatePage(pageId, payload);
+    let respo = await pageRepo.updatePage(
+      pageId,
+      payload,
+      req.jwtPayload.userid
+    );
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -125,7 +152,7 @@ export const deletePage = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await pageRepo.deletePage(pageId);
+    let respo = await pageRepo.deletePage(pageId, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
