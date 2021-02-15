@@ -22,6 +22,7 @@ export const createCat = async (req, res, next) => {
     isFeatured,
     Order,
     iconName,
+    author: req.jwtPayload.userid,
   };
   try {
     let respo = await catRepo.createCat(payload);
@@ -44,7 +45,7 @@ export const getCats = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
   try {
-    let respo = await catRepo.getCats(page - 1 || 0);
+    let respo = await catRepo.getCats(page - 1 || 0, req.jwtPayload.userId);
     if (respo.status === "success") {
       if (respo.data.cats.length) res.status(200).json(respo);
       else {
@@ -78,7 +79,7 @@ export const getCatDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await catRepo.getCatDetails(id);
+    let respo = await catRepo.getCatDetails(id, req.jwtPayload.userId);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
@@ -108,10 +109,14 @@ export const updateCat = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await catRepo.updateCat(id, {
-      ...payload,
-      updatedAt: new Date(),
-    });
+    let respo = await catRepo.updateCat(
+      id,
+      {
+        ...payload,
+        updatedAt: new Date(),
+      },
+      req.jwtPayload.userId
+    );
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -140,7 +145,7 @@ export const deleteCat = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await catRepo.deleteCat(id);
+    let respo = await catRepo.deleteCat(id, req.jwtPayload.userId);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

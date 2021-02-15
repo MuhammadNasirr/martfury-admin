@@ -28,7 +28,7 @@ export const getTags = async (page) => {
 };
 
 export const getTagDetails = async (id) => {
-  const tag = await tagModel.findOne({ id: id });
+  const tag = await tagModel.findOne({ id: id }).select("-author");
 
   return {
     status: "success",

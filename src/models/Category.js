@@ -22,6 +22,10 @@ const categorySchema = mongoose.Schema(
     isFeatured: { type: Boolean, default: false },
     iconName: String,
     Order: Number,
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
 
   { strict: "throw" }

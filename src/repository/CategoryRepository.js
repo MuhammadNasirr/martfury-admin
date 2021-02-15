@@ -28,10 +28,13 @@ export const getCats = async (page) => {
 };
 
 export const getCatDetails = async (id) => {
-  const cat = await catModel.findOne({ id: id }).populate({
-    path: "parent",
-    select: { name: 1 },
-  });
+  const cat = await catModel
+    .findOne({ id: id })
+    .populate({
+      path: "parent",
+      select: { name: 1 },
+    })
+    .select("-author");
 
   return {
     status: "success",

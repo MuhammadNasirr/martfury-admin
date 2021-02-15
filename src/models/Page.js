@@ -19,6 +19,10 @@ const pageSchema = mongoose.Schema(
     isFeatured: { type: Boolean, default: false },
     content: { type: String, required: true },
     softDelete: { type: Boolean, default: false },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
   { strict: "throw" }
 );

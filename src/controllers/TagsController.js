@@ -7,6 +7,7 @@ export const createTag = async (req, res, next) => {
     description,
     status,
     createdAt: new Date(),
+    author: req.jwtPayload.userid,
   };
   try {
     let respo = await tagRepo.createTag(payload);

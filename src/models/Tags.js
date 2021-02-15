@@ -12,6 +12,10 @@ const tagSchema = mongoose.Schema(
     },
     createdAt: Date,
     description: { type: String, required: true },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
 
   { strict: "throw" }
