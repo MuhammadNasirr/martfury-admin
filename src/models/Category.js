@@ -1,5 +1,6 @@
 import mongoose from "../config/database";
 var AutoIncrement = require("mongoose-sequence")(mongoose);
+import idValid from "mongoose-id-validator";
 
 const categorySchema = mongoose.Schema(
   {
@@ -31,5 +32,6 @@ const categorySchema = mongoose.Schema(
   { strict: "throw" }
 );
 categorySchema.plugin(AutoIncrement, { id: "id_seq2", inc_field: "id" });
+categorySchema.plugin(idValid);
 
 export default mongoose.model("categories", categorySchema);

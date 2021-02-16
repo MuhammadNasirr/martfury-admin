@@ -15,7 +15,7 @@ export const getTags = async (page, userId) => {
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await tagModel.countDocuments();
+  const count = await tagModel.countDocuments({ author: userId });
 
   return {
     status: "success",

@@ -1,5 +1,5 @@
 import { PAGE_LIMIT } from "../config/constants";
-import catModel from "../models/Category";
+import catModel from "../models/FAQ_Category";
 
 export const createCat = async (payload) => {
   const cat = new catModel(payload);

@@ -1,5 +1,6 @@
 import mongoose from "../config/database";
 var AutoIncrement = require("mongoose-sequence")(mongoose);
+import idValid from "mongoose-id-validator";
 
 const menuSchema = mongoose.Schema(
   {
@@ -23,5 +24,6 @@ const menuSchema = mongoose.Schema(
   { strict: "throw" }
 );
 menuSchema.plugin(AutoIncrement, { id: "id_seq5", inc_field: "id" });
+menuSchema.plugin(idValid);
 
 export default mongoose.model("menus", menuSchema);

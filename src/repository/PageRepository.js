@@ -15,7 +15,7 @@ export const getPages = async (page, userId) => {
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await pageModel.countDocuments();
+  const count = await pageModel.countDocuments({ author: userId });
 
   return {
     status: "success",

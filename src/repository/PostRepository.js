@@ -23,7 +23,7 @@ export const getPosts = async (page, userId) => {
       select: { name: 1 },
     });
 
-  const count = await postModel.countDocuments();
+  const count = await postModel.countDocuments({ author: userId });
 
   return {
     status: "success",

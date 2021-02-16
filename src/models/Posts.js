@@ -1,5 +1,7 @@
 import mongoose from "../config/database";
 var AutoIncrement = require("mongoose-sequence")(mongoose);
+import idValid from "mongoose-id-validator";
+
 const postSchema = mongoose.Schema(
   {
     id: Number,
@@ -43,6 +45,7 @@ const postSchema = mongoose.Schema(
   { strict: "throw" }
 );
 postSchema.plugin(AutoIncrement, { id: "id_seq4", inc_field: "id" });
+postSchema.plugin(idValid);
 postSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.softDelete;

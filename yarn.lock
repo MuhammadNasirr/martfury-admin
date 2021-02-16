@@ -1291,6 +1291,11 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+clone@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
+  integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
@@ -2627,6 +2632,14 @@ mongodb@3.6.3:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongoose-id-validator@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/mongoose-id-validator/-/mongoose-id-validator-0.6.0.tgz#cdf343fcbf952b2b4e25fe882746df0aef4c23ee"
+  integrity sha512-y3b3/PkmaiMKSbKB8tsEEGUjgCgKQGpD2Ood7jaVEob3V2HWgnmNKCgiSQUpEtQuDU0lUnLJQ5JE9PH1Bytziw==
+  dependencies:
+    clone "^1.0.2"
+    traverse "^0.6.6"
+
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
@@ -3651,6 +3664,11 @@ touch@^3.1.0:
   integrity sha512-WBx8Uy5TLtOSRtIq+M03/sKDrXCLHxwDcquSP2c43Le03/9serjQBIztjRz6FkJez9D/hleyAXTBGLwwZUw9lA==
   dependencies:
     nopt "~1.0.10"
+
+traverse@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
+  integrity sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=
 
 type-fest@^0.8.1:
   version "0.8.1"

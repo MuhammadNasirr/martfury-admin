@@ -1,5 +1,7 @@
 import mongoose from "../config/database";
 var AutoIncrement = require("mongoose-sequence")(mongoose);
+import idValid from "mongoose-id-validator";
+
 const pageSchema = mongoose.Schema(
   {
     id: Number,
@@ -27,6 +29,8 @@ const pageSchema = mongoose.Schema(
   { strict: "throw" }
 );
 pageSchema.plugin(AutoIncrement, { id: "id_seq", inc_field: "id" });
+pageSchema.plugin(idValid);
+
 pageSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.softDelete;

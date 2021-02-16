@@ -2,7 +2,7 @@ import mongoose from "../config/database";
 var AutoIncrement = require("mongoose-sequence")(mongoose);
 import idValid from "mongoose-id-validator";
 
-const tagSchema = mongoose.Schema(
+const faqCategorySchema = mongoose.Schema(
   {
     id: Number,
     name: { type: String, required: true },
@@ -12,7 +12,7 @@ const tagSchema = mongoose.Schema(
       required: true,
     },
     createdAt: Date,
-    description: { type: String, required: true },
+    Order: Number,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
@@ -21,7 +21,10 @@ const tagSchema = mongoose.Schema(
 
   { strict: "throw" }
 );
-tagSchema.plugin(AutoIncrement, { id: "id_seq1", inc_field: "id" });
-tagSchema.plugin(idValid);
+faqCategorySchema.plugin(AutoIncrement, {
+  id: "faqCategory_seq",
+  inc_field: "id",
+});
 
-export default mongoose.model("tags", tagSchema);
+faqCategorySchema.plugin(idValid);
+export default mongoose.model("faqCategory", faqCategorySchema);

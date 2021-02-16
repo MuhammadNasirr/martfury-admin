@@ -5,6 +5,8 @@ import * as TemplateController from "../controllers/TemplateController";
 import * as TagsController from "../controllers/TagsController";
 import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
+import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
+import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
 import { authMiddleware } from "../middlewares/JwtAuth";
 
@@ -101,6 +103,30 @@ protectedRouter.delete(
   CatsController.deleteCat
 );
 
+//FAQ_CATS
+protectedRouter.post("/faq/cats", authMiddleware, FAQ_CATController.createCat);
+protectedRouter.get("/faq/cats", authMiddleware, FAQ_CATController.getCats);
+protectedRouter.get(
+  "/faq/cats/published",
+  authMiddleware,
+  FAQ_CATController.getPublishedCats
+);
+protectedRouter.get(
+  "/faq/cats/:catId",
+  authMiddleware,
+  FAQ_CATController.getCatDetails
+);
+protectedRouter.put(
+  "/faq/cats/:catId",
+  authMiddleware,
+  FAQ_CATController.updateCat
+);
+protectedRouter.delete(
+  "/faq/cats/:catId",
+  authMiddleware,
+  FAQ_CATController.deleteCat
+);
+
 //POSTS
 protectedRouter.post("/post", authMiddleware, PostController.createPost);
 protectedRouter.get("/post", authMiddleware, PostController.getPosts);
@@ -115,6 +141,13 @@ protectedRouter.delete(
   authMiddleware,
   PostController.deletePost
 );
+
+//Faqs
+protectedRouter.post("/faq", authMiddleware, FaqController.createFaq);
+protectedRouter.get("/faq", authMiddleware, FaqController.getFaqs);
+protectedRouter.get("/faq/:faqId", authMiddleware, FaqController.getFaqDetails);
+protectedRouter.put("/faq/:faqId", authMiddleware, FaqController.updateFaq);
+protectedRouter.delete("/faq/:faqId", authMiddleware, FaqController.deleteFaq);
 
 //MENUS
 protectedRouter.post("/menu", authMiddleware, MenuController.createMenu);

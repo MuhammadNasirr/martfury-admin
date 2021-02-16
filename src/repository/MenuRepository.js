@@ -15,7 +15,7 @@ export const getMenus = async (page, userId) => {
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await menuModel.countDocuments();
+  const count = await menuModel.countDocuments({ author: userId });
 
   return {
     status: "success",
