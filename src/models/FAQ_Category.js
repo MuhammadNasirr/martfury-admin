@@ -12,7 +12,7 @@ const faqCategorySchema = mongoose.Schema(
       required: true,
     },
     createdAt: Date,
-    Order: Number,
+    order: Number,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",

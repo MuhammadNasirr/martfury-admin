@@ -82,6 +82,36 @@ export const getMenuDetails = async (req, res, next) => {
   }
 };
 
+export const getMenuByDisplayLocation = async (req, res, next) => {
+  //   console.log(req);
+  const { menuId } = req.params;
+
+  if (menuId !== "Main" && menuId !== "Header" && menuId !== "Footer") {
+    const err = new Error("Invalid menu type provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+
+  try {
+    let respo = await menuRepo.getMenuByDisplayLocation(menuId);
+    if (respo.status === "success") {
+      if (respo.data) res.status(200).json(respo);
+      else res.status(204).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const updateMenu = async (req, res, next) => {
   //   console.log(req);
   const { menuId } = req.params;

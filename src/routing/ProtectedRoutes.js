@@ -3,6 +3,7 @@ import * as UserController from "../controllers/UserController";
 import * as PageController from "../controllers/PageController";
 import * as TemplateController from "../controllers/TemplateController";
 import * as TagsController from "../controllers/TagsController";
+import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
@@ -163,4 +164,41 @@ protectedRouter.delete(
   authMiddleware,
   MenuController.deleteMenu
 );
+
+//Contact
+protectedRouter.post(
+  "/contact",
+  authMiddleware,
+  ContactController.createContact
+);
+protectedRouter.get("/contact", authMiddleware, ContactController.getContacts);
+
+protectedRouter.post(
+  "/contact/:contactId/reply",
+  authMiddleware,
+  ContactController.addReply
+);
+
+// protectedRouter.get(
+
+//   "/contact/published",
+//   authMiddleware,
+//   ContactController.getPublishedcontact
+// );
+protectedRouter.get(
+  "/contact/:contactId",
+  authMiddleware,
+  ContactController.getContactDetails
+);
+protectedRouter.put(
+  "/contact/:contactId",
+  authMiddleware,
+  ContactController.updateContact
+);
+protectedRouter.delete(
+  "/contact/:contactId",
+  authMiddleware,
+  ContactController.deleteContact
+);
+
 export { protectedRouter };

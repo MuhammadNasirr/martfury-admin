@@ -38,6 +38,17 @@ export const getMenuDetails = async (id, userId) => {
   };
 };
 
+export const getMenuByDisplayLocation = async (type) => {
+  const menu = await menuModel
+    .find({ displayLocation: type, status: "Published" })
+    .select("structure");
+
+  return {
+    status: "success",
+    data: menu,
+  };
+};
+
 export const updateMenu = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;

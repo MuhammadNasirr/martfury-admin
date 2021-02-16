@@ -6,14 +6,14 @@ export const createCat = async (req, res, next) => {
 
     status,
 
-    Order,
+    order,
   } = req.body;
   let payload = {
     name,
     status,
     createdAt: new Date(),
 
-    Order,
+    order,
 
     author: req.jwtPayload.userid,
   };
