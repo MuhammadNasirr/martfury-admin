@@ -106,3 +106,18 @@ export const getMenuPages = async (userId) => {
     subMenus: menuPage,
   };
 };
+
+export const getPageByName = async (name) => {
+  const menu = await pageModel
+    .find({ name: name, status: "Published" })
+    .select("content template")
+    .populate({
+      path: "template",
+      select: { header: 1, footer: 1 },
+    });
+
+  return {
+    status: "success",
+    data: menu,
+  };
+};
