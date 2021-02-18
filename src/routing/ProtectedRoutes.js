@@ -160,7 +160,7 @@ protectedRouter.get(
 );
 protectedRouter.put("/menu/:menuId", authMiddleware, MenuController.updateMenu);
 protectedRouter.delete(
-  "/menu/:menu",
+  "/menu/:menuId",
   authMiddleware,
   MenuController.deleteMenu
 );
