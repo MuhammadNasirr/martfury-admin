@@ -1,21 +1,21 @@
 import { PAGE_LIMIT } from "../config/constants";
-import adsModel from "../models/Ads";
+import catModel from "../models/Category";
 
 export const createCat = async (payload) => {
-  const cat = new adsModel(payload);
+  const cat = new catModel(payload);
   const catData = await cat.save();
   console.log(catData);
   return { status: "success", message: "Successfully created" };
 };
 
 export const getCats = async (page, userId) => {
-  const cats = await adsModel
+  const cats = await catModel
     .find({ author: userId })
     .select("id name status createdAt updatedAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await adsModel.countDocuments({ author: userId });
+  const count = await catModel.countDocuments({ author: userId });
 
   return {
     status: "success",
@@ -28,7 +28,7 @@ export const getCats = async (page, userId) => {
 };
 
 export const getAllPublishedCats = async (userId) => {
-  const cats = await adsModel
+  const cats = await catModel
     .find({ author: userId, status: "Published" })
     .select("id name");
 
@@ -39,7 +39,7 @@ export const getAllPublishedCats = async (userId) => {
 };
 
 export const getCatDetails = async (id, userId) => {
-  const cat = await adsModel
+  const cat = await catModel
     .findOne({ id: id, author: userId })
     .populate({
       path: "parent",
@@ -60,7 +60,7 @@ export const updateCat = async (id, payload, userId) => {
   if (payload._id) {
     delete payload._id;
   }
-  const cat = await adsModel.updateOne(
+  const cat = await catModel.updateOne(
     { id: id, author: userId },
     { ...payload },
     { runValidators: true }
@@ -78,7 +78,7 @@ export const updateCat = async (id, payload, userId) => {
 };
 
 export const deleteCat = async (id, userId) => {
-  const cat = await adsModel.deleteOne({ id: id, author: userId });
+  const cat = await catModel.deleteOne({ id: id, author: userId });
   console.log(cat);
   if (cat.n > 0)
     return {
