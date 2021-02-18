@@ -1,17 +1,17 @@
 import { PAGE_LIMIT } from "../config/constants";
 import adsModel from "../models/Ads";
 
-export const createCat = async (payload) => {
-  const cat = new adsModel(payload);
-  const catData = await cat.save();
-  console.log(catData);
+export const createAd = async (payload) => {
+  const ad = new adsModel(payload);
+  const adData = await ad.save();
+  console.log(adData);
   return { status: "success", message: "Successfully created" };
 };
 
-export const getCats = async (page, userId) => {
-  const cats = await adsModel
+export const getAds = async (page, userId) => {
+  const ads = await adsModel
     .find({ author: userId })
-    .select("id name status createdAt updatedAt")
+    .select("id name status expiredAt image clicked shortCode ")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
@@ -20,74 +20,70 @@ export const getCats = async (page, userId) => {
   return {
     status: "success",
     data: {
-      cats,
+      ads,
       count,
       currentPage: page + 1,
     },
   };
 };
 
-export const getAllPublishedCats = async (userId) => {
-  const cats = await adsModel
+export const getAllPublishedAds = async (userId) => {
+  const ads = await adsModel
     .find({ author: userId, status: "Published" })
     .select("id name");
 
   return {
     status: "success",
-    data: cats,
+    data: ads,
   };
 };
 
-export const getCatDetails = async (id, userId) => {
-  const cat = await adsModel
+export const getAdDetails = async (id, userId) => {
+  const ad = await adsModel
     .findOne({ id: id, author: userId })
-    .populate({
-      path: "parent",
-      select: { name: 1 },
-    })
     .select("-author");
 
   return {
     status: "success",
-    data: cat,
+    data: ad,
   };
 };
 
-export const updateCat = async (id, payload, userId) => {
+export const updateAd = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;
   }
   if (payload._id) {
     delete payload._id;
   }
-  const cat = await adsModel.updateOne(
+  const Ad = await adsModel.updateOne(
     { id: id, author: userId },
     { ...payload },
     { runValidators: true }
   );
-  if (cat.n > 0)
+  if (Ad.n > 0)
     return {
       status: "success",
-      message: "Category Successfully updated",
+      message: "Advertisement Successfully updated",
     };
   else
     return {
       status: "fail",
-      message: "Inavlid CategoryId",
+      message: "Inavlid AdvertisementId",
     };
 };
 
-export const deleteCat = async (id, userId) => {
-  const cat = await adsModel.deleteOne({ id: id, author: userId });
-  console.log(cat);
-  if (cat.n > 0)
+export const deleteAd = async (id, userId) => {
+  const ad = await adsModel.deleteOne({ id: id, author: userId });
+  console.log(ad);
+  if (ad.n > 0)
     return {
       status: "success",
-      message: "Category Successfully deleted",
+      message: "Advertisement Successfully deleted",
     };
   else
     return {
       status: "fail",
-      message: "Inavlid categoryId",
+      message: "Inavlid AdvertisementId",
     };
 };
