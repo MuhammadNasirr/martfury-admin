@@ -11,7 +11,7 @@ export const createFaq = async (payload) => {
 export const getFaqs = async (page, userId) => {
   const cats = await faqModel
     .find({ author: userId })
-    .select("id name categories createdAt status")
+    .select("id question categories createdAt status")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page)
     .populate({

@@ -18,7 +18,7 @@ const menuSchema = mongoose.Schema(
       ref: "users",
     },
     structure: Object,
-    displayLocation: { type: String, enum: ["Main", "Header", "Footer"] },
+    displayLocation: [{ type: String, enum: ["Main", "Header", "Footer"] }],
   },
 
   { strict: "throw" }

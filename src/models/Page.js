@@ -5,7 +5,7 @@ import idValid from "mongoose-id-validator";
 const pageSchema = mongoose.Schema(
   {
     id: Number,
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     template: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "templates",
