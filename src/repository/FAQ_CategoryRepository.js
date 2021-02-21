@@ -8,14 +8,17 @@ export const createCat = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getCats = async (page, userId) => {
+export const getCats = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const cats = await catModel
-    .find({ author: userId })
+    .find({ author: userId, ...query })
     .select("id name status createdAt updatedAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await catModel.countDocuments({ author: userId });
+  const count = await catModel.countDocuments({ author: userId, ...query });
 
   return {
     status: "success",

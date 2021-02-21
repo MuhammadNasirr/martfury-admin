@@ -8,14 +8,23 @@ export const createTag = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getTags = async (page, userId) => {
+export const getTags = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  // if (query.search) {
+  //   query["$text"] = {
+  //     $search: query.search,
+  //   };
+  //   delete query.search;
+  // }
   const tags = await tagModel
-    .find({ author: userId })
+    .find({ author: userId, ...query })
     .select("id name status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await tagModel.countDocuments({ author: userId });
+  const count = await tagModel.countDocuments({ author: userId, ...query });
 
   return {
     status: "success",

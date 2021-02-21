@@ -8,14 +8,21 @@ export const createPage = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getPages = async (page, userId) => {
+export const getPages = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const pages = await pageModel
-    .find({ softDelete: false, author: userId })
+    .find({ softDelete: false, author: userId, ...query })
     .select("id name template status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await pageModel.countDocuments({ author: userId });
+  const count = await pageModel.countDocuments({
+    softDelete: false,
+    author: userId,
+    ...query,
+  });
 
   return {
     status: "success",

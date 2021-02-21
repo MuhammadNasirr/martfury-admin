@@ -23,5 +23,11 @@ const tagSchema = mongoose.Schema(
 );
 tagSchema.plugin(AutoIncrement, { id: "id_seq1", inc_field: "id" });
 tagSchema.plugin(idValid);
+tagSchema.index({
+  id: 1,
+});
+tagSchema.index({
+  name: "text",
+});
 
 export default mongoose.model("tags", tagSchema);

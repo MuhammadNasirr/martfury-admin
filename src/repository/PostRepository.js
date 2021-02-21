@@ -8,9 +8,12 @@ export const createPost = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getPosts = async (page, userId) => {
+export const getPosts = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const cats = await postModel
-    .find({ author: userId })
+    .find({ author: userId, ...query })
     .select("id name categories createdAt status author")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page)
@@ -23,7 +26,7 @@ export const getPosts = async (page, userId) => {
       select: { name: 1 },
     });
 
-  const count = await postModel.countDocuments({ author: userId });
+  const count = await postModel.countDocuments({ author: userId, ...query });
 
   return {
     status: "success",

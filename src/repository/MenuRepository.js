@@ -8,14 +8,17 @@ export const createMenu = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getMenus = async (page, userId) => {
+export const getMenus = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const menus = await menuModel
-    .find({ author: userId })
+    .find({ author: userId, ...query })
     .select("id name status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await menuModel.countDocuments({ author: userId });
+  const count = await menuModel.countDocuments({ author: userId, ...query });
 
   return {
     status: "success",

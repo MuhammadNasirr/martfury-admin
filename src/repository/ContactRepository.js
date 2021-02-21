@@ -8,14 +8,17 @@ export const createContact = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getContacts = async (page, userId) => {
+export const getContacts = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const contacts = await contactModel
-    .find({ author: userId })
+    .find({ author: userId, ...query })
     .select("id name email phone status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await contactModel.countDocuments({ author: userId });
+  const count = await contactModel.countDocuments({ author: userId, ...query });
 
   return {
     status: "success",

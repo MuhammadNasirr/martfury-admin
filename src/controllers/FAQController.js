@@ -30,8 +30,13 @@ export const createFaq = async (req, res, next) => {
 export const getFaqs = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
+  delete req.query.page;
   try {
-    let respo = await faqRepo.getFaqs(page - 1 || 0, req.jwtPayload.userid);
+    let respo = await faqRepo.getFaqs(
+      page - 1 || 0,
+      req.jwtPayload.userid,
+      req.query
+    );
     if (respo.status === "success") {
       if (respo.data.Faqs.length) res.status(200).json(respo);
       else {
