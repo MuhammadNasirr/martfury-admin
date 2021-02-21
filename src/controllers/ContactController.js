@@ -1,7 +1,7 @@
 import * as contactRepo from "../repository/ContactRepository";
 
 export const createContact = async (req, res, next) => {
-  const { name, email, phone, status, content, address } = req.body;
+  const { name, email, phone, status, content, address, subject } = req.body;
   let payload = {
     name,
     email,
@@ -9,6 +9,7 @@ export const createContact = async (req, res, next) => {
     status,
     content,
     address,
+    subject,
     createdAt: new Date(),
     author: req.jwtPayload.userid,
   };

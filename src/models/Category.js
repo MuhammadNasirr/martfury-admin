@@ -22,7 +22,7 @@ const categorySchema = mongoose.Schema(
     isDefault: { type: Boolean, default: false },
     isFeatured: { type: Boolean, default: false },
     iconName: String,
-    Order: Number,
+    order: Number,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",

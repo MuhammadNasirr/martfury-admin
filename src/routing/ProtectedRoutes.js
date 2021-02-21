@@ -6,6 +6,8 @@ import * as TagsController from "../controllers/TagsController";
 import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
+import * as AdsController from "../controllers/AdsController";
+import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
@@ -104,6 +106,34 @@ protectedRouter.delete(
   CatsController.deleteCat
 );
 
+//ADS
+protectedRouter.post("/ads", authMiddleware, AdsController.createAd);
+protectedRouter.get("/ads", authMiddleware, AdsController.getAds);
+protectedRouter.get(
+  "/ads/published",
+  authMiddleware,
+  AdsController.getPublishedAds
+);
+protectedRouter.get("/ads/:adId", authMiddleware, AdsController.getAdDetails);
+protectedRouter.put("/ads/:adId", authMiddleware, AdsController.updateAd);
+protectedRouter.delete("/ads/:adId", authMiddleware, AdsController.deleteAd);
+
+protectedRouter.post(
+  "/newsletter",
+  authMiddleware,
+  NewsletterController.createNewsletter
+);
+protectedRouter.get(
+  "/newsletter",
+  authMiddleware,
+  NewsletterController.getNewsletters
+);
+protectedRouter.delete(
+  "/newsletter/:newsletterId",
+  authMiddleware,
+  NewsletterController.deleteNewsletter
+);
+
 //FAQ_CATS
 protectedRouter.post("/faq/cats", authMiddleware, FAQ_CATController.createCat);
 protectedRouter.get("/faq/cats", authMiddleware, FAQ_CATController.getCats);
@@ -160,7 +190,7 @@ protectedRouter.get(
 );
 protectedRouter.put("/menu/:menuId", authMiddleware, MenuController.updateMenu);
 protectedRouter.delete(
-  "/menu/:menu",
+  "/menu/:menuId",
   authMiddleware,
   MenuController.deleteMenu
 );

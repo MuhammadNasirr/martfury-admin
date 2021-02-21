@@ -2,7 +2,7 @@ import mongoose from "../config/database";
 var AutoIncrement = require("mongoose-sequence")(mongoose);
 import idValid from "mongoose-id-validator";
 
-const menuSchema = mongoose.Schema(
+const adsSchema = mongoose.Schema(
   {
     id: Number,
     name: { type: String, required: true },
@@ -11,19 +11,24 @@ const menuSchema = mongoose.Schema(
       enum: ["Published", "Pending", "Draft"],
       required: true,
     },
+    image: String,
     createdAt: Date,
-
+    expiredAt: Date,
+    shortCode: String,
+    key: { type: String, required: true, unique: true },
+    clicked: Number,
+    url: { type: String, required: true },
+    order: Number,
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
-    structure: Object,
-    displayLocation: [{ type: String, enum: ["Main", "Header", "Footer"] }],
+    location: { type: String },
   },
 
   { strict: "throw" }
 );
-menuSchema.plugin(AutoIncrement, { id: "id_seq5", inc_field: "id" });
-menuSchema.plugin(idValid);
+adsSchema.plugin(AutoIncrement, { id: "ads_seq", inc_field: "id" });
+adsSchema.plugin(idValid);
 
-export default mongoose.model("menus", menuSchema);
+export default mongoose.model("ads", adsSchema);
