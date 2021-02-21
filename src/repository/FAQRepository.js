@@ -13,13 +13,8 @@ export const getFaqs = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const cats = await faqModel
-<<<<<<< HEAD
-    .find({ author: userId, ...query })
-    .select("id name categories createdAt status")
-=======
     .find({ author: userId })
     .select("id question categories createdAt status")
->>>>>>> 286d396f11e91ac720c3bb3d40d6b3a83267f77b
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page)
     .populate({
