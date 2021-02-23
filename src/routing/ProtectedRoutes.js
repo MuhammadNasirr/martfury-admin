@@ -2,10 +2,13 @@ import { Router } from "express";
 import * as UserController from "../controllers/UserController";
 import * as PageController from "../controllers/PageController";
 import * as TemplateController from "../controllers/TemplateController";
+import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
+import * as ProductTagController from "../controllers/ProductTagController";
 import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
+import * as ProCatsController from "../controllers/ProductCategoryController";
 import * as AdsController from "../controllers/AdsController";
 import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
@@ -104,6 +107,90 @@ protectedRouter.delete(
   "/cats/:catId",
   authMiddleware,
   CatsController.deleteCat
+);
+
+//PRODUCT CATS
+protectedRouter.post(
+  "/product/cats",
+  authMiddleware,
+  ProCatsController.createCat
+);
+protectedRouter.get("/product/cats", authMiddleware, ProCatsController.getCats);
+protectedRouter.get(
+  "/product/cats/published",
+  authMiddleware,
+  ProCatsController.getPublishedCats
+);
+protectedRouter.get(
+  "/product/cats/:catId",
+  authMiddleware,
+  ProCatsController.getCatDetails
+);
+protectedRouter.put(
+  "/product/cats/:catId",
+  authMiddleware,
+  ProCatsController.updateCat
+);
+protectedRouter.delete(
+  "/product/cats/:catId",
+  authMiddleware,
+  ProCatsController.deleteCat
+);
+
+//Product Tags
+protectedRouter.post(
+  "/product/tags",
+  authMiddleware,
+  ProductTagController.createTag
+);
+protectedRouter.get(
+  "/product/tags",
+  authMiddleware,
+  ProductTagController.getTags
+);
+protectedRouter.get(
+  "/product/tags/published",
+  authMiddleware,
+  ProductTagController.getPublishedTags
+);
+protectedRouter.get(
+  "/product/tags/:tagId",
+  authMiddleware,
+  ProductTagController.getTagDetails
+);
+protectedRouter.put(
+  "/product/tags/:tagId",
+  authMiddleware,
+  ProductTagController.updateTag
+);
+protectedRouter.delete(
+  "/product/tags/:tagId",
+  authMiddleware,
+  ProductTagController.deleteTag
+);
+
+//BRAND
+protectedRouter.post("/brands", authMiddleware, BrandController.createBrand);
+protectedRouter.get("/brands", authMiddleware, BrandController.getBrands);
+protectedRouter.get(
+  "/brands/published",
+  authMiddleware,
+  BrandController.getPublishedBrands
+);
+protectedRouter.get(
+  "/brands/:brandId",
+  authMiddleware,
+  BrandController.getBrandDetails
+);
+protectedRouter.put(
+  "/brands/:brandId",
+  authMiddleware,
+  BrandController.updateBrand
+);
+protectedRouter.delete(
+  "/brands/:brandId",
+  authMiddleware,
+  BrandController.deleteBrand
 );
 
 //ADS
