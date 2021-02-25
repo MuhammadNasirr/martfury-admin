@@ -9,12 +9,15 @@ import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
 import * as ProCatsController from "../controllers/ProductCategoryController";
+import * as ProAttrController from "../controllers/ProductAttributeController";
 import * as AdsController from "../controllers/AdsController";
+import * as SliderController from "../controllers/SliderController";
 import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
 import { authMiddleware } from "../middlewares/JwtAuth";
+import Slider from "../models/Slider";
 
 let protectedRouter = Router();
 protectedRouter.use(function timeLog(req, res, next) {
@@ -193,6 +196,37 @@ protectedRouter.delete(
   BrandController.deleteBrand
 );
 
+//PRODUCT ATTRIBUTES
+protectedRouter.post(
+  "/product/attr",
+  authMiddleware,
+  ProAttrController.createAttr
+);
+protectedRouter.get(
+  "/product/attr",
+  authMiddleware,
+  ProAttrController.getAttrs
+);
+protectedRouter.get(
+  "/product/attr/published",
+  authMiddleware,
+  ProAttrController.getPublishedAttrs
+);
+protectedRouter.get(
+  "/product/attr/:attrId",
+  authMiddleware,
+  ProAttrController.getAttrDetails
+);
+protectedRouter.put(
+  "/product/attr/:attrId",
+  authMiddleware,
+  ProAttrController.updateAttr
+);
+protectedRouter.delete(
+  "/product/attr/:attrId",
+  authMiddleware,
+  ProAttrController.deleteAttr
+);
 //ADS
 protectedRouter.post("/ads", authMiddleware, AdsController.createAd);
 protectedRouter.get("/ads", authMiddleware, AdsController.getAds);
@@ -204,6 +238,47 @@ protectedRouter.get(
 protectedRouter.get("/ads/:adId", authMiddleware, AdsController.getAdDetails);
 protectedRouter.put("/ads/:adId", authMiddleware, AdsController.updateAd);
 protectedRouter.delete("/ads/:adId", authMiddleware, AdsController.deleteAd);
+
+//SLIDER
+protectedRouter.post("/slider", authMiddleware, SliderController.createSlider);
+protectedRouter.get("/slider", authMiddleware, SliderController.getSliders);
+protectedRouter.get(
+  "/slider/published",
+  authMiddleware,
+  SliderController.getPublishedSliders
+);
+protectedRouter.get(
+  "/slider/:sliderId",
+  authMiddleware,
+  SliderController.getSliderDetails
+);
+protectedRouter.put(
+  "/slider/:sliderId",
+  authMiddleware,
+  SliderController.updateSlider
+);
+protectedRouter.delete(
+  "/slider/:sliderId",
+  authMiddleware,
+  SliderController.deleteSlider
+);
+protectedRouter.put(
+  "/slider/:sliderId/item/:itemId",
+  authMiddleware,
+  SliderController.updateSliderItem
+);
+protectedRouter.delete(
+  "/slider/:sliderId/item/:itemId",
+  authMiddleware,
+  SliderController.deleteSliderItem
+);
+protectedRouter.post(
+  "/slider/:sliderId/item",
+  authMiddleware,
+  SliderController.createSliderItem
+);
+
+//NEWSLETTER
 
 protectedRouter.post(
   "/newsletter",
