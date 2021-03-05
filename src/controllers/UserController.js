@@ -15,7 +15,7 @@ export const login = async (req, res, next) => {
     } else {
       res.status(200).json({
         _id: user.id,
-        token: signUser(user.id),
+        token: signUser(user.id, user.role),
         userId: user.email,
         name: user.name,
       });
@@ -47,7 +47,7 @@ export const signup = async (req, res, next) => {
     }
     res.status(200).json({
       _id: user.id,
-      token: signUser(user.id),
+      token: signUser(user.id, user.role),
       userId: user.userId,
       name: user.name,
     });
@@ -56,5 +56,34 @@ export const signup = async (req, res, next) => {
     err.status = "fail";
     err.statusCode = 401;
     next(err);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  //   console.log(req);
+  const { userId } = req.params;
+
+  let id = userId;
+  if (!id) {
+    const err = new Error("Invalid UserId provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+  try {
+    let respo = await userRepo.deleteUser(id);
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 };

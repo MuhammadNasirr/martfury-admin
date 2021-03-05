@@ -13,13 +13,17 @@ export const createUser = async (payload) => {
       userId: userData.userId,
       name: userData.name,
       password: userData.password,
+      role: userData.role,
     };
   }
 };
 
 export const getUser = async (payload) => {
   //console.log(payload)
-  let user = await userModel.findOne({ userId: payload.userId });
+  let user = await userModel.findOne({
+    userId: payload.userId,
+    softDelete: false,
+  });
   console.log(user);
   if (!user) return { error: "User Doesnot Exist" };
   if (user) {
@@ -34,10 +38,29 @@ export const getUser = async (payload) => {
         id: user._id,
         userId: user.userId,
         name: user.name,
+        role: user.role,
       };
     else
       return {
         error: "invalid username and password pair",
       };
   }
+};
+
+export const deleteUser = async (id) => {
+  const user = await userModel.updateOne(
+    { userId: id, softDelete: false },
+    { softDelete: true }
+  );
+  console.log(user);
+  if (user.n > 0)
+    return {
+      status: "success",
+      message: "User Successfully deleted",
+    };
+  else
+    return {
+      status: "fail",
+      message: "Inavlid UserId",
+    };
 };

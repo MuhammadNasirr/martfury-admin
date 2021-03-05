@@ -16,14 +16,19 @@ import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
+import * as SettingsController from "../controllers/SettingsController";
 import { authMiddleware } from "../middlewares/JwtAuth";
 import Slider from "../models/Slider";
 
 let protectedRouter = Router();
 protectedRouter.use(function timeLog(req, res, next) {
   console.log("Time: ", Date.now());
+  // authMiddleware(req,res,next)
+  // if()
   next();
 });
+
+protectedRouter.delete("/auth/user/:userId", UserController.deleteUser);
 
 //PAGE
 protectedRouter.post("/page", authMiddleware, PageController.createPage);
@@ -238,6 +243,20 @@ protectedRouter.get(
 protectedRouter.get("/ads/:adId", authMiddleware, AdsController.getAdDetails);
 protectedRouter.put("/ads/:adId", authMiddleware, AdsController.updateAd);
 protectedRouter.delete("/ads/:adId", authMiddleware, AdsController.deleteAd);
+
+//SETTINGS
+protectedRouter.post(
+  "/settings",
+  authMiddleware,
+  SettingsController.createSetting
+);
+protectedRouter.get("/settings", authMiddleware, SettingsController.getSetting);
+
+protectedRouter.put(
+  "/settings",
+  authMiddleware,
+  SettingsController.updateSetting
+);
 
 //SLIDER
 protectedRouter.post("/slider", authMiddleware, SliderController.createSlider);

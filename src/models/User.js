@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     role: { type: String, enum: ["Admin", "User"], required: true },
+    softDelete: Boolean,
   },
   { strict: "throw" }
 );

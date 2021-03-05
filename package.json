@@ -28,6 +28,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
+    "mongodb-backup": "https://github.com/hex7c0/mongodb-backup",
+    "mongodb-restore-dump": "^1.0.1",
     "mongoose": "^5.11.15",
     "mongoose-id-validator": "^0.6.0",
     "mongoose-sequence": "^5.3.1"

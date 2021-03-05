@@ -13,9 +13,9 @@ const contactSchema = mongoose.Schema(
       enum: ["Read", "Unread"],
       required: true,
     },
-    phone: { type: String, required: true },
+    phone: { type: String, required: false },
     subject: { type: String, required: true },
-    address: { type: String, required: true },
+    address: { type: String, required: false },
     content: { type: String, required: true },
 
     author: {

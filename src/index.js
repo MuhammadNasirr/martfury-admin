@@ -7,7 +7,19 @@ import { errorHandler, errorRoutes } from "./middlewares/ErrorHandler";
 import { authMiddleware } from "./middlewares/JwtAuth";
 import { protectedRouter } from "./routing/ProtectedRoutes";
 var methodOverride = require("method-override");
+// let spawn = require("child_process").spawn;
+// let backupProcess = spawn("mongodump", [
+//   '--uri="mongodb+srv://test:test1234@cluster0.13uvc.mongodb.net/server?retryWrites=true&w=majority"',
+//   "--archive=.",
+//   "--gzip",
+// ]);
 
+// backupProcess.on("exit", (code, signal) => {
+//   if (code) console.log("Backup process exited with code ", code);
+//   else if (signal)
+//     console.error("Backup process was killed with singal ", signal);
+//   else console.log("Successfully backedup the database");
+// });
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
