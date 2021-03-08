@@ -11,6 +11,7 @@ import * as CatsController from "../controllers/CategoryController";
 import * as ProCatsController from "../controllers/ProductCategoryController";
 import * as ProAttrController from "../controllers/ProductAttributeController";
 import * as AdsController from "../controllers/AdsController";
+import * as PluginController from "../controllers/PluginController";
 import * as SliderController from "../controllers/SliderController";
 import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
@@ -243,6 +244,25 @@ protectedRouter.get(
 protectedRouter.get("/ads/:adId", authMiddleware, AdsController.getAdDetails);
 protectedRouter.put("/ads/:adId", authMiddleware, AdsController.updateAd);
 protectedRouter.delete("/ads/:adId", authMiddleware, AdsController.deleteAd);
+
+//PLUGINS
+protectedRouter.post("/plugins", authMiddleware, PluginController.createPlugin);
+protectedRouter.get("/plugins", authMiddleware, PluginController.getPlugins);
+protectedRouter.put(
+  "/plugins/:pluginId/activate",
+  authMiddleware,
+  PluginController.activatePlugin
+);
+protectedRouter.put(
+  "/plugins/:pluginId/deactivate",
+  authMiddleware,
+  PluginController.deactivatePlugin
+);
+protectedRouter.delete(
+  "/plugins/:pluginId",
+  authMiddleware,
+  PluginController.deletePlugin
+);
 
 //SETTINGS
 protectedRouter.post(
