@@ -11,7 +11,7 @@ export const createPlugin = async (payload) => {
 export const getPlugins = async () => {
   const plugins = await pluginModel
     .find({ softDelete: false })
-    .select("name activated")
+    .select("name activated description version")
     .populate({
       path: "author",
       select: { name: 1 },

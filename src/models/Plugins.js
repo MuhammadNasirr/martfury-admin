@@ -11,6 +11,8 @@ const pluginSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
+    description: String,
+    version: String,
   },
   { strict: "throw" }
 );

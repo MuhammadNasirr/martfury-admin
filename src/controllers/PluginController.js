@@ -1,9 +1,11 @@
 import * as pluginRepo from "../repository/PluginRepository";
 
 export const createPlugin = async (req, res, next) => {
-  const { name } = req.body;
+  const { name, description, version } = req.body;
   let payload = {
     name,
+    description,
+    version,
     author: req.jwtPayload.userid,
   };
   try {
