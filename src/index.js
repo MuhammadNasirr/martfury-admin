@@ -6,6 +6,14 @@ import { connect } from "./config/database";
 import { errorHandler, errorRoutes } from "./middlewares/ErrorHandler";
 import { authMiddleware } from "./middlewares/JwtAuth";
 import { protectedRouter } from "./routing/ProtectedRoutes";
+var cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "jawadserver101",
+  api_key: "217182419745265",
+  api_secret: "XBreEevyyT5THVw6OE0_1UHMwjk",
+});
+
 var methodOverride = require("method-override");
 // let spawn = require("child_process").spawn;
 // let backupProcess = spawn("mongodump", [

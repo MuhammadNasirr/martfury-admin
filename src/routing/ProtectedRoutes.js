@@ -11,7 +11,9 @@ import * as CatsController from "../controllers/CategoryController";
 import * as ProCatsController from "../controllers/ProductCategoryController";
 import * as ProAttrController from "../controllers/ProductAttributeController";
 import * as AdsController from "../controllers/AdsController";
+import * as LangController from "../controllers/LanguageController";
 import * as PluginController from "../controllers/PluginController";
+import * as MediaController from "../controllers/MediaController";
 import * as SliderController from "../controllers/SliderController";
 import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
@@ -20,6 +22,22 @@ import * as PostController from "../controllers/PostController";
 import * as SettingsController from "../controllers/SettingsController";
 import { authMiddleware } from "../middlewares/JwtAuth";
 import Slider from "../models/Slider";
+import multer from "multer";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + "." + file.mimetype.split("/")[1]
+    );
+  },
+});
+
+var upload = multer({ storage: storage });
+console.log(upload);
 
 let protectedRouter = Router();
 protectedRouter.use(function timeLog(req, res, next) {
@@ -30,6 +48,25 @@ protectedRouter.use(function timeLog(req, res, next) {
 });
 
 protectedRouter.delete("/auth/user/:userId", UserController.deleteUser);
+
+//MEDIA
+protectedRouter.post(
+  "/media",
+  authMiddleware,
+  upload.array("media", 12),
+  (req, res, next) => {
+    // console.log(req);
+    const files = req.files;
+    if (files === null || files === undefined) {
+      console.log("files", files);
+      const error = new Error("Please choose files");
+      error.httpStatusCode = 400;
+      return next(error);
+    }
+
+    console.log(files);
+  }
+);
 
 //PAGE
 protectedRouter.post("/page", authMiddleware, PageController.createPage);
@@ -333,6 +370,15 @@ protectedRouter.delete(
   "/newsletter/:newsletterId",
   authMiddleware,
   NewsletterController.deleteNewsletter
+);
+
+//LANGUAGES
+protectedRouter.post("/lang", authMiddleware, LangController.addLang);
+protectedRouter.get("/lang", authMiddleware, LangController.getLang);
+protectedRouter.delete(
+  "/lang/:langId",
+  authMiddleware,
+  LangController.deleteLang
 );
 
 //FAQ_CATS

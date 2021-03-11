@@ -1,0 +1,2983 @@
+{
+	"info": {
+		"_postman_id": "735d72b9-4ea7-4405-bf4b-ebeaf479d94e",
+		"name": "SERVER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Hameez\",\r\n    \"userId\":\"Hameez21\",\r\n    \"password\":\"12345678\",\r\n    \"role\":\"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}auth/signup",
+							"host": [
+								"{{Endpoint}}auth"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"Hameez21\",\r\n    \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}auth/login",
+							"host": [
+								"{{Endpoint}}auth"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"name\": \"test\",\r\n    \"template\": \"6026c7db02779b00150a40fb\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"content\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}page",
+							"host": [
+								"{{Endpoint}}page"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Pages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2MDJjMTlkYTA2ZTRhZTAwMTUyYTdlYjkiLCJpYXQiOjE2MTM1ODI1NjV9.r3jr6zO6Kq_VFQxDEho4fy901l3yFYWj9LpX6wFfNHQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}page?page=1&name=Coming&template=602c8d159e08b900152bdbef&status=Published&createdAt=2021-02-17T17:32:33.593Z",
+							"host": [
+								"{{Endpoint}}page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								},
+								{
+									"key": "name",
+									"value": "Coming"
+								},
+								{
+									"key": "template",
+									"value": "602c8d159e08b900152bdbef"
+								},
+								{
+									"key": "status",
+									"value": "Published"
+								},
+								{
+									"key": "createdAt",
+									"value": "2021-02-17T17:32:33.593Z",
+									"description": "JS Date Object"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Menu Pages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}page/published",
+							"host": [
+								"{{Endpoint}}page"
+							],
+							"path": [
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Page",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"template\": \"6026c7db02779b00150a40fb\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"content\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}page/36",
+							"host": [
+								"{{Endpoint}}page"
+							],
+							"path": [
+								"36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Page Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}page/36",
+							"host": [
+								"{{Endpoint}}page"
+							],
+							"path": [
+								"36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}page/{{pageId}}",
+							"host": [
+								"{{Endpoint}}page"
+							],
+							"path": [
+								"{{pageId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Template",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"name\": \"test\",\r\n    \"header\":\"<div>\",\r\n    \"footer\":\"</div>\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}template",
+							"host": [
+								"{{Endpoint}}template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}template",
+							"host": [
+								"{{Endpoint}}template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //any of the below field can be updated. You can send one or more field that needs to be updated. I am currently showing all\r\n    //Remove thess line before sending request\r\n    \"name\": \"test2\",\r\n    \"header\":\"<div>\",\r\n    \"footer\":\"</div>\"\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}template/6026c7db02779b00150a40fb",
+							"host": [
+								"{{Endpoint}}template"
+							],
+							"path": [
+								"6026c7db02779b00150a40fb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}template/6026c7db02779b00150a40fb",
+							"host": [
+								"{{Endpoint}}template"
+							],
+							"path": [
+								"6026c7db02779b00150a40fb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"name\": \"tes2\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}tags",
+							"host": [
+								"{{Endpoint}}tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}tags?page=1&name=te&status=Published",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								},
+								{
+									"key": "name",
+									"value": "te"
+								},
+								{
+									"key": "status",
+									"value": "Published"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}tags/published",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"path": [
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": 10\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}brands/1",
+							"host": [
+								"{{Endpoint}}brands"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}tags/1",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}tags/2",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n     \"name\":\"TEST\",\r\n    \"email\":\"test@test.com\",\r\n    \"phone\":\"+923330002222\",\r\n    \"status\":\"Unread\",\r\n    \"content\":\"TestContent\",\r\n    \"address\":\"my address\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}contact",
+							"host": [
+								"{{Endpoint}}contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}contact?page=1",
+							"host": [
+								"{{Endpoint}}contact"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\":\"TEST\",\r\n    \"email\":\"test@test.com\",\r\n    \"phone\":\"+923330002222\",\r\n    \"status\":\"Read\",\r\n    \"content\":\"TestContent\",\r\n    \"address\":\"my address\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}contact/1",
+							"host": [
+								"{{Endpoint}}contact"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}contact/1",
+							"host": [
+								"{{Endpoint}}contact"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}tags/2",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reply",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"content\":\"Amazing COntent\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}contact/1/reply",
+							"host": [
+								"{{Endpoint}}contact"
+							],
+							"path": [
+								"1",
+								"reply"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Plugin",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"name\": \"tes2\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}plugins",
+							"host": [
+								"{{Endpoint}}plugins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}plugins",
+							"host": [
+								"{{Endpoint}}plugins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": 10\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}plugins/6045d25492c1c829ec6a8261/activate",
+							"host": [
+								"{{Endpoint}}plugins"
+							],
+							"path": [
+								"6045d25492c1c829ec6a8261",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}plugins/6045d25492c1c829ec6a8261",
+							"host": [
+								"{{Endpoint}}plugins"
+							],
+							"path": [
+								"6045d25492c1c829ec6a8261"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": 10\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}plugins/6045d25492c1c829ec6a8261/deactivate",
+							"host": [
+								"{{Endpoint}}plugins"
+							],
+							"path": [
+								"6045d25492c1c829ec6a8261",
+								"deactivate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menus",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"name\": \"tes2\",\r\n    \r\n    \"status\": \"Published\",\r\n    \"displayLocation\": \"Main\" , //Main Header Footer\r\n    \"structure\":{\r\n        \"menuPrimary\":[\r\n            {\r\n              \"menu_1\":[\r\n                  {\r\n\r\n                  }\r\n              ]\r\n            }\r\n        ]\r\n    }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}menu",
+							"host": [
+								"{{Endpoint}}menu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}menu?page=1",
+							"host": [
+								"{{Endpoint}}menu"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": 10\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}tags/1",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}menu/1",
+							"host": [
+								"{{Endpoint}}menu"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Menu By Type",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}api/menu/Main",
+							"host": [
+								"{{Endpoint}}api"
+							],
+							"path": [
+								"menu",
+								"Main"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}tags/2",
+							"host": [
+								"{{Endpoint}}tags"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\":\"Tests\",\r\n   \"categories\":[\"60282e98a3970320a076574b\",\"602832ef116d5921d48addb0\"],\r\n   \"tags\":[\"60282abb52a1cd1e92c004b4\",\"602837c2c0aec224262c4de5\"],\r\n    \"description\":\"te\",\r\n    \"status\":\"Draft\",\r\n    \"format\":\"Default\",\r\n    \"isFeatured\":true,\r\n    \"content\":\"ss\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}post",
+							"host": [
+								"{{Endpoint}}post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}post?page=1",
+							"host": [
+								"{{Endpoint}}post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"name\":\"Tests2\",\r\n   \"categories\":[\"602832ef116d5921d48addb0\"],\r\n   \"tags\":[\"60282abb52a1cd1e92c004b4\",\"602837c2c0aec224262c4de5\"],\r\n    \"description\":\"te\",\r\n    \"status\":\"Draft\",\r\n    \"format\":\"Default\",\r\n    \"isFeatured\":true,\r\n    \"content\":\"ss\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}post/1",
+							"host": [
+								"{{Endpoint}}post"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}post/1",
+							"host": [
+								"{{Endpoint}}post"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}post/1",
+							"host": [
+								"{{Endpoint}}post"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FAQ",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"question\":\"test\", \"categories\":null, \"status\":\"Published\", \"answer\":\"no\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}faq",
+							"host": [
+								"{{Endpoint}}faq"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq?page=1",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"question\":\"test\", \"categories\":\"\", \"status\":\"Published\", \"answer\":\"no\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}faq/1",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq/3",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq/1",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Brand",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\":\"test\",\r\n    \"description\":\"tres\",\r\n    \"status\":\"Published\",\r\n    \"logo\":null,\r\n    \"isFeatured\":true,\r\n    \"order\":0,\r\n    \"website\":\"ssss\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}brands",
+							"host": [
+								"{{Endpoint}}brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}brands?page=1",
+							"host": [
+								"{{Endpoint}}brands"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}brands/published",
+							"host": [
+								"{{Endpoint}}brands"
+							],
+							"path": [
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"isDefault\": true,\r\n    \"isFeatured\": false,\r\n    \"Order\": 2,\r\n    \"iconName\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}cats/2",
+							"host": [
+								"{{Endpoint}}cats"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}brands/1",
+							"host": [
+								"{{Endpoint}}brands"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}brands/1",
+							"host": [
+								"{{Endpoint}}brands"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"tes2\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"isDefault\": true,\r\n    \"isFeatured\": false,\r\n    \"Order\": 0,\r\n    \"iconName\": null,\r\n    \"parent\":\"60282e98a3970320a076574b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}cats",
+							"host": [
+								"{{Endpoint}}cats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}cats?page=1",
+							"host": [
+								"{{Endpoint}}cats"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}cats/published",
+							"host": [
+								"{{Endpoint}}cats"
+							],
+							"path": [
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"isDefault\": true,\r\n    \"isFeatured\": false,\r\n    \"Order\": 2,\r\n    \"iconName\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}cats/2",
+							"host": [
+								"{{Endpoint}}cats"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}cats/2",
+							"host": [
+								"{{Endpoint}}cats"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}cats/2",
+							"host": [
+								"{{Endpoint}}cats"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Slider",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\":\"testSlider\",\r\n    \"description\":\"ma\",\r\n    \"status\":\"Published\",\r\n    \"key\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}slider",
+							"host": [
+								"{{Endpoint}}slider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}slider?page=1",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}slider/published",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"name\":\"testSlider\",\r\n    \"description\":\"mas\",\r\n    \"status\":\"Published\",\r\n    \"key\":\"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}slider/2",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}slider/2",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}slider/1",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Slider Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"item\", \r\n        \"order\":1  ,\r\n        \"link\":\"/product\" ,\r\n        \"images\":[\"test\"]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}slider/2/item",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"2",
+								"item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Slider Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"item\", \r\n        \"order\":1  ,\r\n        \"link\":\"/product\" ,\r\n        \"description\":\"SS\",\r\n        \"images\":[\"test\",\"S\"]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}slider/2/item/60378a6b5c4841265c9bb625",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"2",
+								"item",
+								"60378a6b5c4841265c9bb625"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Slider Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\":\"item\", \r\n        \"order\":1  ,\r\n        \"link\":\"/product\" ,\r\n        \"images\":[\"test\",\"T\"]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}slider/2/item/60378876dccb5c2da88249c2",
+							"host": [
+								"{{Endpoint}}slider"
+							],
+							"path": [
+								"2",
+								"item",
+								"60378876dccb5c2da88249c2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Attributes",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"title\":\"Size\",\r\n    \"slug\":\"size\",\r\n    \"status\":\"Published\",\r\n    \"layout\":\"Visual Swatch\",\r\n    \"searchable\":true,\r\n    \"comparable\":true,\r\n    \"usedProductListing\":true,\r\n    \"order\":0,\r\n    \"attributesList\":[{\r\n        \"title\":\"s\",\r\n        \"slug\":\"s\",\r\n        \"isDefault\":false,\r\n        \"color\":\"#dddddd\",\r\n        \"image\":null\r\n    }]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}product/attr",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"attr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/attr?page=1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"attr"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/attr/published",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"attr",
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"title\":\"Size\",\r\n    \"slug\":\"size\",\r\n    \"status\":\"Published\",\r\n    \"layout\":\"Visual Swatch\",\r\n    \"searchable\":true,\r\n    \"comparable\":true,\r\n    \"usedProductListing\":true,\r\n    \"order\":0,\r\n    \"attributesList\":[{\r\n        \"title\":\"s\",\r\n        \"slug\":\"s\",\r\n        \"isDefault\":false,\r\n        \"color\":\"#dddddd\",\r\n        \"image\":null\r\n    },\r\n    {\r\n        \"title\":\"m\",\r\n        \"slug\":\"m\",\r\n        \"isDefault\":false,\r\n        \"color\":\"#dddddd\",\r\n        \"image\":null\r\n    }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}product/attr/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"attr",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/attr/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"attr",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/attr/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"attr",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Category",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"tes2\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"image\": null,\r\n    \"isFeatured\": false,\r\n    \"Order\": 0,\r\n    \"iconName\": null,\r\n    \"parent\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}product/cats",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"cats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/cats?page=1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"cats"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/cats/published",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"cats",
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"tes2\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"image\": null,\r\n    \"isFeatured\": false,\r\n    \"order\": 0,\r\n    \"iconName\": null,\r\n    \"parent\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}product/cats/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"cats",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/cats/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"cats",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/cats/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"cats",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Tags",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"tes2\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}product/tags",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/tags?page=1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"tags"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								},
+								{
+									"key": "name",
+									"value": "tss",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/tags/published",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"tags",
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"tes2\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Draft\"\r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}product/tags/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/tags/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}product/tags/1",
+							"host": [
+								"{{Endpoint}}product"
+							],
+							"path": [
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"general\":{\r\n         \"adminEmail\":\"bobtle@bobtle.com\",\r\n      \"timezone\": \"UTC\",\r\n      \"siteLanguage\": \"en\",\r\n      \"isRTL\": false\r\n    },\r\n     \"adminAppearance\": {\r\n      \"logo\": \"test\",\r\n      \"favIcon\": \"testy\",\r\n      \"loginBackground\": [\"test\"],\r\n      \"title\": \"boblte\",\r\n      \"editor\": \"CkEditor\",\r\n      \"theme\": \"test\",\r\n      \"changeTheme\":true\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}settings",
+							"host": [
+								"{{Endpoint}}settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}settings",
+							"host": [
+								"{{Endpoint}}settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FAQ Category",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"name\":\"test\",\r\n\r\n    \"status\":\"Published\",\r\n\r\n    \"order\":0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}faq/cats",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"cats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq/cats?page=1",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"cats"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Per Page 10 Results"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq/cats/published",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"cats",
+								"published"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"description\": \"test\",\r\n    \"status\": \"Published\",\r\n    \"isDefault\": true,\r\n    \"isFeatured\": false,\r\n    \"Order\": 2,\r\n    \"iconName\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Endpoint}}faq/cats/2",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"cats",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq/cats/2",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"cats",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Endpoint}}faq/cats/2",
+							"host": [
+								"{{Endpoint}}faq"
+							],
+							"path": [
+								"cats",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
