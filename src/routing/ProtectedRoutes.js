@@ -5,6 +5,7 @@ import * as TemplateController from "../controllers/TemplateController";
 import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
 import * as ProductTagController from "../controllers/ProductTagController";
+import * as PaymentMethodController from "../controllers/PaymentMethodController";
 import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
 import * as CatsController from "../controllers/CategoryController";
@@ -476,6 +477,54 @@ protectedRouter.delete(
   "/contact/:contactId",
   authMiddleware,
   ContactController.deleteContact
+);
+
+//PAYMENT_METHODS
+protectedRouter.post(
+  "/paymentMethod",
+  authMiddleware,
+  PaymentMethodController.createPayment
+);
+protectedRouter.get(
+  "/paymentMethod",
+  authMiddleware,
+  PaymentMethodController.getAllPayments
+);
+protectedRouter.get(
+  "/paymentMethod/activated",
+  authMiddleware,
+  PaymentMethodController.getAllActivatedPayments
+);
+
+// protectedRouter.get(
+
+//   "/contact/published",
+//   authMiddleware,
+//   ContactController.getPublishedcontact
+// );
+
+protectedRouter.put(
+  "/paymentMethod/:paymentId",
+  authMiddleware,
+  PaymentMethodController.updatePayment
+);
+
+protectedRouter.post(
+  "/paymentMethod/:paymentId/activate",
+  authMiddleware,
+  PaymentMethodController.activatePayment
+);
+
+protectedRouter.post(
+  "/paymentMethod/:paymentId/deactivate",
+  authMiddleware,
+  PaymentMethodController.deactivatePayment
+);
+
+protectedRouter.post(
+  "/paymentMethod/:paymentId/setDefault",
+  authMiddleware,
+  PaymentMethodController.setDefaultPayment
 );
 
 export { protectedRouter };
