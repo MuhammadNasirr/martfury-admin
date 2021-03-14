@@ -1,8 +1,11 @@
 import { PAGE_LIMIT } from "../config/constants";
 import sliderModel from "../models/Slider";
+import SliderItemsModel from "../models/SliderItems";
 
 export const createSlider = async (payload) => {
+  console.log("SLIDER", payload);
   const slider = new sliderModel(payload);
+
   const sliderData = await slider.save();
   console.log(sliderData);
   return { status: "success", message: "Successfully created" };
@@ -40,8 +43,11 @@ export const getAllPublishedSliders = async (userId) => {
 
 export const getSliderDetails = async (id, userId) => {
   const slider = await sliderModel
-    .findOne({ id: id, author: userId })
-    .select("-author");
+    .findOne({ id: id })
+    .select("-author")
+    .populate({
+      path: "sliderItems",
+    });
 
   return {
     status: "success",
@@ -89,11 +95,19 @@ export const deleteSlider = async (id, userId) => {
 };
 
 export const createSliderItem = async (id, payload) => {
+  const sliderItem = await SliderItemsModel({
+    ...payload,
+    createdAt: new Date(),
+  });
+
+  console.log("sliderItemModel", sliderItem);
+
   const slider = await sliderModel.updateOne(
     { id: id },
-    { $push: { sliderItems: { ...payload, createdAt: new Date() } } },
+    { $push: { sliderItems: { _id: sliderItem._id } } },
     { runValidators: true }
   );
+  await sliderItem.save();
   console.log(slider);
   if (slider.nModified > 0)
     return {
@@ -108,12 +122,14 @@ export const createSliderItem = async (id, payload) => {
 };
 
 export const deleteSliderItem = async (id, itemId) => {
+  const sliderItem = await SliderItemsModel.findOne({ id: itemId });
+  await SliderItemsModel.deleteOne({ id: itemId });
   const slider = await sliderModel.updateOne(
     { id: id },
-    { $pull: { sliderItems: { _id: itemId } } }
+    { $pull: { sliderItems: { _id: sliderItem._id } } }
   );
   console.log(slider);
-  if (slider.nModified > 0)
+  if (slider.n > 0)
     return {
       status: "success",
       message: "Slider Successfully updated",
@@ -126,15 +142,10 @@ export const deleteSliderItem = async (id, itemId) => {
 };
 
 export const updateSliderItem = async (id, itemId, payload) => {
-  let query = {};
-  for (var key in payload) {
-    query[`sliderItems.$.` + key] = payload[key];
-  }
-  console.log(query);
-  const slider = await sliderModel.updateOne(
-    { id: id, "sliderItems._id": itemId },
+  const slider = await SliderItemsModel.updateOne(
+    { id: itemId },
     {
-      $set: query,
+      ...payload,
     },
     { runValidators: true }
   );
