@@ -527,4 +527,35 @@ protectedRouter.post(
   PaymentMethodController.setDefaultPayment
 );
 
+app.post("/api/processPayment/", authMiddleware, async (req, res, next) => {
+  const token = req.body.tokenId;
+  const email = req.body.email;
+  const paymentId = req.body.paymentId;
+
+  let paymentMethod = PaymentMethodController.getPayment(paymentId);
+
+  if (paymentMethod && paymentMethod.name === "Stripe") {
+    const stripe = require("stripe")(paymentMethod.key);
+    try {
+      const create = await stripe.customers.create({
+        email: email,
+        source: token,
+      });
+      const charge = await stripe.charges.create({
+        amount: 1000,
+        currency: "usd",
+        customer: customer.id,
+      });
+      console.log({ create, charge });
+      res.json({
+        status: "success",
+        message: "Payment Processed",
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+});
+
 export { protectedRouter };

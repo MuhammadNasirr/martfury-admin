@@ -79,6 +79,18 @@ export const getAllActivatedPayments = async (req, res, next) => {
   }
 };
 
+export const getPayment = async (id) => {
+  //   console.log(req);
+  try {
+    // console.log(req.jwtPayload);
+    let respo = await paymentRepo.getPayment(id);
+    return respo.data;
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 // export const getBrandDetails = async (req, res, next) => {
 //   //   console.log(req);
 //   const { brandId } = req.params;

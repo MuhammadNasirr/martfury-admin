@@ -29,6 +29,18 @@ export const getAllActivatedPayments = async () => {
   };
 };
 
+export const getPayment = async (id) => {
+  const paymentMethods = await paymentModel.findOne({
+    isActivated: true,
+    _id: id,
+  });
+
+  return {
+    status: "success",
+    data: paymentMethods,
+  };
+};
+
 export const updatePayment = async (id, payload) => {
   if (payload.id) {
     delete payload.id;
