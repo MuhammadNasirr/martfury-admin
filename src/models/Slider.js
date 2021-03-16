@@ -14,18 +14,8 @@ const sliderSchema = mongoose.Schema(
 
     createdAt: Date,
     key: { type: String, required: true, unique: true },
-    description: { type: String, required: true, unique: true },
-    sliderItems: [
-      {
-        id: Number,
-        title: { type: String, required: true },
-        order: { type: Number, required: true },
-        createdAt: Date,
-        link: { type: String, required: true },
-        description: { type: String, required: true },
-        images: [{ type: String }],
-      },
-    ],
+    description: { type: String, required: true },
+    sliderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "sliderItems" }],
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
@@ -34,11 +24,9 @@ const sliderSchema = mongoose.Schema(
 
   { strict: "throw" }
 );
+
 sliderSchema.plugin(AutoIncrement, { id: "slider_seq", inc_field: "id" });
-sliderSchema.plugin(AutoIncrement, {
-  id: "sliderItems_seq",
-  inc_field: "sliderItems.$.id",
-});
+
 sliderSchema.plugin(idValid);
 
 export default mongoose.model("slider", sliderSchema);
