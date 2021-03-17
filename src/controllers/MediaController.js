@@ -1,8 +1,7 @@
-import multer from "multer";
-import * as langRepo from "../repository/LanguageRepository";
-
 export const addMedia = async (req, res, next) => {
-  //   const { code, name } = req.body;
+  console.log(req.files);
+  console.log(req.body);
+  res.status(200).json({ status: "success", message: "uploaded" });
   //   let payload = {
   //     code,
   //     name,
@@ -22,18 +21,6 @@ export const addMedia = async (req, res, next) => {
   //     console.log(error);
   //     next(error);
   //   }
-
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "uploads");
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + "-" + Date.now());
-    },
-  });
-
-  var upload = multer({ storage: storage });
-  console.log(upload);
 };
 
 // export const getLang = async (req, res, next) => {

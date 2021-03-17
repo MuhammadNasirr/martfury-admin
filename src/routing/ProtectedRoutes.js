@@ -41,7 +41,7 @@ const storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-console.log(upload);
+// console.log(upload);
 
 let protectedRouter = Router();
 protectedRouter.use(function timeLog(req, res, next) {
@@ -67,8 +67,7 @@ protectedRouter.post(
       error.httpStatusCode = 400;
       return next(error);
     }
-
-    console.log(files);
+    MediaController.addMedia(req, res, next);
   }
 );
 
