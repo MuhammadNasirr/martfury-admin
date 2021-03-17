@@ -7,6 +7,7 @@ const emailTemplateSchema = mongoose.Schema(
     template: { type: String, required: true },
     description: { type: String, required: true },
     enabled: { type: Boolean, required: true },
+    subject: { type: String, required: true },
     slug: { type: String, required: false, unique: true },
     body: { type: String, required: true },
   },
