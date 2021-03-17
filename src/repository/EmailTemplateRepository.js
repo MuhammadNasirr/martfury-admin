@@ -1,5 +1,5 @@
 import { PAGE_LIMIT } from "../config/constants";
-import EmailTemplate from "../models/EmailTemplate";
+import EmailTemplate from "../models/EmailTemplates";
 
 export const createEmailTemplate = async (payload) => {
   const emailTemplate = new EmailTemplate(payload);
@@ -9,7 +9,30 @@ export const createEmailTemplate = async (payload) => {
 };
 
 export const getEmailTemplates = async () => {
-  const emailTemplates = await EmailTemplate.find();
+  const emailTemplates = await EmailTemplate.aggregate([
+    {
+      $group: {
+        category: "$category",
+        templates: {
+          $push: {
+            _id: "$_id",
+            template: "$template",
+            description: "$description",
+            enabled: "$enabled",
+          },
+        },
+      },
+    },
+  ]);
+
+  return {
+    status: "success",
+    data: emailTemplates,
+  };
+};
+
+export const getEmailTemplateById = async (id) => {
+  const emailTemplates = await EmailTemplate.findOne({ _id: id });
 
   return {
     status: "success",

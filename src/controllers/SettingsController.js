@@ -1,10 +1,32 @@
 import * as settingRepo from "../repository/SettingRepository";
 
 export const createSetting = async (req, res, next) => {
-  const { general, adminAppearance } = req.body;
+  const { general, adminAppearance, email } = {
+    general: {
+      isRTL: true,
+      adminEmail: "bobtle@bobtle.com",
+      timezone: "(GMT -11:00) Midway Island, Samoa",
+      siteLanguage: "en",
+    },
+    adminAppearance: {
+      loginBackground: ["test"],
+      changeTheme: true,
+      logo: "test",
+      favIcon: "testy",
+      title: "boblte",
+      editor: "CkEditor",
+      theme: "darkblue",
+    },
+    email: {
+      domain: "test",
+      senderName: "test",
+      senderEmail: "test@test.com",
+    },
+  };
   let payload = {
     general,
     adminAppearance,
+    email,
     author: req.jwtPayload.userid,
   };
   try {
@@ -55,6 +77,28 @@ export const updateSetting = async (req, res, next) => {
       },
       req.jwtPayload.userid
     );
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const updateEmail = async (req, res, next) => {
+  //   console.log(req);
+  let payload = req.body;
+  try {
+    let respo = await settingRepo.updateEmail({
+      ...payload,
+    });
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

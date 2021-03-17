@@ -15,6 +15,8 @@ import * as AdsController from "../controllers/AdsController";
 import * as LangController from "../controllers/LanguageController";
 import * as PluginController from "../controllers/PluginController";
 import * as MediaController from "../controllers/MediaController";
+import * as EmailProviderController from "../controllers/EmailProviderController";
+import * as EmailTemplateController from "../controllers/EmailTemplateController";
 import * as SliderController from "../controllers/SliderController";
 import * as NewsletterController from "../controllers/NewsletterController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
@@ -24,6 +26,7 @@ import * as SettingsController from "../controllers/SettingsController";
 import { authMiddleware } from "../middlewares/JwtAuth";
 import Slider from "../models/Slider";
 import multer from "multer";
+import Email from "../models/Email";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -304,7 +307,7 @@ protectedRouter.delete(
 
 //SETTINGS
 protectedRouter.post(
-  "/settings",
+  "/settings/setup",
   authMiddleware,
   SettingsController.createSetting
 );
@@ -314,6 +317,12 @@ protectedRouter.put(
   "/settings",
   authMiddleware,
   SettingsController.updateSetting
+);
+
+protectedRouter.put(
+  "/settings/email",
+  authMiddleware,
+  SettingsController.updateEmail
 );
 
 //SLIDER
@@ -560,6 +569,49 @@ protectedRouter.post(
       }
     }
   }
+);
+
+//EMAIL PROVIDER
+protectedRouter.post(
+  "/emailProvider",
+  authMiddleware,
+  EmailProviderController.createEmailProvider
+);
+protectedRouter.get(
+  "/emailProvider",
+  authMiddleware,
+  EmailProviderController.getEmailProviders
+);
+
+protectedRouter.put(
+  "/emailProvider/:emailProviderId",
+  authMiddleware,
+  EmailProviderController.updateEmailProvider
+);
+
+protectedRouter.post(
+  "/emailProvider/:emailProviderId/setDefault",
+  authMiddleware,
+  EmailProviderController.setDefaultEmailProvider
+);
+
+//EMAIL TEMPLATE
+protectedRouter.post(
+  "/emailTemplate",
+  authMiddleware,
+  EmailTemplateController.createEmailTemplate
+);
+
+protectedRouter.put(
+  "/emailTemplate/:emailTemplateId",
+  authMiddleware,
+  EmailTemplateController.updateEmailBody
+);
+
+protectedRouter.get(
+  "/emailTemplate/:emailTemplateId",
+  authMiddleware,
+  EmailTemplateController.getEmailTemplateById
 );
 
 export { protectedRouter };
