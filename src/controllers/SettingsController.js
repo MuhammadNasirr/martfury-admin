@@ -50,7 +50,7 @@ export const getSetting = async (req, res, next) => {
   //   console.log(req);
 
   try {
-    let respo = await settingRepo.getSettings(req.jwtPayload.userid);
+    let respo = await settingRepo.getSettings();
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
