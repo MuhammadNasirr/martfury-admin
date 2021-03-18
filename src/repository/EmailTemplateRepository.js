@@ -12,7 +12,7 @@ export const getEmailTemplates = async () => {
   const emailTemplates = await EmailTemplate.aggregate([
     {
       $group: {
-        category: "$category",
+        _id: "$category",
         templates: {
           $push: {
             _id: "$_id",
