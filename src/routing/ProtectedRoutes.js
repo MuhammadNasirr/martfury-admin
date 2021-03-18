@@ -613,4 +613,10 @@ protectedRouter.get(
   EmailTemplateController.getEmailTemplateById
 );
 
+protectedRouter.post(
+  "/sendEmail",
+  authMiddleware,
+  EmailTemplateController.sendEmail
+);
+
 export { protectedRouter };

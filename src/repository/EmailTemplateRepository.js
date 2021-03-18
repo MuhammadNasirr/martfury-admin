@@ -1,4 +1,8 @@
+import fetch from "node-fetch";
 import { PAGE_LIMIT } from "../config/constants";
+import Email from "../models/Email";
+import EmailProvider from "../models/EmailProvider";
+import EmailTemplates from "../models/EmailTemplates";
 import EmailTemplate from "../models/EmailTemplates";
 
 export const createEmailTemplate = async (payload) => {
@@ -77,4 +81,43 @@ export const enableEmailTemplate = async (id, enabled) => {
       status: "fail",
       message: "Inavlid Email Template ID",
     };
+};
+
+export const sendMail = async (templateId, to) => {
+  const emailProvider = await EmailProvider.findOne({ isDefault: true });
+  const provider = emailProvider;
+
+  const emailTemplate = await EmailTemplates.findOne({ _id: templateId });
+  const template = emailTemplate;
+
+  const emailSetting = await Email.findOne();
+  const email = emailSetting;
+  console.log({ provider, template, email });
+
+  try {
+    console.log(
+      `${provider.endpoint}?apikey=${provider.key}&subject=${template.subject}&to=${to}&from=hameez21@live.com&bodyHtml=${template.body}`
+    );
+    let res = await fetch(
+      `${provider.endpoint}?apikey=${provider.key}&subject=${template.subject}&to=${to}&from=syed_hameez21@outlook.com&bodyHtml=${template.body}`,
+      {
+        method: "POST",
+      }
+    );
+
+    if (res.ok) {
+      res = await res.json();
+      console.log(res);
+
+      if (res.success) {
+        return { status: "success" };
+      }
+      return { status: "error", message: res.error };
+    } else throw res;
+  } catch (error) {
+    if (error.json) console.log(await error.json());
+    else console.log(await error);
+
+    return { status: "error" };
+  }
 };

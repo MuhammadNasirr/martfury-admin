@@ -187,6 +187,29 @@ export const getEmailTemplateById = async (req, res, next) => {
   }
 };
 
+export const sendEmail = async (req, res, next) => {
+  const payload = { ...req.body };
+
+  try {
+    let respo = await EmailTemplateRepository.sendMail(
+      payload.templateId,
+      payload.to
+    );
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 // export const activatePayment = async (req, res, next) => {
 //   //   console.log(req);
 //   const { paymentId } = req.params;
