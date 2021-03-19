@@ -6,6 +6,7 @@ import { connect } from "./config/database";
 import { errorHandler, errorRoutes } from "./middlewares/ErrorHandler";
 import { authMiddleware } from "./middlewares/JwtAuth";
 import { protectedRouter } from "./routing/ProtectedRoutes";
+import { createLog } from "./repository/ActivityLogsRepository";
 const filemanagerMiddleware = require("@opuscapita/filemanager-server")
   .middleware;
 var cloudinary = require("cloudinary").v2;
@@ -37,8 +38,62 @@ var methodOverride = require("method-override");
 // });
 const app = express();
 app.use(cors());
+app.set("trust proxy", true);
 app.use(bodyParser.json());
 connect();
+app.use((req, res, next) => {
+  res.on("finish", () => {
+    const { rawHeaders, httpVersion, method, socket, url } = req;
+
+    const { statusCode, statusMessage, body } = res;
+    const headers = res.getHeaders();
+    // id: Number,
+    // createdAt: { type: Date, default: new Date() },
+    // createdBy: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "users",
+    // },
+    // action: { type: String, required: true },
+    // userAgent: { type: String },
+    // ip: { type: String },
+    if (res.statusCode === 200) {
+      let log;
+      let api = url.split("/")[1];
+      if (url.includes("login")) {
+        log = {
+          action: "logged into system",
+          createdBy: req.body.userId,
+          userAgent: req.headers["user-agent"],
+          ip: req.ip,
+        };
+      } else if (method === "POST") {
+        log = {
+          action: "created a " + api,
+          createdBy: req.jwtPayload.username,
+          userAgent: req.headers["user-agent"],
+          ip: req.ip,
+        };
+      } else if (method === "PUT") {
+        log = {
+          action: "updated a " + api,
+          createdBy: req.jwtPayload.username,
+          userAgent: req.headers["user-agent"],
+          ip: req.ip,
+        };
+      } else if (method === "DELETE") {
+        log = {
+          action: "deleted a " + api,
+          createdBy: req.jwtPayload.username,
+          userAgent: req.headers["user-agent"],
+          ip: req.ip,
+        };
+      }
+      createLog({ ...log });
+    }
+  });
+
+  next();
+});
 
 const baseUrl = process.env.BASE_URL || "/";
 
@@ -55,6 +110,7 @@ app.all("*", (req, res, next) => {
 });
 
 app.use(errorHandler);
+
 app.listen(process.env.PORT || 3000, () => {
   console.log("Authentication service started on port 3000");
 });

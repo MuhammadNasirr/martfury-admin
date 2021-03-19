@@ -50,6 +50,22 @@ export const getUser = async (payload) => {
   }
 };
 
+export const getUserDetails = async (userId) => {
+  //console.log(payload)
+  let users = await userModel
+    .findOne({
+      userId,
+      softDelete: false,
+    })
+    .populate({ path: "role" })
+    .select("-password");
+  console.log(users);
+  return {
+    status: "success",
+    data: users,
+  };
+};
+
 export const getUsers = async (payload) => {
   //console.log(payload)
   let users = await userModel

@@ -20,6 +20,7 @@ import * as EmailTemplateController from "../controllers/EmailTemplateController
 import * as SliderController from "../controllers/SliderController";
 import * as NewsletterController from "../controllers/NewsletterController";
 import * as RolesController from "../controllers/RolesController";
+import * as ActivityLogsController from "../controllers/ActivityLogController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
@@ -650,6 +651,24 @@ protectedRouter.delete(
   "/role/:roleId",
   authMiddleware,
   RolesController.deleteRole
+);
+
+//Activities
+protectedRouter.get(
+  "/activities",
+  authMiddleware,
+  ActivityLogsController.getActvities
+);
+
+protectedRouter.delete(
+  "/activities/:activityId",
+  authMiddleware,
+  ActivityLogsController.deleteActivity
+);
+protectedRouter.delete(
+  "/activities",
+  authMiddleware,
+  ActivityLogsController.deleteAll
 );
 
 export { protectedRouter };
