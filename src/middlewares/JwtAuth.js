@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next) => {
   try {
     req.jwtPayload = verifyUser(token);
   } catch (err) {
-    console.log(err.message);
+    console.log("jwtERROR", err);
     res.status(401).json({ message: err.message });
     return;
   }

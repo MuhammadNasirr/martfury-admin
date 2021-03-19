@@ -95,9 +95,6 @@ export const sendMail = async (templateId, to) => {
   console.log({ provider, template, email });
 
   try {
-    console.log(
-      `${provider.endpoint}?apikey=${provider.key}&subject=${template.subject}&to=${to}&from=hameez21@live.com&bodyHtml=${template.body}`
-    );
     let res = await fetch(
       `${provider.endpoint}?apikey=${provider.key}&subject=${template.subject}&to=${to}&from=syed_hameez21@outlook.com&bodyHtml=${template.body}`,
       {

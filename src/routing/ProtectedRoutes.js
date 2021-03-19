@@ -19,6 +19,7 @@ import * as EmailProviderController from "../controllers/EmailProviderController
 import * as EmailTemplateController from "../controllers/EmailTemplateController";
 import * as SliderController from "../controllers/SliderController";
 import * as NewsletterController from "../controllers/NewsletterController";
+import * as RolesController from "../controllers/RolesController";
 import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
@@ -51,7 +52,17 @@ protectedRouter.use(function timeLog(req, res, next) {
   next();
 });
 
-protectedRouter.delete("/auth/user/:userId", UserController.deleteUser);
+protectedRouter.delete(
+  "/auth/user/:userId",
+  authMiddleware,
+  UserController.deleteUser
+);
+protectedRouter.put(
+  "/auth/user/:userId",
+  authMiddleware,
+  UserController.updateUser
+);
+protectedRouter.get("/users", authMiddleware, UserController.getUsers);
 
 //MEDIA
 protectedRouter.post(
@@ -617,6 +628,28 @@ protectedRouter.post(
   "/sendEmail",
   authMiddleware,
   EmailTemplateController.sendEmail
+);
+
+//User ROLE
+protectedRouter.post("/role", authMiddleware, RolesController.createRole);
+
+protectedRouter.put(
+  "/role/:roleId",
+  authMiddleware,
+  RolesController.updateRole
+);
+
+protectedRouter.get("/role", authMiddleware, RolesController.getRoles);
+protectedRouter.get(
+  "/role/permissions",
+  authMiddleware,
+  RolesController.getPermissions
+);
+
+protectedRouter.delete(
+  "/role/:roleId",
+  authMiddleware,
+  RolesController.deleteRole
 );
 
 export { protectedRouter };

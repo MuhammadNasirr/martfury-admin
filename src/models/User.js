@@ -9,8 +9,19 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    role: { type: String, enum: ["Admin", "User"], required: true },
-    softDelete: Boolean,
+    email: { type: String, required: true },
+    createdAt: { type: Date, default: new Date() },
+    status: {
+      type: String,
+      enum: ["Activated", "Deactivated"],
+      required: true,
+    },
+    isSuper: { type: Boolean, default: false },
+    role: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "userRoles",
+    },
+    softDelete: { type: Boolean, default: false },
   },
   { strict: "throw" }
 );
