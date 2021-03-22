@@ -2,9 +2,11 @@ import { Router } from "express";
 import * as UserController from "../controllers/UserController";
 import * as PageController from "../controllers/PageController";
 import * as TemplateController from "../controllers/TemplateController";
+import * as TaxController from "../controllers/TaxController";
 import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
 import * as ProductTagController from "../controllers/ProductTagController";
+import * as ProductCollectionController from "../controllers/ProductCollectionController";
 import * as PaymentMethodController from "../controllers/PaymentMethodController";
 import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
@@ -15,6 +17,7 @@ import * as AdsController from "../controllers/AdsController";
 import * as LangController from "../controllers/LanguageController";
 import * as PluginController from "../controllers/PluginController";
 import * as MediaController from "../controllers/MediaController";
+import * as ProductController from "../controllers/ProductController";
 import * as EmailProviderController from "../controllers/EmailProviderController";
 import * as EmailTemplateController from "../controllers/EmailTemplateController";
 import * as SliderController from "../controllers/SliderController";
@@ -252,6 +255,58 @@ protectedRouter.delete(
   "/brands/:brandId",
   authMiddleware,
   BrandController.deleteBrand
+);
+
+//TAXES
+protectedRouter.post("/taxes", authMiddleware, TaxController.createTax);
+protectedRouter.get("/taxes", authMiddleware, TaxController.getTaxes);
+protectedRouter.get(
+  "/taxes/published",
+  authMiddleware,
+  TaxController.getPublishedTaxes
+);
+protectedRouter.get(
+  "/taxes/:taxId",
+  authMiddleware,
+  TaxController.getTaxDetails
+);
+protectedRouter.put("/taxes/:taxId", authMiddleware, TaxController.updateTax);
+protectedRouter.delete(
+  "/taxes/:taxId",
+  authMiddleware,
+  TaxController.deleteTax
+);
+
+//ProductCollection
+protectedRouter.post(
+  "/collection",
+  authMiddleware,
+  ProductCollectionController.create
+);
+protectedRouter.get(
+  "/collection",
+  authMiddleware,
+  ProductCollectionController.get
+);
+protectedRouter.get(
+  "/collection/published",
+  authMiddleware,
+  ProductCollectionController.getPublished
+);
+protectedRouter.get(
+  "/collection/:collectionId",
+  authMiddleware,
+  ProductCollectionController.getDetails
+);
+protectedRouter.put(
+  "/collection/:collectionId",
+  authMiddleware,
+  ProductCollectionController.update
+);
+protectedRouter.delete(
+  "/collection/:collectionId",
+  authMiddleware,
+  ProductCollectionController.deleteModel
 );
 
 //PRODUCT ATTRIBUTES
@@ -669,6 +724,30 @@ protectedRouter.delete(
   "/activities",
   authMiddleware,
   ActivityLogsController.deleteAll
+);
+
+//Product
+protectedRouter.post("/product", authMiddleware, ProductController.create);
+protectedRouter.get("/product", authMiddleware, ProductController.get);
+protectedRouter.get(
+  "/product/published",
+  authMiddleware,
+  ProductController.getPublished
+);
+protectedRouter.get(
+  "/product/:productId",
+  authMiddleware,
+  ProductController.getDetails
+);
+protectedRouter.put(
+  "/product/:productId",
+  authMiddleware,
+  ProductController.update
+);
+protectedRouter.delete(
+  "/product/:productId",
+  authMiddleware,
+  ProductController.deleteModel
 );
 
 export { protectedRouter };
