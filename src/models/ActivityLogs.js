@@ -7,7 +7,7 @@ const activitySchema = mongoose.Schema(
     id: Number,
     createdAt: { type: Date, default: new Date() },
     createdBy: String,
-    action: { type: String, required: true },
+    action: { type: String },
     userAgent: { type: String },
     ip: { type: String },
   },

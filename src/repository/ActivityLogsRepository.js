@@ -5,7 +5,7 @@ export const createLog = async (payload) => {
   try {
     const activity = new activityLogs(payload);
     const activityData = await activity.save();
-    // console.log(activityData);
+    console.log(activityData);
     return { status: "success", message: "Successfully created" };
   } catch (err) {
     console.log(err);

@@ -5,8 +5,11 @@ import * as TemplateController from "../controllers/TemplateController";
 import * as TaxController from "../controllers/TaxController";
 import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
+import * as ShippingController from "../controllers/ShippingController";
 import * as ProductTagController from "../controllers/ProductTagController";
 import * as ProductCollectionController from "../controllers/ProductCollectionController";
+import * as CustomerController from "../controllers/CustomerController";
+import * as ReviewController from "../controllers/ReviewController";
 import * as PaymentMethodController from "../controllers/PaymentMethodController";
 import * as ContactController from "../controllers/ContactController";
 import * as MenuController from "../controllers/MenuController";
@@ -748,6 +751,70 @@ protectedRouter.delete(
   "/product/:productId",
   authMiddleware,
   ProductController.deleteModel
+);
+
+//Shipping
+protectedRouter.post("/shipping", authMiddleware, ShippingController.create);
+protectedRouter.get("/shipping", authMiddleware, ShippingController.get);
+protectedRouter.post(
+  "/shipping/:shippingId/rule",
+  authMiddleware,
+  ShippingController.addRule
+);
+protectedRouter.put(
+  "/shipping/:shippingId/rule/:ruleId",
+  authMiddleware,
+  ShippingController.updateRule
+);
+protectedRouter.delete(
+  "/shipping/:shippingId/rule/:ruleId",
+  authMiddleware,
+  ShippingController.deleteRule
+);
+protectedRouter.delete(
+  "/shipping/:shippingId",
+  authMiddleware,
+  ShippingController.deleteModel
+);
+
+//Customer
+protectedRouter.post("/customer", authMiddleware, CustomerController.create);
+protectedRouter.get("/customer", authMiddleware, CustomerController.get);
+
+protectedRouter.get(
+  "/customer/:customerId",
+  authMiddleware,
+  CustomerController.getById
+);
+protectedRouter.put(
+  "/customer/:customerId",
+  authMiddleware,
+  CustomerController.update
+);
+protectedRouter.delete(
+  "/customer/:customerId",
+  authMiddleware,
+  CustomerController.deleteModel
+);
+
+//Reviews
+protectedRouter.post("/reviews", authMiddleware, ReviewController.create);
+protectedRouter.get("/reviews", authMiddleware, ReviewController.get);
+
+protectedRouter.get(
+  "/product/:productId/reviews",
+  authMiddleware,
+  ReviewController.getReviewByProduct
+);
+protectedRouter.get(
+  "/myreviews",
+  authMiddleware,
+  ReviewController.getReviewByCustomer
+);
+protectedRouter.delete(
+  "/reviews/:reviewId",
+  authMiddleware,
+  ReviewController.deleteModel
 );
 
 export { protectedRouter };

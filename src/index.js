@@ -88,7 +88,7 @@ app.use((req, res, next) => {
           ip: req.ip,
         };
       }
-      createLog({ ...log });
+      if (method !== "GET") createLog({ ...log });
     }
   });
 
