@@ -1,7 +1,9 @@
 import { Router } from "express";
 import * as UserController from "../controllers/UserController";
 import * as PageController from "../controllers/PageController";
+import * as FlashSaleController from "../controllers/FlashSaleController";
 import * as TemplateController from "../controllers/TemplateController";
+import * as ReportController from "../controllers/ReportsController";
 import * as TaxController from "../controllers/TaxController";
 import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
@@ -775,6 +777,53 @@ protectedRouter.delete(
   "/shipping/:shippingId",
   authMiddleware,
   ShippingController.deleteModel
+);
+
+//FlashSale
+protectedRouter.post("/flashSale", authMiddleware, FlashSaleController.create);
+protectedRouter.get("/flashSale", authMiddleware, FlashSaleController.get);
+protectedRouter.get(
+  "/flashSale/published",
+  authMiddleware,
+  FlashSaleController.getPublished
+);
+protectedRouter.get(
+  "/flashSale/:flashSaleId",
+  authMiddleware,
+  FlashSaleController.getDetails
+);
+protectedRouter.post(
+  "/flashSale/:flashSaleId/product",
+  authMiddleware,
+  FlashSaleController.addProduct
+);
+protectedRouter.put(
+  "/flashSale/:flashSaleId",
+  authMiddleware,
+  FlashSaleController.update
+);
+protectedRouter.put(
+  "/flashSale/:flashSaleId/product/:productId",
+  authMiddleware,
+  FlashSaleController.updateProduct
+);
+console.log(new Date());
+protectedRouter.delete(
+  "/flashSale/:flashSaleId/product/:productId",
+  authMiddleware,
+  FlashSaleController.deleteProduct
+);
+protectedRouter.delete(
+  "/flashSale/:flashSaleId",
+  authMiddleware,
+  FlashSaleController.deleteModel
+);
+
+//Reports
+protectedRouter.get(
+  "/report/summary",
+  authMiddleware,
+  ReportController.sendSummary
 );
 
 //Customer
