@@ -13,7 +13,21 @@ export const createRole = async (payload) => {
 
 export const getRoles = async () => {
   //console.log(payload)
-  let userRole = await userRoleModel.find();
+  let userRole = await userRoleModel
+    .find()
+    .populate({ path: "createdBy", select: "name -_id" })
+    .select("-permissions");
+  return {
+    status: "success",
+    data: userRole,
+  };
+};
+
+export const getRoleDetails = async (id) => {
+  //console.log(payload)
+  let userRole = await userRoleModel
+    .findOne({ id: id })
+    .populate({ path: "createdBy", select: "name _id" });
   return {
     status: "success",
     data: userRole,

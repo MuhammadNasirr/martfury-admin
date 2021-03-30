@@ -45,6 +45,60 @@ export const getLang = async (req, res, next) => {
   }
 };
 
+export const getAllLocale = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    let respo = await langRepo.getAllLocale();
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getLocaleById = async (req, res, next) => {
+  //   console.log(req);
+  const { langId } = req.params;
+  //   const payload = { ...req.body };
+  let id = langId;
+  if (!id) {
+    const err = new Error("Invalid LanguageId provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+  try {
+    let respo = await langRepo.getLocaleById(id);
+    if (respo.status === "success") {
+      if (respo.data) {
+        res.status(200).json(respo);
+      } else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 // export const getContactDetails = async (req, res, next) => {
 //   //   console.log(req);
 //   const { contactId } = req.params;
@@ -100,38 +154,34 @@ export const getLang = async (req, res, next) => {
 //   }
 //};
 
-// export const updateContact = async (req, res, next) => {
-//   //   console.log(req);
-//   const { contactId } = req.params;
-//   const payload = { ...req.body };
-//   let id = parseInt(contactId);
-//   if (!id) {
-//     const err = new Error("Invalid ContactId provided");
-//     err.status = "fail";
-//     err.statusCode = 400;
-//     next(err);
-//     return;
-//   }
-//   try {
-//     let respo = await langRepo.updateContact(
-//       id,
-//       payload,
-//       req.jwtPayload.userid
-//     );
-//     if (respo.status === "success") {
-//       res.status(200).json(respo);
-//     } else {
-//       const err = new Error(respo.message);
-//       err.status = respo.status;
-//       err.statusCode = 400;
-//       next(err);
-//       return;
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     next(error);
-//   }
-// };
+export const updateLocale = async (req, res, next) => {
+  //   console.log(req);
+  const { langId } = req.params;
+  const payload = { ...req.body };
+  let id = langId;
+  if (!id) {
+    const err = new Error("Invalid LangId provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+  try {
+    let respo = await langRepo.updateLocale(id, payload);
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 
 // export const addReply = async (req, res, next) => {
 //   //   console.log(req);

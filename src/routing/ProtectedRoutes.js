@@ -461,6 +461,21 @@ protectedRouter.delete(
   authMiddleware,
   LangController.deleteLang
 );
+protectedRouter.get(
+  "/lang/locales",
+  authMiddleware,
+  LangController.getAllLocale
+);
+protectedRouter.get(
+  "/lang/locale/:langId",
+  authMiddleware,
+  LangController.getLocaleById
+);
+protectedRouter.post(
+  "/lang/locale/:langId",
+  authMiddleware,
+  LangController.updateLocale
+);
 
 //FAQ_CATS
 protectedRouter.post("/faq/cats", authMiddleware, FAQ_CATController.createCat);
@@ -701,6 +716,11 @@ protectedRouter.put(
 );
 
 protectedRouter.get("/role", authMiddleware, RolesController.getRoles);
+protectedRouter.get(
+  "/role/:roleId",
+  authMiddleware,
+  RolesController.getRoleDetails
+);
 protectedRouter.get(
   "/role/permissions",
   authMiddleware,

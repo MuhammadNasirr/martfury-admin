@@ -82,7 +82,7 @@ export const getUsers = async (payload) => {
 };
 
 export const deleteUser = async (id) => {
-  const user = await userModel.deleteOne({ userId: id });
+  const user = await userModel.updateOne({ userId: id }, { softDelete: true });
   console.log(user);
   if (user.n > 0)
     return {
