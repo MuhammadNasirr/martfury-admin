@@ -709,7 +709,11 @@ protectedRouter.post(
 
 //User ROLE
 protectedRouter.post("/role", authMiddleware, RolesController.createRole);
-
+protectedRouter.get(
+  "/role/permissions",
+  authMiddleware,
+  RolesController.getPermissions
+);
 protectedRouter.put(
   "/role/:roleId",
   authMiddleware,
@@ -721,11 +725,6 @@ protectedRouter.get(
   "/role/:roleId",
   authMiddleware,
   RolesController.getRoleDetails
-);
-protectedRouter.get(
-  "/role/permissions",
-  authMiddleware,
-  RolesController.getPermissions
 );
 
 protectedRouter.delete(
