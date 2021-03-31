@@ -5,6 +5,7 @@ import * as FlashSaleController from "../controllers/FlashSaleController";
 import * as TemplateController from "../controllers/TemplateController";
 import * as ReportController from "../controllers/ReportsController";
 import * as TaxController from "../controllers/TaxController";
+import * as SocialLoginController from "../controllers/SocialLoginController";
 import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
 import * as ShippingController from "../controllers/ShippingController";
@@ -845,6 +846,11 @@ protectedRouter.get(
   authMiddleware,
   ReportController.sendSummary
 );
+protectedRouter.get(
+  "/dashboard/summary",
+  authMiddleware,
+  ReportController.sendDashboard
+);
 
 //Customer
 protectedRouter.post("/customer", authMiddleware, CustomerController.create);
@@ -884,6 +890,43 @@ protectedRouter.delete(
   "/reviews/:reviewId",
   authMiddleware,
   ReviewController.deleteModel
+);
+
+//Reviews
+protectedRouter.post(
+  "/socialLogin",
+  authMiddleware,
+  SocialLoginController.create
+);
+protectedRouter.get("/socialLogin", authMiddleware, SocialLoginController.get);
+
+protectedRouter.get(
+  "/socialLogin/enabled",
+  authMiddleware,
+  SocialLoginController.getEnabled
+);
+protectedRouter.post(
+  "/socialLogin/add",
+  authMiddleware,
+  SocialLoginController.addLogin
+);
+
+protectedRouter.delete(
+  "/socialLogin/remove/:loginId",
+  authMiddleware,
+  SocialLoginController.removeLogin
+);
+
+protectedRouter.post(
+  "/socialLogin/update",
+  authMiddleware,
+  SocialLoginController.updateLogin
+);
+
+protectedRouter.post(
+  "/socialLogin/:isEnabled",
+  authMiddleware,
+  SocialLoginController.setEnabled
 );
 
 export { protectedRouter };

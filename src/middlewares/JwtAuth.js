@@ -11,12 +11,15 @@ const authMiddleware = async (req, res, next) => {
   try {
     req.jwtPayload = verifyUser(token);
     console.log(req.jwtPayload);
-    let user = await User.findOne({
-      userId: req.jwtPayload.username,
-    });
-    console.log(user);
-    if (!user) {
-      throw { message: "Session Expired" };
+    if (req.jwtPayload.type === "Customer") {
+    } else {
+      let user = await User.findOne({
+        userId: req.jwtPayload.username,
+      });
+      console.log(user);
+      if (!user) {
+        throw { message: "Session Expired" };
+      }
     }
   } catch (err) {
     console.log("jwtERROR", err);
