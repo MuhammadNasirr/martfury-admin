@@ -105,7 +105,7 @@ export const updateLogin = async (id, payload) => {
     { $set: { ...query } },
     { runValidators: true }
   );
-  if (collection.nModified > 0)
+  if (collection.n > 0)
     return {
       status: "success",
       message: modelName + " Successfully updated",
