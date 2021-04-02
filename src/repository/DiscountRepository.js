@@ -14,8 +14,11 @@ export const get = async (page, userId, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
-  const collection = await Model.find()
-    .select("id name slug image status createdAt")
+  const discount = await Model.find()
+    .select(
+      "id code discount applyOn couponType startDate endDate collectionId productId variantId customerId"
+    )
+    .populate(["collectionId", "productId", "variantId", "customerId"])
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
@@ -24,55 +27,27 @@ export const get = async (page, userId, query) => {
   return {
     status: "success",
     data: {
-      collection,
+      discount,
       count,
       currentPage: page + 1,
     },
   };
 };
 
-export const getAllPublished = async (userId) => {
-  const collection = await Model.find({ status: "Published" }).select(
-    "id name"
-  );
+export const getDiscountbyCode = async (code) => {
+  const discount = await Model.findOne({ code: code }).populate([
+    "collectionId",
+    "productId",
+    "variantId",
+    "customerId",
+  ]);
 
   return {
     status: "success",
-    data: collection,
+    data: {
+      discount,
+    },
   };
-};
-
-export const getDetails = async (id, userId) => {
-  const collection = await Model.findOne({ id: id }).select("-author");
-
-  return {
-    status: "success",
-    data: collection,
-  };
-};
-
-export const update = async (id, payload, userId) => {
-  if (payload.id) {
-    delete payload.id;
-  }
-  if (payload._id) {
-    delete payload._id;
-  }
-  const collection = await Model.updateOne(
-    { id: id },
-    { ...payload },
-    { runValidators: true }
-  );
-  if (collection.n > 0)
-    return {
-      status: "success",
-      message: modelName + " Successfully updated",
-    };
-  else
-    return {
-      status: "fail",
-      message: "Invalid " + modelName + "Id",
-    };
 };
 
 export const deleteModel = async (id) => {

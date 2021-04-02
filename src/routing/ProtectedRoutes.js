@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as UserController from "../controllers/UserController";
 import * as PageController from "../controllers/PageController";
 import * as FlashSaleController from "../controllers/FlashSaleController";
+import * as DiscountController from "../controllers/DiscountController";
 import * as TemplateController from "../controllers/TemplateController";
 import * as ReportController from "../controllers/ReportsController";
 import * as TaxController from "../controllers/TaxController";
@@ -926,6 +927,16 @@ protectedRouter.post(
   "/socialLogin/:isEnabled",
   authMiddleware,
   SocialLoginController.setEnabled
+);
+
+//Discounts
+protectedRouter.post("/discount", authMiddleware, DiscountController.create);
+protectedRouter.get("/discount", authMiddleware, DiscountController.get);
+
+protectedRouter.delete(
+  "/discount/:discountId",
+  authMiddleware,
+  DiscountController.deleteModel
 );
 
 export { protectedRouter };

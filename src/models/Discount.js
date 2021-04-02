@@ -5,7 +5,7 @@ import idValid from "mongoose-id-validator";
 const discountSchema = mongoose.Schema(
   {
     id: Number,
-    code: { type: String, required: true },
+    code: { type: String, required: true, unique: true },
     type: {
       type: String,
       enum: ["Coupon Code", "Promotion"],
@@ -14,7 +14,7 @@ const discountSchema = mongoose.Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date },
     willExpire: { type: Boolean, default: true },
-    limit: { type: Number, default: 0 },
+    limit: { type: Number, default: -1 },
     useWithPromotion: { type: Boolean, default: false },
     couponType: {
       type: String,
@@ -24,7 +24,31 @@ const discountSchema = mongoose.Schema(
     },
     discount: { type: Number, default: 0 },
     applyOn: { type: String },
+    orderAmountFrom: { type: Number },
+    collectionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "productCollection",
+    },
+
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "products",
+    },
+
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "customer",
+    },
+    variantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "products",
+    },
+    productType: {
+      type: String,
+      enum: ["One per order", , "One per product in cart"],
+    },
     noOfProducts: { type: Number, default: 0 },
+    noOfTimesUsed: { type: Number, default: 0 },
   },
 
   { strict: "throw" }
