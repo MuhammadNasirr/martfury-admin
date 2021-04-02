@@ -11,6 +11,8 @@ const paymentMethodSchema = mongoose.Schema(
     secret: { type: String },
     isActivated: { type: Boolean, default: true },
     isDefault: { type: Boolean, default: false },
+    isSandbox: { type: Boolean, default: true },
+    merchant: { email: String },
   },
   { strict: "throw" }
 );

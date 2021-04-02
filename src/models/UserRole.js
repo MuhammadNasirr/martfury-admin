@@ -8,7 +8,7 @@ const roleSchema = mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String, required: true },
     isDefault: { type: Boolean, default: false },
-    permissions: [{ type: String }],
+    permissions: [{ title: { type: String } }],
     createdAt: Date,
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

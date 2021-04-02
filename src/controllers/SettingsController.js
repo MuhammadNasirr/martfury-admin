@@ -3,10 +3,15 @@ import * as settingRepo from "../repository/SettingRepository";
 export const createSetting = async (req, res, next) => {
   const { general, adminAppearance, email } = {
     general: {
-      isRTL: true,
+      siteTitle: String,
+      tagline: String,
+      siteAddress: String,
+      blogAddress: String,
+      membership: String,
       adminEmail: "bobtle@bobtle.com",
-      timezone: "(GMT -11:00) Midway Island, Samoa",
-      siteLanguage: "en",
+      timezone: String,
+      dateFormat: String,
+      timeFormat: String,
     },
     adminAppearance: {
       loginBackground: ["test"],

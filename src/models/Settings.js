@@ -6,10 +6,17 @@ const settingsSchema = mongoose.Schema(
   {
     id: { type: Number, default: 1, unique: true },
     general: {
+      siteTitle: String,
+      tagline: String,
+      siteAddress: String,
+      blogAddress: String,
+      membership: String,
+      adminEmail: String,
+      timezone: String,
+      dateFormat: String,
+      timeFormat: String,
       adminEmail: { type: String, required: true },
       timezone: { type: String, required: true },
-      siteLanguage: { type: String, required: true },
-      isRTL: { type: Boolean, required: true, default: false },
     },
     adminAppearance: {
       logo: { type: String },

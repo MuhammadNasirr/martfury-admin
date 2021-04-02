@@ -33,12 +33,22 @@ export const login = async (req, res, next) => {
 };
 
 export const signup = async (req, res, next) => {
-  const { name, userId, password, role, status, email, isSuper } = req.body;
+  const {
+    firstName,
+    lastName,
+    userId,
+    password,
+    role,
+    status,
+    email,
+    isSuper,
+  } = req.body;
   console.log(req.body);
   try {
     if (userId && password) {
       let user = await userRepo.createUser({
-        name,
+        firstName,
+        lastName,
         userId: userId,
         password: password,
         role,
@@ -59,6 +69,7 @@ export const signup = async (req, res, next) => {
         userId: user.userId,
         name: user.name,
       });
+      return;
     } else {
       const err = new Error("UserId or Password missing");
       err.status = "fail";

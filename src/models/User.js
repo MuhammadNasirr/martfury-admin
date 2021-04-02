@@ -3,7 +3,8 @@ import bcrypt from "bcrypt";
 const salt = 10;
 const userSchema = mongoose.Schema(
   {
-    name: String,
+    firstName: String,
+    lastName: String,
     userId: { type: String, required: true, unique: true },
     password: {
       type: String,

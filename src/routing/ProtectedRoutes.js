@@ -7,6 +7,7 @@ import * as TemplateController from "../controllers/TemplateController";
 import * as ReportController from "../controllers/ReportsController";
 import * as TaxController from "../controllers/TaxController";
 import * as SocialLoginController from "../controllers/SocialLoginController";
+import * as TransactionController from "../controllers/TransactionController";
 import * as BrandController from "../controllers/BrandController";
 import * as TagsController from "../controllers/TagsController";
 import * as ShippingController from "../controllers/ShippingController";
@@ -74,6 +75,11 @@ protectedRouter.put(
   UserController.updateUser
 );
 protectedRouter.get("/users", authMiddleware, UserController.getUsers);
+protectedRouter.get(
+  "/users/:userId",
+  authMiddleware,
+  UserController.getUserDetails
+);
 
 //MEDIA
 protectedRouter.post(
@@ -932,11 +938,41 @@ protectedRouter.post(
 //Discounts
 protectedRouter.post("/discount", authMiddleware, DiscountController.create);
 protectedRouter.get("/discount", authMiddleware, DiscountController.get);
+protectedRouter.get(
+  "/discount/:couponCode",
+  authMiddleware,
+  DiscountController.getByCode
+);
 
 protectedRouter.delete(
   "/discount/:discountId",
   authMiddleware,
   DiscountController.deleteModel
+);
+
+//Transactions
+protectedRouter.post(
+  "/transaction",
+  authMiddleware,
+  TransactionController.create
+);
+protectedRouter.get("/transaction", authMiddleware, TransactionController.get);
+protectedRouter.get(
+  "/transaction/:transactionId",
+  authMiddleware,
+  TransactionController.getDetails
+);
+
+protectedRouter.put(
+  "/transaction/:transactionId",
+  authMiddleware,
+  TransactionController.update
+);
+
+protectedRouter.delete(
+  "/transaction/:transactionId",
+  authMiddleware,
+  TransactionController.deleteModel
 );
 
 export { protectedRouter };

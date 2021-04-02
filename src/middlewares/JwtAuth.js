@@ -11,6 +11,7 @@ const authMiddleware = async (req, res, next) => {
   try {
     req.jwtPayload = verifyUser(token);
     console.log(req.jwtPayload);
+
     if (req.jwtPayload.type === "Customer") {
     } else {
       let user = await User.findOne({

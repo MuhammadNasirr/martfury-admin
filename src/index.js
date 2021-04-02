@@ -69,21 +69,21 @@ app.use((req, res, next) => {
       } else if (method === "POST") {
         log = {
           action: "created a " + api,
-          createdBy: req.jwtPayload.username,
+          createdBy: req.jwtPayload?.username,
           userAgent: req.headers["user-agent"],
           ip: req.ip,
         };
       } else if (method === "PUT") {
         log = {
           action: "updated a " + api,
-          createdBy: req.jwtPayload.username,
+          createdBy: req.jwtPayload?.username,
           userAgent: req.headers["user-agent"],
           ip: req.ip,
         };
       } else if (method === "DELETE") {
         log = {
           action: "deleted a " + api,
-          createdBy: req.jwtPayload.username,
+          createdBy: req.jwtPayload?.username,
           userAgent: req.headers["user-agent"],
           ip: req.ip,
         };
