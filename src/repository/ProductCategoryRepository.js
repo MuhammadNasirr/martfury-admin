@@ -13,12 +13,12 @@ export const getCats = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const cats = await catModel
-    .find({ author: userId, ...query })
+    .find({ ...query })
     .select("id name status createdAt ")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await catModel.countDocuments({ author: userId, ...query });
+  const count = await catModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -31,9 +31,7 @@ export const getCats = async (page, userId, query) => {
 };
 
 export const getAllPublishedCats = async (userId) => {
-  const cats = await catModel
-    .find({ author: userId, status: "Published" })
-    .select("id name");
+  const cats = await catModel.find({ status: "Published" }).select("id name");
 
   return {
     status: "success",
@@ -43,7 +41,7 @@ export const getAllPublishedCats = async (userId) => {
 
 export const getCatDetails = async (id, userId) => {
   const cat = await catModel
-    .findOne({ id: id, author: userId })
+    .findOne({ id: id })
     .populate({
       path: "parent",
       select: { name: 1 },
@@ -64,7 +62,7 @@ export const updateCat = async (id, payload, userId) => {
     delete payload._id;
   }
   const cat = await catModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -81,7 +79,7 @@ export const updateCat = async (id, payload, userId) => {
 };
 
 export const deleteCat = async (id, userId) => {
-  const cat = await catModel.deleteOne({ id: id, author: userId });
+  const cat = await catModel.deleteOne({ id: id });
   console.log(cat);
   if (cat.n > 0)
     return {

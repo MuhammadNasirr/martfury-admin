@@ -13,12 +13,12 @@ export const getAttrs = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const attrs = await attrModel
-    .find({ author: userId, ...query })
+    .find({ ...query })
     .select("id title slug createdAt status order")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await attrModel.countDocuments({ author: userId, ...query });
+  const count = await attrModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -32,7 +32,7 @@ export const getAttrs = async (page, userId, query) => {
 
 export const getAllPublishedAttrs = async (userId) => {
   const attrs = await attrModel
-    .find({ author: userId, status: "Published" })
+    .find({ status: "Published" })
     .select("id title attributesList.title");
 
   return {
@@ -43,7 +43,7 @@ export const getAllPublishedAttrs = async (userId) => {
 
 export const getAttrDetails = async (id, userId) => {
   const attr = await attrModel
-    .findOne({ id: id, author: userId })
+    .findOne({ id: id })
 
     .select("-author");
 
@@ -61,7 +61,7 @@ export const updateAttr = async (id, payload, userId) => {
     delete payload._id;
   }
   const attr = await attrModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -78,7 +78,7 @@ export const updateAttr = async (id, payload, userId) => {
 };
 
 export const deleteAttr = async (id, userId) => {
-  const atr = await attrModel.deleteOne({ id: id, author: userId });
+  const atr = await attrModel.deleteOne({ id: id });
   console.log(atr);
   if (atr.n > 0)
     return {

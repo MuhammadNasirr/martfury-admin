@@ -13,12 +13,12 @@ export const getContacts = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const contacts = await contactModel
-    .find({ author: userId, ...query })
+    .find({ ...query })
     .select("id name email phone status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await contactModel.countDocuments({ author: userId, ...query });
+  const count = await contactModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -32,7 +32,7 @@ export const getContacts = async (page, userId, query) => {
 
 // export const getPublishedTags = async (userId) => {
 //   const tags = await contactModel
-//     .find({ author: userId, status: "Published" })
+//     .find({ , status: "Published" })
 //     .select("id name ");
 
 //   return {
@@ -42,9 +42,7 @@ export const getContacts = async (page, userId, query) => {
 // };
 
 export const getContactDetails = async (id, userId) => {
-  const contact = await contactModel
-    .findOne({ id: id, author: userId })
-    .select("-author");
+  const contact = await contactModel.findOne({ id: id }).select("-author");
 
   return {
     status: "success",
@@ -63,7 +61,7 @@ export const updateContact = async (id, payload, userId) => {
     delete payload.replies;
   }
   const contact = await contactModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -81,14 +79,12 @@ export const updateContact = async (id, payload, userId) => {
 
 export const addReply = async (id, payload, userId) => {
   const contact = await contactModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { $push: { replies: payload } },
     { runValidators: true }
   );
   if (contact.n > 0) {
-    const replies = await contactModel
-      .findOne({ id: id, author: userId })
-      .select("replies");
+    const replies = await contactModel.findOne({ id: id }).select("replies");
     return {
       status: "success",
       message: "Reply Saved",
@@ -102,7 +98,7 @@ export const addReply = async (id, payload, userId) => {
 };
 
 export const deleteContact = async (id, userId) => {
-  const contact = await contactModel.deleteOne({ id: id, author: userId });
+  const contact = await contactModel.deleteOne({ id: id });
   console.log(contact);
   if (contact.n > 0)
     return {

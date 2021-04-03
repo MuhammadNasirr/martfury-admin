@@ -13,7 +13,7 @@ export const getTaxes = async (page, userId, query) => {
     query.title = { $regex: query.title, $options: "i" };
   }
   const taxes = await taxModel
-    .find()
+    .find({ ...query })
     .select("id title taxPercent priority status createdAt ")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);

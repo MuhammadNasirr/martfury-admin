@@ -14,7 +14,7 @@ export const get = async (page, userId, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
-  const collection = await Model.find()
+  const collection = await Model.find({ ...query })
     .select("id name slug image status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);

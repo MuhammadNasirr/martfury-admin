@@ -13,12 +13,12 @@ export const getMenus = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const menus = await menuModel
-    .find({ author: userId, ...query })
+    .find({ ...query })
     .select("id name status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await menuModel.countDocuments({ author: userId, ...query });
+  const count = await menuModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -31,9 +31,7 @@ export const getMenus = async (page, userId, query) => {
 };
 
 export const getMenuDetails = async (id, userId) => {
-  const menu = await menuModel
-    .findOne({ id: id, author: userId })
-    .select("-author");
+  const menu = await menuModel.findOne({ id: id }).select("-author");
 
   return {
     status: "success",
@@ -60,7 +58,7 @@ export const updateMenu = async (id, payload, userId) => {
     delete payload._id;
   }
   const menu = await menuModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -77,7 +75,7 @@ export const updateMenu = async (id, payload, userId) => {
 };
 
 export const deleteMenu = async (id, userId) => {
-  const menu = await menuModel.deleteOne({ id: id, author: userId });
+  const menu = await menuModel.deleteOne({ id: id });
   console.log(menu);
   if (menu.n > 0)
     return {

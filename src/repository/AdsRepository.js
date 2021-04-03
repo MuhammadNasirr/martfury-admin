@@ -8,14 +8,17 @@ export const createAd = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getAds = async (page, userId) => {
+export const getAds = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const ads = await adsModel
-    .find({ author: userId })
+    .find({ ...query })
     .select("id name status expiredAt image clicked shortCode ")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await adsModel.countDocuments({ author: userId });
+  const count = await adsModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -28,9 +31,7 @@ export const getAds = async (page, userId) => {
 };
 
 export const getAllPublishedAds = async (userId) => {
-  const ads = await adsModel
-    .find({ author: userId, status: "Published" })
-    .select("id name");
+  const ads = await adsModel.find({ status: "Published" }).select("id name");
 
   return {
     status: "success",
@@ -39,9 +40,7 @@ export const getAllPublishedAds = async (userId) => {
 };
 
 export const getAdDetails = async (id, userId) => {
-  const ad = await adsModel
-    .findOne({ id: id, author: userId })
-    .select("-author");
+  const ad = await adsModel.findOne({ id: id }).select("-author");
 
   return {
     status: "success",
@@ -57,7 +56,7 @@ export const updateAd = async (id, payload, userId) => {
     delete payload._id;
   }
   const Ad = await adsModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -74,7 +73,7 @@ export const updateAd = async (id, payload, userId) => {
 };
 
 export const deleteAd = async (id, userId) => {
-  const ad = await adsModel.deleteOne({ id: id, author: userId });
+  const ad = await adsModel.deleteOne({ id: id });
   console.log(ad);
   if (ad.n > 0)
     return {

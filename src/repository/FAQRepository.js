@@ -13,7 +13,7 @@ export const getFaqs = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const cats = await faqModel
-    .find({ author: userId })
+    .find({ ...query })
     .select("id question categories createdAt status")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page)
@@ -22,7 +22,7 @@ export const getFaqs = async (page, userId, query) => {
       select: { name: 1 },
     });
 
-  const count = await faqModel.countDocuments({ author: userId, ...query });
+  const count = await faqModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -35,7 +35,7 @@ export const getFaqs = async (page, userId, query) => {
 };
 
 export const getFaqDetails = async (id, userId) => {
-  const cat = await faqModel.findOne({ id: id, author: userId });
+  const cat = await faqModel.findOne({ id: id });
   // .populate({
   //   path: "categories",
   //   select: { name: 1, id: 1 },
@@ -63,7 +63,7 @@ export const updateFaq = async (id, payload, userId) => {
     delete payload._id;
   }
   const cat = await faqModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -80,7 +80,7 @@ export const updateFaq = async (id, payload, userId) => {
 };
 
 export const deleteFaq = async (id, userId) => {
-  const cat = await faqModel.deleteOne({ id: id, author: userId });
+  const cat = await faqModel.deleteOne({ id: id });
   console.log(cat);
   if (cat.n > 0)
     return {

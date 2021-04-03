@@ -8,14 +8,17 @@ export const createNewsletter = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getNewsletters = async (page) => {
+export const getNewsletters = async (page, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const newsletters = await newsletterModel
-    .find()
+    .find({ ...query })
     .select("id name status createdAt email")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await newsletterModel.countDocuments();
+  const count = await newsletterModel.countDocuments({ ...query });
 
   return {
     status: "success",

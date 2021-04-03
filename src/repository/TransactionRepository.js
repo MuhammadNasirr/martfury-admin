@@ -11,10 +11,10 @@ export const create = async (payload) => {
 };
 
 export const get = async (page, userId, query) => {
-  if (query.name) {
-    query.name = { $regex: query.name, $options: "i" };
+  if (query.chargeId) {
+    query.chargeId = { $regex: query.chargeId, $options: "i" };
   }
-  const transactions = await Model.find()
+  const transactions = await Model.find({ ...query })
     .select("id chargeId total paymentChannel status createdAt")
     .populate({
       path: "paymentChannel",

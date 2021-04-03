@@ -6,6 +6,7 @@ import * as DiscountController from "../controllers/DiscountController";
 import * as TemplateController from "../controllers/TemplateController";
 import * as ReportController from "../controllers/ReportsController";
 import * as TaxController from "../controllers/TaxController";
+import * as PermalinkController from "../controllers/PermalinkController";
 import * as SocialLoginController from "../controllers/SocialLoginController";
 import * as TransactionController from "../controllers/TransactionController";
 import * as BrandController from "../controllers/BrandController";
@@ -974,5 +975,11 @@ protectedRouter.delete(
   authMiddleware,
   TransactionController.deleteModel
 );
+
+//Permalink
+protectedRouter.post("/permalink", authMiddleware, PermalinkController.create);
+protectedRouter.get("/permalink", authMiddleware, PermalinkController.get);
+
+protectedRouter.put("/permalink", authMiddleware, PermalinkController.update);
 
 export { protectedRouter };

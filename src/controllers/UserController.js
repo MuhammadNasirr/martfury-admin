@@ -114,7 +114,7 @@ export const deleteUser = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
   //   console.log(req);
   try {
-    let respo = await userRepo.getUsers();
+    let respo = await userRepo.getUsers(req.query);
     if (respo.status === "success") {
       if (respo.data.length) res.status(200).json(respo);
       else {

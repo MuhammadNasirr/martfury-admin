@@ -31,7 +31,7 @@ export const getRoles = async (req, res, next) => {
   //   console.log(req);
 
   try {
-    let respo = await role.getRoles();
+    let respo = await role.getRoles(req.query);
     if (respo.status === "success") {
       if (respo.data.length) res.status(200).json(respo);
       else {

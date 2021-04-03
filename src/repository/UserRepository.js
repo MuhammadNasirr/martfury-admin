@@ -66,8 +66,17 @@ export const getUserDetails = async (userId) => {
   };
 };
 
-export const getUsers = async (payload) => {
+export const getUsers = async (query) => {
   //console.log(payload)
+  if (query.userId) {
+    query.userId = { $regex: query.userId, $options: "i" };
+  }
+  if (query.firstName) {
+    query.firstName = { $regex: query.firstName, $options: "i" };
+  }
+  if (query.lastName) {
+    query.lastName = { $regex: query.lastName, $options: "i" };
+  }
   let users = await userModel
     .find({
       softDelete: false,

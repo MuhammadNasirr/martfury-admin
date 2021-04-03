@@ -11,14 +11,17 @@ export const createSlider = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getSliders = async (page, userId) => {
+export const getSliders = async (page, userId, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   const sliders = await sliderModel
-    .find({ author: userId })
+    .find({ ...query })
     .select("id name key createdAt status")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await sliderModel.countDocuments({ author: userId });
+  const count = await sliderModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -63,7 +66,7 @@ export const updateSlider = async (id, payload, userId) => {
     delete payload._id;
   }
   const slider = await sliderModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -80,7 +83,7 @@ export const updateSlider = async (id, payload, userId) => {
 };
 
 export const deleteSlider = async (id, userId) => {
-  const slider = await sliderModel.deleteOne({ id: id, author: userId });
+  const slider = await sliderModel.deleteOne({ id: id });
   console.log(slider);
   if (slider.n > 0)
     return {

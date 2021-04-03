@@ -14,7 +14,7 @@ export const get = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
-  const flashSale = await Model.find()
+  const flashSale = await Model.find({ ...query })
     .select("id name status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);

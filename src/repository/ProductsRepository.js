@@ -14,7 +14,7 @@ export const get = async (page, userId, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
-  const products = await Model.find()
+  const products = await Model.find({ ...query })
     .select(
       "id name images price salePrice quanitity inStore sku status createdAt"
     )

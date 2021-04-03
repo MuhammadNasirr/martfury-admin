@@ -13,14 +13,14 @@ export const getPages = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const pages = await pageModel
-    .find({ softDelete: false, author: userId, ...query })
+    .find({ softDelete: false, ...query })
     .select("id name template status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
   const count = await pageModel.countDocuments({
     softDelete: false,
-    author: userId,
+
     ...query,
   });
 
@@ -36,7 +36,7 @@ export const getPages = async (page, userId, query) => {
 
 export const getPageDetails = async (id, userId) => {
   const page = await pageModel
-    .findOne({ id: id, softDelete: false, author: userId })
+    .findOne({ id: id, softDelete: false })
     .populate({
       path: "template",
       select: { name: 1 },
@@ -57,7 +57,7 @@ export const updatePage = async (id, payload, userId) => {
     delete payload._id;
   }
   const page = await pageModel.updateOne(
-    { id: id, softDelete: false, author: userId },
+    { id: id, softDelete: false },
     { ...payload },
     { runValidators: true }
   );
@@ -75,7 +75,7 @@ export const updatePage = async (id, payload, userId) => {
 
 export const deletePage = async (id, userId) => {
   const page = await pageModel.updateOne(
-    { id: id, softDelete: false, author: userId },
+    { id: id, softDelete: false },
     { softDelete: true },
     { runValidators: true }
   );
@@ -93,7 +93,7 @@ export const deletePage = async (id, userId) => {
 
 export const getMenuPages = async (userId) => {
   const pages = await pageModel
-    .find({ softDelete: false, author: userId, status: "Published" })
+    .find({ softDelete: false, status: "Published" })
     .select("id name");
   const menuPage = [];
   if (pages.length) {

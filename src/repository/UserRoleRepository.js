@@ -11,10 +11,13 @@ export const createRole = async (payload) => {
   };
 };
 
-export const getRoles = async () => {
+export const getRoles = async (query) => {
   //console.log(payload)
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
   let userRole = await userRoleModel
-    .find()
+    .find({ ...query })
     .populate({ path: "createdBy", select: "name -_id" })
     .select("-permissions");
   return {

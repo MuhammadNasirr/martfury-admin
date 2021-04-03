@@ -13,12 +13,12 @@ export const getBrands = async (page, userId, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const brands = await brandModel
-    .find({ author: userId, ...query })
+    .find({ ...query })
     .select("id name status createdAt ")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await brandModel.countDocuments({ author: userId, ...query });
+  const count = await brandModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -32,7 +32,7 @@ export const getBrands = async (page, userId, query) => {
 
 export const getAllPublishedBrands = async (userId) => {
   const brands = await brandModel
-    .find({ author: userId, status: "Published" })
+    .find({ status: "Published" })
     .select("id name");
 
   return {
@@ -43,7 +43,7 @@ export const getAllPublishedBrands = async (userId) => {
 
 export const getBrandDetails = async (id, userId) => {
   const brand = await brandModel
-    .findOne({ id: id, author: userId })
+    .findOne({ id: id })
     .populate({
       path: "parent",
       select: { name: 1 },
@@ -64,7 +64,7 @@ export const updateBrand = async (id, payload, userId) => {
     delete payload._id;
   }
   const brand = await brandModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -81,7 +81,7 @@ export const updateBrand = async (id, payload, userId) => {
 };
 
 export const deleteBrand = async (id, userId) => {
-  const brand = await brandModel.deleteOne({ id: id, author: userId });
+  const brand = await brandModel.deleteOne({ id: id });
   console.log(brand);
   if (brand.n > 0)
     return {

@@ -14,7 +14,7 @@ export const get = async (page, userId, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
-  const discount = await Model.find()
+  const discount = await Model.find({ ...query })
     .select(
       "id code discount applyOn couponType startDate endDate collectionId productId variantId customerId"
     )

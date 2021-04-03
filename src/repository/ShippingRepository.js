@@ -11,7 +11,7 @@ export const create = async (payload) => {
 };
 
 export const get = async (page, userId, query) => {
-  const shipping = await Model.find();
+  const shipping = await Model.find({ ...query });
 
   const count = await Model.countDocuments({ ...query });
 

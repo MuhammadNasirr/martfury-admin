@@ -19,12 +19,12 @@ export const getTags = async (page, userId, query) => {
   //   delete query.search;
   // }
   const tags = await tagModel
-    .find({ author: userId, ...query })
+    .find({ ...query })
     .select("id name status createdAt")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
-  const count = await tagModel.countDocuments({ author: userId, ...query });
+  const count = await tagModel.countDocuments({ ...query });
 
   return {
     status: "success",
@@ -37,9 +37,7 @@ export const getTags = async (page, userId, query) => {
 };
 
 export const getPublishedTags = async (userId) => {
-  const tags = await tagModel
-    .find({ author: userId, status: "Published" })
-    .select("id name ");
+  const tags = await tagModel.find({ status: "Published" }).select("id name ");
 
   return {
     status: "success",
@@ -48,9 +46,7 @@ export const getPublishedTags = async (userId) => {
 };
 
 export const getTagDetails = async (id, userId) => {
-  const tag = await tagModel
-    .findOne({ id: id, author: userId })
-    .select("-author");
+  const tag = await tagModel.findOne({ id: id }).select("-author");
 
   return {
     status: "success",
@@ -66,7 +62,7 @@ export const updateTag = async (id, payload, userId) => {
     delete payload._id;
   }
   const tag = await tagModel.updateOne(
-    { id: id, author: userId },
+    { id: id },
     { ...payload },
     { runValidators: true }
   );
@@ -83,7 +79,7 @@ export const updateTag = async (id, payload, userId) => {
 };
 
 export const deleteTag = async (id, userId) => {
-  const tag = await tagModel.deleteOne({ id: id, author: userId });
+  const tag = await tagModel.deleteOne({ id: id });
   console.log(tag);
   if (tag.n > 0)
     return {
