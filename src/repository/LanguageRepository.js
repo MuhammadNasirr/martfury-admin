@@ -42,26 +42,55 @@ export const updateLocale = async (id, payload, userId) => {
   if (payload._id) {
     delete payload._id;
   }
-  let keys = Object.keys(payload);
-  let query = {};
-  keys.forEach((key) => {
-    query["data." + key] = payload[key];
-  });
-  const Ad = await langModel.updateOne(
-    { _id: id },
-    { $set: { ...query } },
-    { runValidators: true }
-  );
-  if (Ad.n > 0)
-    return {
-      status: "success",
-      message: "Data Successfully updated",
-    };
-  else
+
+  let success = [];
+  for (let i = 0; i < payload.length; i++) {
+    let obj = payload[i];
+    if (obj.id) {
+      let query = {};
+
+      let keys = Object.keys(obj);
+      keys.forEach((key) => {
+        if (key !== "id") {
+          query["data.$." + key] = obj[key];
+        }
+      });
+      let data = await langModel.updateOne(
+        { _id: id, "data.id": obj.id },
+        { ...query },
+        { runValidators: true }
+      );
+      if (!data.n) {
+        success.push("invalid Data Id , id:" + obj.id);
+      }
+    } else if (obj.id === undefined) {
+      let data = await langModel.updateOne(
+        { _id: id },
+        {
+          $push: {
+            data: {
+              id: (await langModel.findOne({ _id: id })).data.length,
+              ...obj,
+            },
+          },
+        },
+        { runValidators: true }
+      );
+      if (!data.n) {
+        success.push("Failed to add Data");
+      }
+    }
+  }
+
+  if (success.length)
     return {
       status: "fail",
-      message: "Inavlid DataId",
+      message: success.join(" \n "),
     };
+  return {
+    status: "success",
+    message: "Data Successfully updated",
+  };
 };
 
 export const deleteLang = async (id) => {

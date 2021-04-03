@@ -7,7 +7,7 @@ const languageScheme = mongoose.Schema(
     code: { type: String, required: true, unique: true },
     name: { type: String },
     isDefault: { type: Boolean, default: false },
-    data: { type: Object },
+    data: [{ type: Object }],
   },
 
   { strict: "throw" }

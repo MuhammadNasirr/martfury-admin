@@ -167,7 +167,7 @@ export const updateLocale = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await langRepo.updateLocale(id, payload);
+    let respo = await langRepo.updateLocale(id, payload.data);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
