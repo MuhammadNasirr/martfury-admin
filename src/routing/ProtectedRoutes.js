@@ -831,7 +831,7 @@ protectedRouter.put(
   FlashSaleController.update
 );
 protectedRouter.put(
-  "/flashSale/:flashSaleId/product/:productId",
+  "/flashSale/:flashSaleId/product",
   authMiddleware,
   FlashSaleController.updateProduct
 );

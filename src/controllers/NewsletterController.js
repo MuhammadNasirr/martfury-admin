@@ -29,9 +29,10 @@ export const createNewsletter = async (req, res, next) => {
 export const getNewsletters = async (req, res, next) => {
   //   console.log(req);
   const { page } = req.query;
+  delete req.query.page;
   try {
     console.log(req.jwtPayload);
-    let respo = await newsletterRepo.getNewsletters(page - 1 || 0);
+    let respo = await newsletterRepo.getNewsletters(page - 1 || 0, req.query);
     if (respo.status === "success") {
       if (respo.data.newsletters.length) res.status(200).json(respo);
       else {

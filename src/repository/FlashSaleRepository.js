@@ -59,7 +59,7 @@ export const update = async (id, payload, userId) => {
     delete payload._id;
   }
   if (payload.products) {
-    delete payload.productsß;
+    delete payload.products;
   }
   const flashSale = await Model.updateOne(
     { id: id },
@@ -79,18 +79,10 @@ export const update = async (id, payload, userId) => {
 };
 
 export const addProduct = async (id, payload) => {
-  if (payload.id) {
-    delete payload.id;
-  }
-  if (payload._id) {
-    delete payload._id;
-  }
-  if (payload.products) {
-    delete payload.productsß;
-  }
+  console.log(payload);
   const flashSale = await Model.updateOne(
     { id: id },
-    { $push: { products: payload } },
+    { $addToSet: { products: { $each: payload } } },
     { runValidators: true }
   );
   if (flashSale.n > 0)
@@ -109,6 +101,24 @@ export const removeProduct = async (id, productId) => {
   const flashSale = await Model.updateOne(
     { id: id },
     { $pull: { products: { product: productId } } },
+    { runValidators: true }
+  );
+  if (flashSale.n > 0)
+    return {
+      status: "success",
+      message: modelName + " Successfully updated",
+    };
+  else
+    return {
+      status: "fail",
+      message: "Invalid " + modelName + "Id",
+    };
+};
+
+export const removeAllProduct = async (id) => {
+  const flashSale = await Model.updateOne(
+    { id: id },
+    { $set: { products: [] } },
     { runValidators: true }
   );
   if (flashSale.n > 0)

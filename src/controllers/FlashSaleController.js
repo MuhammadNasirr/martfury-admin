@@ -118,9 +118,8 @@ export const addProduct = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await ModelRepo.addProduct(id, {
-      ...payload,
-    });
+    let remo = await ModelRepo.removeAllProduct(id);
+    let respo = await ModelRepo.addProduct(id, payload);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -173,8 +172,8 @@ export const update = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   //   console.log(req);
-  const { flashSaleId, productId } = req.params;
-  const payload = { ...req.body };
+  const { flashSaleId } = req.params;
+  const payload = req.body;
   let id = flashSaleId;
   if (!id) {
     const err = new Error("Invalid flashSaleId provided");
@@ -184,17 +183,10 @@ export const updateProduct = async (req, res, next) => {
     return;
   }
 
-  if (!productId) {
-    const err = new Error("Invalid productId provided");
-    err.status = "fail";
-    err.statusCode = 400;
-    next(err);
-    return;
-  }
   try {
-    let respo = await ModelRepo.updateProduct(id, productId, {
-      ...payload,
-    });
+    let remo = await ModelRepo.removeAllProduct(id);
+    // console.log(payload);
+    let respo = await ModelRepo.addProduct(id, payload);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
