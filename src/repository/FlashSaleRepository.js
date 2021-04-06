@@ -58,9 +58,7 @@ export const update = async (id, payload, userId) => {
   if (payload._id) {
     delete payload._id;
   }
-  if (payload.products) {
-    delete payload.products;
-  }
+
   const flashSale = await Model.updateOne(
     { id: id },
     { ...payload },
