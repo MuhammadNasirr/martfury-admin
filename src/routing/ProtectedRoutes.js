@@ -102,7 +102,6 @@ protectedRouter.post(
 
 //PAGE
 protectedRouter.post("/page", authMiddleware, PageController.createPage);
-protectedRouter.get("/page", authMiddleware, PageController.getPages);
 protectedRouter.get(
   "/page/published",
   authMiddleware,

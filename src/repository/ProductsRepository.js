@@ -1,5 +1,6 @@
 import { PAGE_LIMIT } from "../config/constants";
 import Model from "../models/Product";
+import Review from "../models/Review";
 
 const modelName = "Product";
 
@@ -27,6 +28,46 @@ export const get = async (page, userId, query) => {
     status: "success",
     data: {
       products,
+      count,
+      currentPage: page + 1,
+    },
+  };
+};
+
+export const getPublishedProducts = async (page, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  const products = await Model.find({ ...query, status: "Published" })
+    .select("id name images price salePrice isFeatured categories")
+    .limit(PAGE_LIMIT)
+    .skip(PAGE_LIMIT * page);
+
+  let pro = JSON.parse(JSON.stringify(products));
+  console.log(pro);
+
+  // products = products.toJSON();
+  for (let i = 0; i < products.length; i++) {
+    const reviews = await Review.countDocuments({ product: products[i]._id });
+
+    // product.reviewCount = reviews;
+    const avgRating = await Review.aggregate([
+      {
+        $match: { product: products[i]._id },
+      },
+      {
+        $group: { _id: products[i]._id, average: { $avg: "$stars" } },
+      },
+    ]);
+    pro[i].reviewCount = reviews;
+    pro[i].averageRating = avgRating.length ? avgRating[0].average : 0;
+  }
+  const count = await Model.countDocuments({ ...query, status: "Published" });
+
+  return {
+    status: "success",
+    data: {
+      products: pro,
       count,
       currentPage: page + 1,
     },

@@ -15,9 +15,8 @@ export const login = async (req, res, next) => {
       } else {
         res.status(200).json({
           _id: user.id,
+          userId: user.userId,
           token: signUser(user.id, user.role, user.isSuper, user.userId),
-          userId: user.email,
-          name: user.name,
         });
       }
     } else {

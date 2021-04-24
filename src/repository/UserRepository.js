@@ -39,7 +39,6 @@ export const getUser = async (payload) => {
       return {
         id: user._id,
         userId: user.userId,
-        name: user.name,
         role: user.role,
         isSuper: user.isSuper,
       };

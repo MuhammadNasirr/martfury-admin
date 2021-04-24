@@ -30,6 +30,31 @@ export const getCats = async (page, userId, query) => {
   };
 };
 
+export const getPublishedCategory = async (page, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  const cats = await catModel
+    .find({ ...query, status: "Published" })
+    .select("id name image")
+    .limit(PAGE_LIMIT)
+    .skip(PAGE_LIMIT * page);
+
+  const count = await catModel.countDocuments({
+    ...query,
+    status: "Published",
+  });
+
+  return {
+    status: "success",
+    data: {
+      cats,
+      count,
+      currentPage: page + 1,
+    },
+  };
+};
+
 export const getAllPublishedCats = async (userId) => {
   const cats = await catModel.find({ status: "Published" }).select("id name");
 
