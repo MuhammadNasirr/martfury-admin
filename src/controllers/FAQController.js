@@ -55,6 +55,30 @@ export const getFaqs = async (req, res, next) => {
   }
 };
 
+export const getFaqsWithAnswer = async (req, res, next) => {
+  //   console.log(req);
+  const { page } = req.query;
+  delete req.query.page;
+  try {
+    let respo = await faqRepo.getFaqsWithAnswer();
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getFaqDetails = async (req, res, next) => {
   //   console.log(req);
   const { faqId } = req.params;

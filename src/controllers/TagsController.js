@@ -91,7 +91,7 @@ export const getPublishedTags = async (req, res, next) => {
   //   console.log(req);
   try {
     console.log(req.jwtPayload);
-    let respo = await tagRepo.getPublishedTags(req.jwtPayload.userid);
+    let respo = await tagRepo.getPublishedTags();
     if (respo.status === "success") {
       if (respo.data.length) res.status(200).json(respo);
       else {

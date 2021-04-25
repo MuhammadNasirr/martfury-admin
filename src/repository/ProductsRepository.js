@@ -38,6 +38,14 @@ export const getPublishedProducts = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
+  if (query.discountDate) {
+    query.discountDate = JSON.parse(query.discountDate);
+    query.discountDate = {
+      from: new Date(query.discountDate.from),
+      to: new Date(query.discountDate.to),
+    };
+  }
+  console.log(query.discountDate);
   const products = await Model.find({ ...query, status: "Published" })
     .select("id name images price salePrice isFeatured categories")
     .limit(PAGE_LIMIT)

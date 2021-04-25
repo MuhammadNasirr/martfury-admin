@@ -8,7 +8,7 @@ export const createPage = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getPages = async (page, userId, query) => {
+export const getPages = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }

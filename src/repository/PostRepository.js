@@ -8,10 +8,11 @@ export const createPost = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getPosts = async (page, userId, query) => {
+export const getPosts = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
+
   const cats = await postModel
     .find({ ...query })
     .select("id name categories createdAt status author")
@@ -38,6 +39,45 @@ export const getPosts = async (page, userId, query) => {
   };
 };
 
+export const getPostsWithImage = async (page, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  let sortBy = { createdAt: -1 };
+  if (query.sortBy) {
+    sortBy = { createdAt: query.sortBy };
+    delete query.sortBy;
+  }
+  const cats = await postModel
+    .find({ status: "Published", ...query })
+    .select("id name categories createdAt image author")
+    .limit(PAGE_LIMIT)
+    .skip(PAGE_LIMIT * page)
+    .populate({
+      path: "categories",
+      select: { name: 1 },
+    })
+    .populate({
+      path: "author",
+      select: { name: 1 },
+    })
+    .sort(sortBy);
+
+  const count = await postModel.countDocuments({
+    status: "Published",
+    ...query,
+  });
+
+  return {
+    status: "success",
+    data: {
+      posts: cats,
+      count,
+      currentPage: page + 1,
+    },
+  };
+};
+
 export const getPostDetails = async (id, userId) => {
   const cat = await postModel
     .findOne({ id: id })
@@ -51,6 +91,10 @@ export const getPostDetails = async (id, userId) => {
     })
     .populate({
       path: "author",
+      select: { name: 1 },
+    })
+    .populate({
+      path: "categories",
       select: { name: 1 },
     });
 

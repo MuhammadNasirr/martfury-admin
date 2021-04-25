@@ -5,6 +5,9 @@ import * as PageController from "../controllers/PageController";
 import { customerLogin } from "../controllers/CustomerController";
 import * as ProCatsController from "../controllers/ProductCategoryController";
 import * as ProductController from "../controllers/ProductController";
+import * as PostController from "../controllers/PostController";
+import * as FaqController from "../controllers/FAQController";
+import * as TagsController from "../controllers/TagsController";
 
 let publicRouter = Router();
 publicRouter.use(function timeLog(req, res, next) {
@@ -27,6 +30,10 @@ publicRouter.get(
 );
 publicRouter.get("/api/product", ProductController.getPublishedProducts);
 publicRouter.get("/api/product/:productId", ProductController.getDetails);
+publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);
+publicRouter.get("/api/posts", PostController.getPostsWithImage);
+publicRouter.get("/post/:postId", PostController.getPostDetails);
+publicRouter.get("/api/tags", TagsController.getPublishedTags);
 
 // define the about route
 

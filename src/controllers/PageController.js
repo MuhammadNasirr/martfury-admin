@@ -34,11 +34,7 @@ export const getPages = async (req, res, next) => {
   const { page } = req.query;
   delete req.query.page;
   try {
-    let respo = await pageRepo.getPages(
-      page - 1 || 0,
-      req.jwtPayload.userid,
-      req.query
-    );
+    let respo = await pageRepo.getPages(page - 1 || 0, req.query);
     if (respo.status === "success") {
       if (respo.data.pages.length) res.status(200).json(respo);
       else {
@@ -60,7 +56,7 @@ export const getPages = async (req, res, next) => {
 export const getMenuPages = async (req, res, next) => {
   //   console.log(req);
   try {
-    let respo = await pageRepo.getMenuPages(req.jwtPayload.userid);
+    let respo = await pageRepo.getMenuPages();
     if (respo.status === "success") {
       if (respo.subMenus.length) res.status(200).json(respo);
       else {
@@ -94,7 +90,7 @@ export const getPageDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await pageRepo.getPageDetails(id, req.jwtPayload.userid);
+    let respo = await pageRepo.getPageDetails(id);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
@@ -124,11 +120,7 @@ export const updatePage = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await pageRepo.updatePage(
-      pageId,
-      payload,
-      req.jwtPayload.userid
-    );
+    let respo = await pageRepo.updatePage(pageId, payload);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {
@@ -157,7 +149,7 @@ export const deletePage = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await pageRepo.deletePage(pageId, req.jwtPayload.userid);
+    let respo = await pageRepo.deletePage(pageId);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

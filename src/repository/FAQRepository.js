@@ -34,6 +34,46 @@ export const getFaqs = async (page, userId, query) => {
   };
 };
 
+export const getFaqsWithAnswer = async () => {
+  const cats = await faqModel
+    .find({ status: "Published" })
+    .select("id question categories answer")
+    .populate({
+      path: "categories",
+      select: { name: 1 },
+    });
+
+  let data = [];
+
+  cats.forEach((cat) => {
+    let index = data.findIndex((a) => a?.categoryId === cat.categories?._id);
+    if (index > -1) {
+      data[index].faqs.push({
+        id: cat.id,
+        question: cat.question,
+        answer: cat.answer,
+      });
+    } else {
+      data.push({
+        categoryId: cat.categories?._id,
+        categoryName: cat.categories?.name,
+        faqs: [
+          {
+            id: cat.id,
+            question: cat.question,
+            answer: cat.answer,
+          },
+        ],
+      });
+    }
+  });
+
+  return {
+    status: "success",
+    data: data,
+  };
+};
+
 export const getFaqDetails = async (id, userId) => {
   const cat = await faqModel.findOne({ id: id });
   // .populate({

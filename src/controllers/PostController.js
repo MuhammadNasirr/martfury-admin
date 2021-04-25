@@ -10,6 +10,7 @@ export const createPost = async (req, res, next) => {
     format,
     isFeatured,
     content,
+    image,
   } = req.body;
   let payload = {
     name,
@@ -18,6 +19,7 @@ export const createPost = async (req, res, next) => {
     description,
     status,
     format,
+    image,
     createdAt: new Date(),
     isFeatured,
     content,
@@ -69,6 +71,31 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
+export const getPostsWithImage = async (req, res, next) => {
+  //   console.log(req);
+  const { page } = req.query;
+  delete req.query.page;
+
+  try {
+    let respo = await postRepo.getPostsWithImage(page - 1 || 0, req.query);
+    if (respo.status === "success") {
+      if (respo.data.posts.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getPostDetails = async (req, res, next) => {
   //   console.log(req);
   const { postId } = req.params;
@@ -84,7 +111,7 @@ export const getPostDetails = async (req, res, next) => {
   }
 
   try {
-    let respo = await postRepo.getPostDetails(id, req.jwtPayload.userid);
+    let respo = await postRepo.getPostDetails(id);
     if (respo.status === "success") {
       if (respo.data) res.status(200).json(respo);
       else res.status(204).json(respo);
