@@ -114,6 +114,30 @@ export const getCollection = async (req, res, next) => {
   }
 };
 
+export const getAllCollection = async (req, res, next) => {
+  //   console.log(req);
+
+  try {
+    // console.log(req.jwtPayload);
+    let respo = await ModelRepo.getAllCollection();
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getDetails = async (req, res, next) => {
   //   console.log(req);
   const { collectionId } = req.params;

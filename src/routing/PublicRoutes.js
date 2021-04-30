@@ -40,6 +40,11 @@ publicRouter.get(
   ProductCollectionController.getCollection
 );
 
+publicRouter.get(
+  "/api/collections",
+  ProductCollectionController.getAllCollection
+);
+
 // define the about route
 
 export { publicRouter };

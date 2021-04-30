@@ -69,6 +69,36 @@ export const getCollection = async (id) => {
   };
 };
 
+export const getAllCollection = async () => {
+  const collectionAll = await Model.find({ status: "Published" });
+  let product = [];
+  let data = [];
+  if (collectionAll.length) {
+    for (let j = 0; j < collectionAll.length; j++) {
+      let collection = collectionAll[j];
+      let productNames = await Product.distinct("name", {
+        productCollection: collection._id,
+      });
+      for (let i = 0; i < productNames.length; i++) {
+        product.push(
+          await (await Product.findOne({ name: productNames[i] })).toJSON()
+        );
+        product[product.length - 1].variants = await Product.find({
+          name: productNames[i],
+        });
+      }
+
+      data.push(await collection.toJSON());
+      data[data.length - 1].product = product;
+    }
+  }
+
+  return {
+    status: "success",
+    data: data,
+  };
+};
+
 export const getDetails = async (id, userId) => {
   const collection = await Model.findOne({ id: id }).select("-author");
 
