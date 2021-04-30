@@ -80,6 +80,40 @@ export const getPublished = async (req, res, next) => {
   }
 };
 
+export const getCollection = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    const { collectionId } = req.params;
+    console.log(collectionId);
+    let id = parseInt(collectionId);
+    if (!id) {
+      const err = new Error("Invalid collectionId provided");
+      err.status = "fail";
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+
+    // console.log(req.jwtPayload);
+    let respo = await ModelRepo.getCollection(id);
+    if (respo.status === "success") {
+      if (respo.data) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getDetails = async (req, res, next) => {
   //   console.log(req);
   const { collectionId } = req.params;

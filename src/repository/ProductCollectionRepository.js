@@ -1,4 +1,5 @@
 import { PAGE_LIMIT } from "../config/constants";
+import Product from "../models/Product";
 import Model from "../models/ProductCollection";
 
 const modelName = "Product Collection";
@@ -39,6 +40,32 @@ export const getAllPublished = async (userId) => {
   return {
     status: "success",
     data: collection,
+  };
+};
+
+export const getCollection = async (id) => {
+  const collection = await Model.findOne({ id: id, status: "Published" });
+  let product = [];
+  let data = null;
+  if (collection) {
+    let productNames = await Product.distinct("name", {
+      productCollection: collection._id,
+    });
+    for (let i = 0; i < productNames.length; i++) {
+      product.push(
+        await (await Product.findOne({ name: productNames[i] })).toJSON()
+      );
+      product[product.length - 1].variants = await Product.find({
+        name: productNames[i],
+      });
+    }
+
+    data = await collection.toJSON();
+    data = { ...data, product };
+  }
+  return {
+    status: "success",
+    data: data,
   };
 };
 

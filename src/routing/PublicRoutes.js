@@ -8,6 +8,7 @@ import * as ProductController from "../controllers/ProductController";
 import * as PostController from "../controllers/PostController";
 import * as FaqController from "../controllers/FAQController";
 import * as TagsController from "../controllers/TagsController";
+import * as ProductCollectionController from "../controllers/ProductCollectionController";
 
 let publicRouter = Router();
 publicRouter.use(function timeLog(req, res, next) {
@@ -34,6 +35,10 @@ publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);
 publicRouter.get("/api/posts", PostController.getPostsWithImage);
 publicRouter.get("/post/:postId", PostController.getPostDetails);
 publicRouter.get("/api/tags", TagsController.getPublishedTags);
+publicRouter.get(
+  "/api/collections/:collectionId",
+  ProductCollectionController.getCollection
+);
 
 // define the about route
 
