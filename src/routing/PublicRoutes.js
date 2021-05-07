@@ -39,6 +39,10 @@ publicRouter.get(
   "/api/collections/:collectionId",
   ProductCollectionController.getCollection
 );
+publicRouter.get(
+  "/api/collections/slug/:slug",
+  ProductCollectionController.getCollectionBySlug
+);
 
 publicRouter.get(
   "/api/collections",

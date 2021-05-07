@@ -69,8 +69,34 @@ export const getCollection = async (id) => {
   };
 };
 
-export const getAllCollection = async () => {
-  const collectionAll = await Model.find({ status: "Published" });
+export const getCollectionBySlug = async (id) => {
+  const collection = await Model.findOne({ slug: id, status: "Published" });
+  let product = [];
+  let data = null;
+  if (collection) {
+    let productNames = await Product.distinct("name", {
+      productCollection: collection._id,
+    });
+    for (let i = 0; i < productNames.length; i++) {
+      product.push(
+        await (await Product.findOne({ name: productNames[i] })).toJSON()
+      );
+      product[product.length - 1].variants = await Product.find({
+        name: productNames[i],
+      });
+    }
+
+    data = await collection.toJSON();
+    data = { ...data, product };
+  }
+  return {
+    status: "success",
+    data: data,
+  };
+};
+
+export const getAllCollection = async (query) => {
+  const collectionAll = await Model.find({ status: "Published", ...query });
   let product = [];
   let data = [];
   if (collectionAll.length) {
