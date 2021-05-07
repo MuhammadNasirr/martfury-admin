@@ -30,8 +30,17 @@ export const getAds = async (page, userId, query) => {
   };
 };
 
-export const getAllPublishedAds = async (userId) => {
+export const getAllPublishedAds = async () => {
   const ads = await adsModel.find({ status: "Published" }).select("id name");
+
+  return {
+    status: "success",
+    data: ads,
+  };
+};
+
+export const getAllAds = async () => {
+  const ads = await adsModel.find({ status: "Published" }).sort({ order: 1 });
 
   return {
     status: "success",

@@ -34,11 +34,32 @@ export const getSliders = async (req, res, next) => {
   delete req.query.page;
   try {
     console.log(req.jwtPayload);
-    let respo = await sliderRepo.getSliders(
-      page - 1 || 0,
-      req.jwtPayload.userid,
-      req.query
-    );
+    let respo = await sliderRepo.getSliders(page - 1 || 0, req.query);
+    if (respo.status === "success") {
+      if (respo.data.sliders.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getAllSliders = async (req, res, next) => {
+  //   console.log(req);
+  const { page } = req.query;
+  delete req.query.page;
+  try {
+    console.log(req.jwtPayload);
+    let respo = await sliderRepo.getAllSliders(page - 1 || 0, req.query);
     if (respo.status === "success") {
       if (respo.data.sliders.length) res.status(200).json(respo);
       else {

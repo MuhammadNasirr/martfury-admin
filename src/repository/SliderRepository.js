@@ -11,13 +11,37 @@ export const createSlider = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getSliders = async (page, userId, query) => {
+export const getSliders = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
   const sliders = await sliderModel
     .find({ ...query })
     .select("id name key createdAt status")
+    .limit(PAGE_LIMIT)
+    .skip(PAGE_LIMIT * page);
+
+  const count = await sliderModel.countDocuments({ ...query });
+
+  return {
+    status: "success",
+    data: {
+      sliders,
+      count,
+      currentPage: page + 1,
+    },
+  };
+};
+
+export const getAllSliders = async (page, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  const sliders = await sliderModel
+    .find({ status: "Published", ...query })
+    .populate({
+      path: "sliderItems",
+    })
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 

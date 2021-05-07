@@ -9,6 +9,8 @@ import * as PostController from "../controllers/PostController";
 import * as FaqController from "../controllers/FAQController";
 import * as TagsController from "../controllers/TagsController";
 import * as ProductCollectionController from "../controllers/ProductCollectionController";
+import * as AdsController from "../controllers/AdsController";
+import * as SliderController from "../controllers/SliderController";
 
 let publicRouter = Router();
 publicRouter.use(function timeLog(req, res, next) {
@@ -48,6 +50,9 @@ publicRouter.get(
   "/api/collections",
   ProductCollectionController.getAllCollection
 );
+
+publicRouter.get("/api/ads", AdsController.getAllAds);
+publicRouter.get("/api/slider", SliderController.getAllSliders);
 
 // define the about route
 
