@@ -12,7 +12,7 @@ export const getPosts = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
-
+  console.log("postQuery", query);
   const cats = await postModel
     .find({ ...query })
     .select("id name categories createdAt status author")

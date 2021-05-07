@@ -48,11 +48,7 @@ export const getPosts = async (req, res, next) => {
   delete req.query.page;
 
   try {
-    let respo = await postRepo.getPosts(
-      page - 1 || 0,
-      req.jwtPayload.userid,
-      req.query
-    );
+    let respo = await postRepo.getPosts(page - 1 || 0, req.query);
     if (respo.status === "success") {
       if (respo.data.posts.length) res.status(200).json(respo);
       else {
