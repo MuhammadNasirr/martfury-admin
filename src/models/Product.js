@@ -22,7 +22,7 @@ const productSchema = mongoose.Schema(
     stockStatus: {
       type: String,
       enum: ["In Stock", "Out of Stock", "On Backorder"],
-      required: true,
+      default: "In Stock",
     },
     allowCheckout: { type: Boolean, default: false },
     shipping: {
