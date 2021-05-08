@@ -109,7 +109,13 @@ export const getDetails = async (id, userId) => {
     .populate("attributes.attributeId")
     .populate("tags.tagId");
   if (product) {
-    const variation = await Model.find({ name: product.name });
+    const variation = await Model.find({ name: product.name })
+      .populate({ path: "categories" })
+      .populate({ path: "brand" })
+      .populate({ path: "productCollection" })
+      .populate({ path: "tax" })
+      .populate("attributes.attributeId")
+      .populate("tags.tagId");
     return {
       status: "success",
       data: {
