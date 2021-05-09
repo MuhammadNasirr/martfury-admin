@@ -47,7 +47,7 @@ const discountSchema = mongoose.Schema(
     ],
     productType: {
       type: String,
-      enum: ["One per order", , "One per product in cart"],
+      enum: ["One per order", "One per product in cart"],
     },
     noOfProducts: { type: Number, default: 0 },
     noOfTimesUsed: { type: Number, default: 0 },
