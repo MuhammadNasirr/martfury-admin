@@ -1,6 +1,7 @@
 import { PAGE_LIMIT } from "../config/constants";
 import Product from "../models/Product";
 import Model from "../models/ProductCollection";
+import ProductVariants from "../models/ProductVariants";
 
 const modelName = "Product Collection";
 
@@ -48,34 +49,25 @@ export const getCollection = async (id) => {
   let product = [];
   let data = null;
   if (collection) {
-    let productNames = await Product.distinct("name", {
-      productCollection: collection._id,
-    });
-    for (let i = 0; i < productNames.length; i++) {
-      product.push(
-        await (await Product.findOne({ name: productNames[i] }))
-          .populate({ path: "categories" })
-          .populate({ path: "brand" })
-          .populate({ path: "productCollection" })
-          .populate({ path: "tax" })
-          .populate("attributes.attributeId")
-          .populate("tags.tagId")
-          .toJSON()
-      );
-      product[product.length - 1].variants = await Product.find({
-        name: productNames[i],
-      })
-        .populate({ path: "categories" })
-        .populate({ path: "brand" })
-        .populate({ path: "productCollection" })
-        .populate({ path: "tax" })
-        .populate("attributes.attributeId")
-        .populate("tags.tagId");
-    }
+    product = await Product.find({ productCollection: collection._id })
+      .populate({ path: "categories" })
+      .populate({ path: "brand" })
+      .populate({ path: "productCollection" })
+      .populate({ path: "tax" })
+      .populate("attributes")
+      .populate("tags.tagId")
+      .lean();
 
-    data = await collection.toJSON();
-    data = { ...data, product };
+    for (let i = 0; i < product.length; i++) {
+      product[i].variants = await ProductVariants.find({
+        productId: product[i]._id,
+      }).lean();
+    }
   }
+
+  data = await collection.toJSON();
+  data = { ...data, product };
+
   return {
     status: "success",
     data: data,
@@ -87,29 +79,19 @@ export const getCollectionBySlug = async (id) => {
   let product = [];
   let data = null;
   if (collection) {
-    let productNames = await Product.distinct("name", {
-      productCollection: collection._id,
-    });
-    for (let i = 0; i < productNames.length; i++) {
-      product.push(
-        await (await Product.findOne({ name: productNames[i] }))
-          .populate({ path: "categories" })
-          .populate({ path: "brand" })
-          .populate({ path: "productCollection" })
-          .populate({ path: "tax" })
-          .populate("attributes.attributeId")
-          .populate("tags.tagId")
-          .toJSON()
-      );
-      product[product.length - 1].variants = await Product.find({
-        name: productNames[i],
-      })
-        .populate({ path: "categories" })
-        .populate({ path: "brand" })
-        .populate({ path: "productCollection" })
-        .populate({ path: "tax" })
-        .populate("attributes.attributeId")
-        .populate("tags.tagId");
+    product = await Product.find({ productCollection: collection._id })
+      .populate({ path: "categories" })
+      .populate({ path: "brand" })
+      .populate({ path: "productCollection" })
+      .populate({ path: "tax" })
+      .populate("attributes")
+      .populate("tags.tagId")
+      .lean();
+
+    for (let i = 0; i < product.length; i++) {
+      product[i].variants = await ProductVariants.find({
+        productId: product[i]._id,
+      }).lean();
     }
 
     data = await collection.toJSON();
@@ -128,30 +110,20 @@ export const getAllCollection = async (query) => {
   if (collectionAll.length) {
     for (let j = 0; j < collectionAll.length; j++) {
       let collection = collectionAll[j];
-      let productNames = await Product.distinct("name", {
-        productCollection: collection._id,
-      });
 
-      for (let i = 0; i < productNames.length; i++) {
-        product.push(
-          await (await Product.findOne({ name: productNames[i] }))
-            .populate({ path: "categories" })
-            .populate({ path: "brand" })
-            .populate({ path: "productCollection" })
-            .populate({ path: "tax" })
-            .populate("attributes.attributeId")
-            .populate("tags.tagId")
-            .toJSON()
-        );
-        product[product.length - 1].variants = await Product.find({
-          name: productNames[i],
-        })
-          .populate({ path: "categories" })
-          .populate({ path: "brand" })
-          .populate({ path: "productCollection" })
-          .populate({ path: "tax" })
-          .populate("attributes.attributeId")
-          .populate("tags.tagId");
+      product = await Product.find({ productCollection: collection._id })
+        .populate({ path: "categories" })
+        .populate({ path: "brand" })
+        .populate({ path: "productCollection" })
+        .populate({ path: "tax" })
+        .populate("attributes")
+        .populate("tags.tagId")
+        .lean();
+
+      for (let i = 0; i < product.length; i++) {
+        product[i].variants = await ProductVariants.find({
+          productId: product[i]._id,
+        }).lean();
       }
 
       data.push(await collection.toJSON());

@@ -760,6 +760,11 @@ protectedRouter.delete(
 
 //Product
 protectedRouter.post("/product", authMiddleware, ProductController.create);
+protectedRouter.post(
+  "/product/:productId/variation",
+  authMiddleware,
+  ProductController.createVariation
+);
 protectedRouter.get("/product", authMiddleware, ProductController.get);
 protectedRouter.get(
   "/product/published",
@@ -776,10 +781,16 @@ protectedRouter.put(
   authMiddleware,
   ProductController.update
 );
-protectedRouter.delete(
-  "/product/:productId",
+protectedRouter.put(
+  "/variation/:variationId",
   authMiddleware,
-  ProductController.deleteModel
+  ProductController.updateVariation
+);
+
+protectedRouter.delete(
+  "/variation/:variationId",
+  authMiddleware,
+  ProductController.deleteVariation
 );
 
 //Shipping

@@ -33,14 +33,11 @@ const productSchema = mongoose.Schema(
     },
     attributes: [
       {
-        attributeId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "productAttribute",
-          required: true,
-        },
-        value: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "productAttribute",
       },
     ],
+
     status: {
       type: String,
       enum: ["Published", "Pending", "Draft"],

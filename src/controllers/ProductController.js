@@ -211,6 +211,68 @@ export const update = async (req, res, next) => {
   }
 };
 
+export const updateVariation = async (req, res, next) => {
+  //   console.log(req);
+  const { variationId } = req.params;
+  const payload = { ...req.body };
+  let id = variationId;
+  if (!id) {
+    const err = new Error("Invalid variationId provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+  try {
+    let respo = await ModelRepo.updateVariation(id, {
+      ...payload,
+    });
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const createVariation = async (req, res, next) => {
+  //   console.log(req);
+  const { productId } = req.params;
+  const payload = { ...req.body };
+  let id = parseInt(productId);
+  if (!id) {
+    const err = new Error("Invalid productId provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+  try {
+    let respo = await ModelRepo.createVariation(id, {
+      ...payload,
+    });
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const deleteModel = async (req, res, next) => {
   //   console.log(req);
   const { productId } = req.params;
@@ -224,7 +286,36 @@ export const deleteModel = async (req, res, next) => {
     return;
   }
   try {
-    let respo = await ModelRepo.deleteModel(id, req.jwtPayload.userid);
+    let respo = await ModelRepo.deleteVariation(id, req.jwtPayload.userid);
+    if (respo.status === "success") {
+      res.status(200).json(respo);
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const deleteVariation = async (req, res, next) => {
+  //   console.log(req);
+  const { variationId } = req.params;
+
+  let id = variationId;
+  if (!id) {
+    const err = new Error("Invalid variationId provided");
+    err.status = "fail";
+    err.statusCode = 400;
+    next(err);
+    return;
+  }
+  try {
+    let respo = await ModelRepo.deleteVariation(id, req.jwtPayload.userid);
     if (respo.status === "success") {
       res.status(200).json(respo);
     } else {

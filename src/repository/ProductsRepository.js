@@ -1,16 +1,88 @@
 import { PAGE_LIMIT } from "../config/constants";
 import Model from "../models/Product";
+import ProductVariants from "../models/ProductVariants";
 import Review from "../models/Review";
 
 const modelName = "Product";
 
 export const create = async (payload) => {
+  // name,
+  //   description,
+  //   content,
+  //   images,
+  //   sku,
+  //   price,
+  //   salePrice,
+  //   discountDate,
+  //   inStore,
+  //   quantity,
+  //   stockStatus,
+  //   allowCheckout,
+  //   shipping,
+  //   attributes,
+  //   status,
+  //   order,
+  //   isFeatured,
+  //   categories,
+  //   tags,
+  //   brand,
+  //   productCollection,
+  //   tax,
+  //   createdAt: new Date(),
+  let attributes = payload.attributes;
+  let variant = null;
+  payload.attributes = payload.attributes?.map((a) => a.attributeId);
   const model = new Model(payload);
   const modelData = await model.save();
   console.log(modelData);
+  if (payload.attributes?.length) {
+    variant = {
+      images: payload.images,
+      sku: payload.sku,
+      price: payload.price,
+      salePrice: payload.salePrice,
+      discountDate: payload.discountDate,
+      inStore: payload.inStore,
+      quantity: payload.quantity,
+      stockStatus: payload.stockStatus,
+      allowCheckout: payload.allowCheckout,
+      shipping: payload.shipping,
+      attributes: attributes,
+      productId: modelData._id,
+    };
+
+    let mongoVariant = new ProductVariants(variant);
+    variant = await mongoVariant.save();
+  }
+
   return { status: "success", message: "Successfully created" };
 };
 
+export const createVariation = async (id, payload) => {
+  let pro = await Model.findOne({ id: id });
+  if (!pro) {
+    throw { status: "fail", message: "Product does not exist" };
+  }
+  let variant = {
+    images: payload.images,
+    sku: payload.sku,
+    price: payload.price,
+    salePrice: payload.salePrice,
+    discountDate: payload.discountDate,
+    inStore: payload.inStore,
+    quantity: payload.quantity,
+    stockStatus: payload.stockStatus,
+    allowCheckout: payload.allowCheckout,
+    shipping: payload.shipping,
+    attributes: payload.attributes,
+    productId: pro._id,
+  };
+
+  let mongoVariant = new ProductVariants(variant);
+  variant = await mongoVariant.save();
+
+  return { status: "success", message: "Successfully created" };
+};
 export const get = async (page, userId, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
@@ -91,7 +163,7 @@ export const getAllPublished = async (query) => {
     .populate({ path: "brand" })
     .populate({ path: "productCollection" })
     .populate({ path: "tax" })
-    .populate("attributes.attributeId")
+    .populate("attributes")
     .populate("tags.tagId");
 
   return {
@@ -106,27 +178,21 @@ export const getDetails = async (id, userId) => {
     .populate({ path: "brand" })
     .populate({ path: "productCollection" })
     .populate({ path: "tax" })
-    .populate("attributes.attributeId")
+    .populate("attributes")
     .populate("tags.tagId");
-  if (product) {
-    const variation = await Model.find({ name: product.name })
-      .populate({ path: "categories" })
-      .populate({ path: "brand" })
-      .populate({ path: "productCollection" })
-      .populate({ path: "tax" })
-      .populate("attributes.attributeId")
-      .populate("tags.tagId");
-    return {
-      status: "success",
-      data: {
-        product,
-        variation,
-      },
-    };
+  if (!product) {
+    throw { status: "fail", message: "Product does not exist" };
   }
+  const variation = await ProductVariants.find({
+    productId: product._id,
+  });
+
   return {
     status: "success",
-    data: [],
+    data: {
+      product,
+      variation,
+    },
   };
 };
 
@@ -154,17 +220,58 @@ export const update = async (id, payload, userId) => {
     };
 };
 
-export const deleteModel = async (id) => {
-  const collection = await Model.deleteOne({ id: id });
-  console.log(collection);
+export const updateVariation = async (id, payload) => {
+  if (payload.id) {
+    delete payload.id;
+  }
+  if (payload._id) {
+    delete payload._id;
+  }
+  const collection = await ProductVariants.updateOne(
+    { _id: id },
+    { ...payload },
+    { runValidators: true }
+  );
   if (collection.n > 0)
     return {
       status: "success",
-      message: modelName + " Successfully deleted",
+      message: "Product Variation" + " Successfully updated",
     };
   else
     return {
       status: "fail",
+      message: "Invalid " + "Product Variation" + "Id",
+    };
+};
+
+export const deleteModel = async (id) => {
+  let _id = (await Model.findOne({ id: id }).select("_id"))._id;
+  const collection = await Model.deleteOne({ id: id });
+  console.log(collection);
+  if (collection.n > 0) {
+    const v = await ProductVariants.deleteMany({ productId: _id });
+    return {
+      status: "success",
+      message: modelName + " Successfully deleted",
+    };
+  } else
+    return {
+      status: "fail",
       message: "Invalid " + modelName + "Id",
+    };
+};
+
+export const deleteVariation = async (id) => {
+  const collection = await ProductVariants.deleteOne({ _id: id });
+  console.log(collection);
+  if (collection.n > 0) {
+    return {
+      status: "success",
+      message: "Product Variation" + " Successfully deleted",
+    };
+  } else
+    return {
+      status: "fail",
+      message: "Invalid " + "Product Variation" + "Id",
     };
 };
