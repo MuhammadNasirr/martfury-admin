@@ -106,6 +106,34 @@ export const get = async (page, userId, query) => {
   };
 };
 
+export const getProductsWithVariant = async (page, query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  const products = await Model.find({ ...query })
+    .select(
+      "id name images price salePrice quanitity inStore sku status createdAt"
+    )
+    .limit(PAGE_LIMIT)
+    .skip(PAGE_LIMIT * page)
+    .lean();
+  for (let i = 0; i < products.length; i++) {
+    products[i].variants = await ProductVariants.find({
+      productId: products[i]._id,
+    });
+  }
+  const count = await Model.countDocuments({ ...query });
+
+  return {
+    status: "success",
+    data: {
+      products,
+      count,
+      currentPage: page + 1,
+    },
+  };
+};
+
 export const getPublishedProducts = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };

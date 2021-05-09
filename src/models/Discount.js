@@ -39,10 +39,12 @@ const discountSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "customer",
     },
-    variantId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "products",
-    },
+    variantId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "products_variations",
+      },
+    ],
     productType: {
       type: String,
       enum: ["One per order", , "One per product in cart"],
