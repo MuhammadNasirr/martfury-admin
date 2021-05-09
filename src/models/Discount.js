@@ -42,7 +42,7 @@ const discountSchema = mongoose.Schema(
     variantId: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "products_variations",
+        ref: "products_variant",
       },
     ],
     productType: {

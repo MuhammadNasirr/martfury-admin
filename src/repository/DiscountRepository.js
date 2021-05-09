@@ -10,7 +10,7 @@ export const create = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const get = async (page, userId, query) => {
+export const get = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }
@@ -21,7 +21,7 @@ export const get = async (page, userId, query) => {
     .populate(["collectionId", "productId", "variantId", "customerId"])
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
-
+  console.log("discount", discount);
   const count = await Model.countDocuments({ ...query });
 
   return {

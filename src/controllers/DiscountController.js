@@ -65,11 +65,7 @@ export const get = async (req, res, next) => {
   delete req.query.page;
   try {
     console.log(req.jwtPayload);
-    let respo = await ModelRepo.get(
-      page - 1 || 0,
-      req.jwtPayload.userid,
-      req.query
-    );
+    let respo = await ModelRepo.get(page - 1 || 0, req.query);
     if (respo.status === "success") {
       if (respo.data.discount.length) res.status(200).json(respo);
       else {
