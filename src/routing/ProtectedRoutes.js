@@ -767,6 +767,11 @@ protectedRouter.post(
 );
 protectedRouter.get("/product", authMiddleware, ProductController.get);
 protectedRouter.get(
+  "/product/:productId/variations",
+  authMiddleware,
+  ProductController.getVariations
+);
+protectedRouter.get(
   "/product/published",
   authMiddleware,
   ProductController.getPublished

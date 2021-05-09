@@ -196,6 +196,24 @@ export const getDetails = async (id, userId) => {
   };
 };
 
+export const getVariations = async (id, userId) => {
+  const product = await Model.findOne({ id: id });
+
+  if (!product) {
+    throw { status: "fail", message: "Product does not exist" };
+  }
+  const variation = await ProductVariants.find({
+    productId: product._id,
+  });
+
+  return {
+    status: "success",
+    data: {
+      variation,
+    },
+  };
+};
+
 export const update = async (id, payload, userId) => {
   if (payload.id) {
     delete payload.id;
