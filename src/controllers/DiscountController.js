@@ -39,6 +39,9 @@ export const create = async (req, res, next) => {
     productType,
     noOfProducts,
   };
+  if (payload.productType === null || payload.productType === "") {
+    payload.productType = undefined;
+  }
   try {
     let respo = await ModelRepo.create(payload);
     if (respo.status === "success") {
