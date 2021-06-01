@@ -21,7 +21,7 @@ export const get = async (page, query) => {
     .populate(["collectionId", "productId", "variantId", "customerId"])
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
-  console.log("discount", discount);
+  // console.log("discount", discount);
   const count = await Model.countDocuments({ ...query });
 
   return {

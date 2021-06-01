@@ -1,16 +1,8 @@
 import * as adRepo from "../repository/AdsRepository";
 
 export const createAd = async (req, res, next) => {
-  const {
-    name,
-    status,
-    order,
-    image,
-    expiredAt,
-    key,
-    url,
-    location,
-  } = req.body;
+  const { name, status, order, image, expiredAt, key, url, location } =
+    req.body;
   let payload = {
     name,
     status,
@@ -162,6 +154,9 @@ export const updateAd = async (req, res, next) => {
     return;
   }
   try {
+    if (payload.key) {
+      payload.shortCode = `[ads key="${payload.key}"][/ads]`;
+    }
     let respo = await adRepo.updateAd(
       id,
       {

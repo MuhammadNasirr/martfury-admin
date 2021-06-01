@@ -412,21 +412,7 @@ protectedRouter.get(
   authMiddleware,
   SliderController.getPublishedSliders
 );
-protectedRouter.get(
-  "/slider/:sliderId",
-  authMiddleware,
-  SliderController.getSliderDetails
-);
-protectedRouter.put(
-  "/slider/:sliderId",
-  authMiddleware,
-  SliderController.updateSlider
-);
-protectedRouter.delete(
-  "/slider/:sliderId",
-  authMiddleware,
-  SliderController.deleteSlider
-);
+
 protectedRouter.put(
   "/slider/:sliderId/item/:itemId",
   authMiddleware,
@@ -443,6 +429,21 @@ protectedRouter.post(
   SliderController.createSliderItem
 );
 
+protectedRouter.get(
+  "/slider/:sliderId",
+  authMiddleware,
+  SliderController.getSliderDetails
+);
+protectedRouter.put(
+  "/slider/:sliderId",
+  authMiddleware,
+  SliderController.updateSlider
+);
+protectedRouter.delete(
+  "/slider/:sliderId",
+  authMiddleware,
+  SliderController.deleteSlider
+);
 //NEWSLETTER
 
 protectedRouter.post(
