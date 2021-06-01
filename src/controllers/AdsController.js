@@ -90,7 +90,7 @@ export const getAllAds = async (req, res, next) => {
   //   console.log(req);
   try {
     console.log(req.jwtPayload);
-    let respo = await adRepo.getAllAds();
+    let respo = await adRepo.getAllAds(req.query);
     if (respo.status === "success") {
       if (respo.data.length) res.status(200).json(respo);
       else {

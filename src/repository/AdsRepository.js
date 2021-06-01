@@ -39,8 +39,10 @@ export const getAllPublishedAds = async () => {
   };
 };
 
-export const getAllAds = async () => {
-  const ads = await adsModel.find({ status: "Published" }).sort({ order: 1 });
+export const getAllAds = async (query) => {
+  const ads = await adsModel
+    .find({ status: "Published", ...query })
+    .sort({ order: 1 });
 
   return {
     status: "success",
