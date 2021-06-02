@@ -25,9 +25,13 @@ export const getAllEnabled = async (userId) => {
   const socialLogin = await Model.findOne({
     isEnabled: true,
   }).select("-_id -__v");
-  let s = socialLogin.toJSON();
-  s.socialLogins = s.socialLogins.filter((d) => d.isEnabled);
-
+  let s = null;
+  if (socialLogin) {
+    s = socialLogin.toJSON();
+    s.socialLogins = s.socialLogins.filter((d) => d.isEnabled);
+  } else {
+    s = null;
+  }
   return {
     status: "success",
     data: { socialLogin: s },

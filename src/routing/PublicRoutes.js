@@ -13,6 +13,7 @@ import * as ProductCollectionController from "../controllers/ProductCollectionCo
 import * as AdsController from "../controllers/AdsController";
 import * as SliderController from "../controllers/SliderController";
 import * as SocialLoginController from "../controllers/SocialLoginController";
+import * as LanguageController from "../controllers/LanguageController";
 
 let publicRouter = Router();
 publicRouter.use(function timeLog(req, res, next) {
@@ -35,7 +36,7 @@ publicRouter.get(
 );
 publicRouter.get("/api/product", ProductController.getPublishedProducts);
 publicRouter.get("/api/product/deals", ProductController.getDealsOfTheDay);
-publicRouter.get("/product/all", ProductController.getProductsWithVariant);
+publicRouter.get("/1api/product/all", ProductController.getProductsWithVariant);
 publicRouter.get("/api/product/:productId", ProductController.getDetails);
 publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);
 publicRouter.get("/api/posts", PostController.getPostsWithImage);
@@ -43,12 +44,9 @@ publicRouter.get(
   "/api/post/categories",
   CategoryController.getAllPublishedCats
 );
-publicRouter.get("/post/:postId", PostController.getPostDetails);
+publicRouter.get("/api/post/:postId", PostController.getPostDetails);
 publicRouter.get("/api/tags", TagsController.getPublishedTags);
-publicRouter.get(
-  "/api/collections/:collectionId",
-  ProductCollectionController.getCollection
-);
+
 publicRouter.get(
   "/api/collections/slug/:slug",
   ProductCollectionController.getCollectionBySlug
@@ -58,11 +56,16 @@ publicRouter.get(
   "/api/collections",
   ProductCollectionController.getAllCollection
 );
+publicRouter.get(
+  "/api/collections/:collectionId",
+  ProductCollectionController.getCollection
+);
 
 publicRouter.get("/api/ads", AdsController.getAllAds);
 publicRouter.get("/api/slider", SliderController.getAllSliders);
 
-publicRouter.get("api/socialLogin", SocialLoginController.getEnabled);
+publicRouter.get("/api/socialLogin", SocialLoginController.getEnabled);
+publicRouter.get("/api/locale", LanguageController.getAllLocale);
 
 // define the about route
 

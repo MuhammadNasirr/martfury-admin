@@ -48,7 +48,7 @@ export const getEnabled = async (req, res, next) => {
     console.log(req.jwtPayload);
     let respo = await ModelRepo.getAllEnabled();
     if (respo.status === "success") {
-      if (respo.data) res.status(200).json(respo);
+      if (respo.data.socialLogin) res.status(200).json(respo);
       else {
         res.status(204).json(respo);
       }
