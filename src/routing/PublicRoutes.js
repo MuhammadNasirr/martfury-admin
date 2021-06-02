@@ -32,6 +32,7 @@ publicRouter.get(
   ProCatsController.getPublishedCategory
 );
 publicRouter.get("/api/product", ProductController.getPublishedProducts);
+publicRouter.get("/api/product/deals", ProductController.getDealsOfTheDay);
 publicRouter.get("/product/all", ProductController.getProductsWithVariant);
 publicRouter.get("/api/product/:productId", ProductController.getDetails);
 publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);

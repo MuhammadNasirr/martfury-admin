@@ -149,6 +149,30 @@ export const getPublishedProducts = async (req, res, next) => {
   }
 };
 
+export const getDealsOfTheDay = async (req, res, next) => {
+  //   console.log(req);
+
+  try {
+    console.log(req.jwtPayload);
+    let respo = await ModelRepo.getDealsOfTheDay(req.query);
+    if (respo.status === "success") {
+      if (respo.data.products.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getPublished = async (req, res, next) => {
   //   console.log(req);
   try {

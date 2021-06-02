@@ -139,13 +139,19 @@ export const getPublishedProducts = async (page, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   if (query.discountDate) {
-    query.discountDate = JSON.parse(query.discountDate);
-    query.discountDate = {
+    let discountDate = JSON.parse(query.discountDate);
+    console.log(discountDate);
+    discountDate = {
       from: new Date(query.discountDate.from),
       to: new Date(query.discountDate.to),
     };
+
+    query["product.discountDate.from"] = { $gte: discountDate.from };
+    query["product.discountDate.to"] = { $lte: discountDate.to };
+    delete query.discountDate;
   }
-  console.log(query.discountDate);
+
+  console.log(query);
   const products = await Model.find({ ...query, status: "Published" })
     .select("id name images price salePrice isFeatured categories")
     .limit(PAGE_LIMIT)
@@ -178,6 +184,61 @@ export const getPublishedProducts = async (page, query) => {
       products: pro,
       count,
       currentPage: page + 1,
+    },
+  };
+};
+
+export const getDealsOfTheDay = async (query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  if (query.dealDate) {
+    const date = new Date(query.dealDate);
+    query["discountDate.from"] = { $lte: date };
+    query["discountDate.to"] = { $gte: date };
+    delete query.dealDate;
+  }
+
+  console.log(query);
+  const productVariants = await ProductVariants.find({ ...query })
+    .select("id name images price salePrice isFeatured categories discountDate")
+    .populate({
+      path: "productId",
+      select: ["status"],
+    });
+  console.log(productVariants);
+  const products = productVariants.map((prod) => {
+    if (prod.productId.status === "Published") {
+      return prod;
+    }
+  });
+
+  let pro = JSON.parse(JSON.stringify(products));
+  console.log(pro);
+  // products = products.toJSON();
+  for (let i = 0; i < products.length; i++) {
+    const reviews = await Review.countDocuments({
+      product: products[i].productId._id,
+    });
+
+    // product.reviewCount = reviews;
+    const avgRating = await Review.aggregate([
+      {
+        $match: { product: products[i].productId._id },
+      },
+      {
+        $group: { _id: products[i].productId._id, average: { $avg: "$stars" } },
+      },
+    ]);
+    pro[i].reviewCount = reviews;
+    pro[i].averageRating = avgRating.length ? avgRating[0].average : 0;
+  }
+  const count = await Model.countDocuments({ ...query, status: "Published" });
+
+  return {
+    status: "success",
+    data: {
+      products: pro,
     },
   };
 };
