@@ -12,6 +12,7 @@ import * as TagsController from "../controllers/TagsController";
 import * as ProductCollectionController from "../controllers/ProductCollectionController";
 import * as AdsController from "../controllers/AdsController";
 import * as SliderController from "../controllers/SliderController";
+import * as SocialLoginController from "../controllers/SocialLoginController";
 
 let publicRouter = Router();
 publicRouter.use(function timeLog(req, res, next) {
@@ -30,7 +31,7 @@ publicRouter.post("/customer/login", customerLogin);
 
 publicRouter.get(
   "/api/product/categories",
-  ProCatsController.getPublishedCategory
+  ProCatsController.getPublishedCategoryPublic
 );
 publicRouter.get("/api/product", ProductController.getPublishedProducts);
 publicRouter.get("/api/product/deals", ProductController.getDealsOfTheDay);
@@ -60,6 +61,8 @@ publicRouter.get(
 
 publicRouter.get("/api/ads", AdsController.getAllAds);
 publicRouter.get("/api/slider", SliderController.getAllSliders);
+
+publicRouter.get("api/socialLogin", SocialLoginController.getEnabled);
 
 // define the about route
 

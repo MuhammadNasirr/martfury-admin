@@ -56,6 +56,44 @@ export const getPublishedCategory = async (page, query) => {
   };
 };
 
+export const getPublishedCategoryPublic = async (query) => {
+  if (query.name) {
+    query.name = { $regex: query.name, $options: "i" };
+  }
+  const cats = await catModel
+    .find({ ...query, status: "Published" })
+    .sort("order");
+  let catObj = {};
+  let parentArray = [];
+  for (let i = 0; i < cats.length; i++) {
+    let cat = cats[i].toJSON();
+    if (cat.parent === null) {
+      parentArray.push(cat);
+      continue;
+    }
+    if (catObj[cat.parent]) catObj[cat.parent].push(cat);
+    else catObj[cat.parent] = [cat];
+  }
+  for (let i = 0; i < parentArray.length; i++) {
+    if (catObj[parentArray[i]._id]) {
+      parentArray[i].mega = true;
+      console.log();
+      parentArray[i].megaContent = catObj[parentArray[i]._id];
+    } else {
+      parentArray[i].mega = false;
+
+      parentArray[i].megaContent = [];
+    }
+  }
+
+  return {
+    status: "success",
+    data: {
+      cats: parentArray,
+    },
+  };
+};
+
 export const getAllPublishedCats = async (userId) => {
   const cats = await catModel.find({ status: "Published" }).select("id name");
 
