@@ -204,12 +204,22 @@ export const getDealsOfTheDay = async (query) => {
     .select("id name images price salePrice isFeatured categories discountDate")
     .populate({
       path: "productId",
-      select: ["status"],
+      select: ["status", "name", "description", "content"],
     });
   console.log(productVariants);
   const products = productVariants.map((prod) => {
     if (prod.productId.status === "Published") {
-      return prod;
+      let tempProd = {
+        ...prod.toJSON(),
+        name: prod.productId.name,
+        description: prod.productId.description,
+        content: prod.productId.content,
+      };
+      delete tempProd.productId.name;
+      delete tempProd.productId.description;
+      delete tempProd.productId.content;
+
+      return tempProd;
     }
   });
 

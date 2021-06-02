@@ -39,6 +39,15 @@ export const getAllPublishedCats = async (userId) => {
   };
 };
 
+export const getAllPublishedCatsPublic = async () => {
+  const cats = await catModel.find({ status: "Published" });
+
+  return {
+    status: "success",
+    data: cats,
+  };
+};
+
 export const getCatDetails = async (id, userId) => {
   const cat = await catModel
     .findOne({ id: id })

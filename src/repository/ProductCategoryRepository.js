@@ -36,9 +36,10 @@ export const getPublishedCategory = async (page, query) => {
   }
   const cats = await catModel
     .find({ ...query, status: "Published" })
-    .select("id name image")
+    .select("id name image order")
     .limit(PAGE_LIMIT)
-    .skip(PAGE_LIMIT * page);
+    .skip(PAGE_LIMIT * page)
+    .sort("order");
 
   const count = await catModel.countDocuments({
     ...query,

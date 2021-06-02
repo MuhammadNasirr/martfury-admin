@@ -6,6 +6,7 @@ import { customerLogin } from "../controllers/CustomerController";
 import * as ProCatsController from "../controllers/ProductCategoryController";
 import * as ProductController from "../controllers/ProductController";
 import * as PostController from "../controllers/PostController";
+import * as CategoryController from "../controllers/CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as TagsController from "../controllers/TagsController";
 import * as ProductCollectionController from "../controllers/ProductCollectionController";
@@ -37,6 +38,10 @@ publicRouter.get("/product/all", ProductController.getProductsWithVariant);
 publicRouter.get("/api/product/:productId", ProductController.getDetails);
 publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);
 publicRouter.get("/api/posts", PostController.getPostsWithImage);
+publicRouter.get(
+  "/api/post/categories",
+  CategoryController.getAllPublishedCats
+);
 publicRouter.get("/post/:postId", PostController.getPostDetails);
 publicRouter.get("/api/tags", TagsController.getPublishedTags);
 publicRouter.get(

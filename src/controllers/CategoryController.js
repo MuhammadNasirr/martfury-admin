@@ -93,6 +93,29 @@ export const getPublishedCats = async (req, res, next) => {
   }
 };
 
+export const getAllPublishedCats = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    console.log(req.jwtPayload);
+    let respo = await catRepo.getAllPublishedCatsPublic();
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 export const getCatDetails = async (req, res, next) => {
   //   console.log(req);
   const { catId } = req.params;
