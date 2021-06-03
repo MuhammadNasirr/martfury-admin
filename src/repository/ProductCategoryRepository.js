@@ -77,7 +77,7 @@ export const getPublishedCategoryPublic = async (query) => {
   for (let i = 0; i < parentArray.length; i++) {
     if (catObj[parentArray[i]._id]) {
       parentArray[i].mega = true;
-      console.log();
+      // console.log();
       parentArray[i].megaContent = catObj[parentArray[i]._id];
     } else {
       parentArray[i].mega = false;

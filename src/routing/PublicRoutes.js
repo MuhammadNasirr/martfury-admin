@@ -14,6 +14,7 @@ import * as AdsController from "../controllers/AdsController";
 import * as SliderController from "../controllers/SliderController";
 import * as SocialLoginController from "../controllers/SocialLoginController";
 import * as LanguageController from "../controllers/LanguageController";
+import * as PluginController from "../controllers/PluginController";
 
 let publicRouter = Router();
 publicRouter.use(function timeLog(req, res, next) {
@@ -66,6 +67,7 @@ publicRouter.get("/api/slider", SliderController.getAllSliders);
 
 publicRouter.get("/api/socialLogin", SocialLoginController.getEnabled);
 publicRouter.get("/api/locale", LanguageController.getAllLocale);
+publicRouter.get("/api/plugins", PluginController.getPlugins);
 
 // define the about route
 
