@@ -14,6 +14,10 @@ import * as AdsController from "../controllers/AdsController";
 import * as SliderController from "../controllers/SliderController";
 import * as SocialLoginController from "../controllers/SocialLoginController";
 import * as LanguageController from "../controllers/LanguageController";
+import * as BrandController from "../controllers/BrandController";
+import * as ProductTagController from "../controllers/ProductTagController";
+import * as ProductAttributeController from "../controllers/ProductAttributeController";
+
 import * as PluginController from "../controllers/PluginController";
 
 let publicRouter = Router();
@@ -38,6 +42,14 @@ publicRouter.get(
 publicRouter.get("/api/product", ProductController.getPublishedProducts);
 publicRouter.get("/api/product/deals", ProductController.getDealsOfTheDay);
 publicRouter.get("/api/product/all", ProductController.getProductsWithVariant);
+publicRouter.get(
+  "/api/product/tags",
+  ProductTagController.getPublishedTagsWithProductCount
+);
+publicRouter.get(
+  "/api/product/attributes",
+  ProductAttributeController.getPublishedAttrs
+);
 publicRouter.get("/api/product/:productId", ProductController.getDetails);
 publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);
 publicRouter.get("/api/posts", PostController.getPostsWithImage);
@@ -68,6 +80,10 @@ publicRouter.get("/api/slider", SliderController.getAllSliders);
 publicRouter.get("/api/socialLogin", SocialLoginController.getEnabled);
 publicRouter.get("/api/locale", LanguageController.getAllLocale);
 publicRouter.get("/api/plugins", PluginController.getPlugins);
+publicRouter.get(
+  "/api/brands",
+  BrandController.getPublishedBrandsWithProductCount
+);
 
 // define the about route
 

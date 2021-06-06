@@ -1,4 +1,5 @@
 import { PAGE_LIMIT } from "../config/constants";
+import Product from "../models/Product";
 import tagModel from "../models/Tags";
 
 export const createTag = async (payload) => {
@@ -39,6 +40,19 @@ export const getTags = async (page, userId, query) => {
 export const getPublishedTags = async (userId) => {
   const tags = await tagModel.find({ status: "Published" }).select("id name ");
 
+  return {
+    status: "success",
+    data: tags,
+  };
+};
+
+export const getPublishedTagsWithProductCount = async (userId) => {
+  const tags = await tagModel.find().select("id name ");
+  // for (let i = 0; i < tags.length; i++) {
+  //   tags[i].productCount = (
+  //     await Product.find({ "tags.tagId": tags[i]._id })
+  //   ).length;
+  // }
   return {
     status: "success",
     data: tags,

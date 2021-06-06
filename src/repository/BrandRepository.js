@@ -1,5 +1,6 @@
 import { PAGE_LIMIT } from "../config/constants";
 import brandModel from "../models/Brand";
+import Product from "../models/Product";
 
 export const createBrand = async (payload) => {
   const brand = new brandModel(payload);
@@ -35,6 +36,22 @@ export const getAllPublishedBrands = async (userId) => {
     .find({ status: "Published" })
     .select("id name");
 
+  return {
+    status: "success",
+    data: brands,
+  };
+};
+
+export const getAllPublishedBrandsWithProductCount = async () => {
+  const brands = await brandModel
+    .find({ status: "Published" })
+    .select("id name")
+    .lean();
+  for (let i = 0; i < brands.length; i++) {
+    brands[i].productCount = (
+      await Product.find({ brand: brands[i]._id })
+    ).length;
+  }
   return {
     status: "success",
     data: brands,

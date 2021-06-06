@@ -49,11 +49,7 @@ export const getAttrs = async (req, res, next) => {
   delete req.query.page;
   try {
     console.log(req.jwtPayload);
-    let respo = await attrRepo.getAttrs(
-      page - 1 || 0,
-      req.jwtPayload.userid,
-      req.query
-    );
+    let respo = await attrRepo.getAttrs(page - 1 || 0, req.query);
     if (respo.status === "success") {
       if (respo.data.attributes.length) res.status(200).json(respo);
       else {
@@ -76,7 +72,7 @@ export const getPublishedAttrs = async (req, res, next) => {
   //   console.log(req);
   try {
     console.log(req.jwtPayload);
-    let respo = await attrRepo.getAllPublishedAttrs(req.jwtPayload.userid);
+    let respo = await attrRepo.getAllPublishedAttrs();
     if (respo.status === "success") {
       if (respo.data.length) res.status(200).json(respo);
       else {

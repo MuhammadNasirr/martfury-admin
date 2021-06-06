@@ -1,15 +1,8 @@
 import * as brandRepo from "../repository/BrandRepository";
 
 export const createBrand = async (req, res, next) => {
-  const {
-    name,
-    description,
-    status,
-    logo,
-    isFeatured,
-    order,
-    website,
-  } = req.body;
+  const { name, description, status, logo, isFeatured, order, website } =
+    req.body;
   let payload = {
     name,
     description,
@@ -71,7 +64,30 @@ export const getPublishedBrands = async (req, res, next) => {
   //   console.log(req);
   try {
     console.log(req.jwtPayload);
-    let respo = await brandRepo.getAllPublishedBrands(req.jwtPayload.userid);
+    let respo = await brandRepo.getAllPublishedBrands();
+    if (respo.status === "success") {
+      if (respo.data.length) res.status(200).json(respo);
+      else {
+        res.status(204).json(respo);
+      }
+    } else {
+      const err = new Error(respo.message);
+      err.status = respo.status;
+      err.statusCode = 400;
+      next(err);
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getPublishedBrandsWithProductCount = async (req, res, next) => {
+  //   console.log(req);
+  try {
+    console.log(req.jwtPayload);
+    let respo = await brandRepo.getAllPublishedBrandsWithProductCount();
     if (respo.status === "success") {
       if (respo.data.length) res.status(200).json(respo);
       else {

@@ -111,9 +111,14 @@ export const getProductsWithVariant = async (page, query) => {
     query.name = { $regex: query.name, $options: "i" };
   }
   const products = await Model.find({ ...query })
-    .select(
-      "id name images price salePrice quanitity inStore sku status createdAt"
-    )
+    .select()
+    .populate({ path: "categories" })
+    .populate({ path: "brand" })
+    .populate({ path: "productCollection" })
+    .populate({ path: "tax" })
+    .populate("attributes")
+    .populate("tags.tagId")
+    .sort("order")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page)
     .lean();
@@ -153,7 +158,13 @@ export const getPublishedProducts = async (page, query) => {
 
   console.log(query);
   const products = await Model.find({ ...query, status: "Published" })
-    .select("id name images price salePrice isFeatured categories")
+    .populate({ path: "categories" })
+    .populate({ path: "brand" })
+    .populate({ path: "productCollection" })
+    .populate({ path: "tax" })
+    .populate("attributes")
+    .populate("tags.tagId")
+    .sort("order")
     .limit(PAGE_LIMIT)
     .skip(PAGE_LIMIT * page);
 
