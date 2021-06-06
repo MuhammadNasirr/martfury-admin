@@ -37,7 +37,7 @@ publicRouter.get(
 );
 publicRouter.get("/api/product", ProductController.getPublishedProducts);
 publicRouter.get("/api/product/deals", ProductController.getDealsOfTheDay);
-publicRouter.get("/1api/product/all", ProductController.getProductsWithVariant);
+publicRouter.get("/api/product/all", ProductController.getProductsWithVariant);
 publicRouter.get("/api/product/:productId", ProductController.getDetails);
 publicRouter.get("/api/faqs", FaqController.getFaqsWithAnswer);
 publicRouter.get("/api/posts", PostController.getPostsWithImage);
