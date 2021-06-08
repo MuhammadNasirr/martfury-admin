@@ -155,7 +155,9 @@ export const getPublishedProducts = async (page, query) => {
     query["product.discountDate.to"] = { $lte: discountDate.to };
     delete query.discountDate;
   }
-
+  if (query.brand) {
+    query.brand = { $in: query.brand.split(",") };
+  }
   console.log(query);
   const products = await Model.find({ ...query, status: "Published" })
     .populate({ path: "categories" })
