@@ -158,6 +158,12 @@ export const getPublishedProducts = async (page, query) => {
   if (query.brand) {
     query.brand = { $in: query.brand.split(",") };
   }
+  if (query.categories) {
+    query.categories = { $in: query.categories.split(",") };
+  }
+  if (query.productCollection) {
+    query.productCollection = { $in: query.productCollection.split(",") };
+  }
   console.log(query);
   const products = await Model.find({ ...query, status: "Published" })
     .populate({ path: "categories" })
