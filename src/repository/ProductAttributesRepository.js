@@ -8,7 +8,7 @@ export const createAttr = async (payload) => {
   return { status: "success", message: "Successfully created" };
 };
 
-export const getAttrs = async (page, userId, query) => {
+export const getAttrs = async (page, query) => {
   if (query.name) {
     query.name = { $regex: query.name, $options: "i" };
   }

@@ -17,6 +17,7 @@ import * as LanguageController from "../controllers/LanguageController";
 import * as BrandController from "../controllers/BrandController";
 import * as ProductTagController from "../controllers/ProductTagController";
 import * as ProductAttributeController from "../controllers/ProductAttributeController";
+import * as NewsletterController from "../controllers/NewsletterController";
 
 import * as PluginController from "../controllers/PluginController";
 
@@ -83,6 +84,15 @@ publicRouter.get("/api/plugins", PluginController.getPlugins);
 publicRouter.get(
   "/api/brands",
   BrandController.getPublishedBrandsWithProductCount
+);
+publicRouter.get(
+  "/api/newsletter",
+  NewsletterController.getNewsletters
+);
+
+publicRouter.post(
+  "/api/newsletter",
+  NewsletterController.createNewsletter
 );
 
 // define the about route
