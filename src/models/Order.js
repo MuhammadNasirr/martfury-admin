@@ -38,6 +38,10 @@ const orderSchema = mongoose.Schema(
         },
         quantity: Number,
         price: Number,
+        variantId:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "products_variant",
+        }
       },
     ],
     discount: Number,

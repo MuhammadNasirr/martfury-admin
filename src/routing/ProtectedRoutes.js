@@ -37,6 +37,7 @@ import * as FAQ_CATController from "../controllers/FAQ_CategoryController";
 import * as FaqController from "../controllers/FAQController";
 import * as PostController from "../controllers/PostController";
 import * as SettingsController from "../controllers/SettingsController";
+import * as OrderController from "../controllers/OrderController";
 import { authMiddleware } from "../middlewares/JwtAuth";
 import Slider from "../models/Slider";
 import multer from "multer";
@@ -997,5 +998,13 @@ protectedRouter.post("/permalink", authMiddleware, PermalinkController.create);
 protectedRouter.get("/permalink", authMiddleware, PermalinkController.get);
 
 protectedRouter.put("/permalink", authMiddleware, PermalinkController.update);
+
+
+//Order
+protectedRouter.post(
+  "/order",
+  authMiddleware,
+  OrderController.create
+);
 
 export { protectedRouter };
