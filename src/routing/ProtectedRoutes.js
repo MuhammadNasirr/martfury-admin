@@ -1007,4 +1007,23 @@ protectedRouter.post(
   OrderController.create
 );
 
+protectedRouter.get(
+  "/orders",
+  authMiddleware,
+  OrderController.get
+);
+
+protectedRouter.get(
+  "/orders/incomplete",
+  authMiddleware,
+  OrderController.getPendingOrders
+);
+
+protectedRouter.get(
+  "/orders/customer",
+  authMiddleware,
+  OrderController.getCustomerOrders
+);
+
+
 export { protectedRouter };
